@@ -1,9 +1,9 @@
 /*
 * =====================================================================================
 *
-*       Filename:  Matrix.cpp
+*       Filename:  matrix.cpp
 *
-*    Description:  Matrix实现
+*    Description:  矩阵类实现
 *
 *        Version:  1.0
 *        Created:

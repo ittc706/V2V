@@ -24,6 +24,18 @@
     <ClCompile Include="matrix.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="vue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vue_physics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vue_link.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vue_network.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h">
@@ -33,6 +45,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vue_physics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vue_link.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vue_network.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

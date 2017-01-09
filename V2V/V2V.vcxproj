@@ -113,11 +113,19 @@
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="vue.cpp" />
+    <ClCompile Include="vue_link.cpp" />
+    <ClCompile Include="vue_network.cpp" />
+    <ClCompile Include="vue_physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="vue.h" />
+    <ClInclude Include="vue_link.h" />
+    <ClInclude Include="vue_network.h" />
+    <ClInclude Include="vue_physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

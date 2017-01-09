@@ -1,9 +1,9 @@
 /*
 * =====================================================================================
 *
-*       Filename:  Complex.cpp
+*       Filename:  complex.cpp
 *
-*    Description:  Complex实现
+*    Description:  复数类实现
 *
 *        Version:  1.0
 *        Created:
