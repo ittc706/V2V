@@ -23,3 +23,8 @@ using namespace std;
 vue_link::vue_link() {
 
 }
+
+
+vue_link::~vue_link() {
+
+}

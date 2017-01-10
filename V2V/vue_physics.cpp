@@ -23,3 +23,8 @@ using namespace std;
 vue_physics::vue_physics() {
 
 }
+
+
+vue_physics::~vue_physics() {
+
+}

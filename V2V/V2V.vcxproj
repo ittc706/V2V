@@ -113,6 +113,7 @@
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="system_control.cpp" />
     <ClCompile Include="vue.cpp" />
     <ClCompile Include="vue_link.cpp" />
     <ClCompile Include="vue_network.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="complex.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="system_control.h" />
     <ClInclude Include="vue.h" />
     <ClInclude Include="vue_link.h" />
     <ClInclude Include="vue_network.h" />

@@ -52,12 +52,12 @@ public:
 	/*
 	* 将拷贝赋值运算符定义为删除
 	*/
-	vue& operator=(const vue&t_vue) = delete;
+	vue& operator=(const vue& t_vue) = delete;
 
 	/*
 	* 将移动赋值运算符定义为删除
 	*/
-	vue& operator=(vue&&t_vue) = delete;
+	vue& operator=(vue&& t_vue) = delete;
 
 	/*----------------访问与编辑器----------------*/
 public:

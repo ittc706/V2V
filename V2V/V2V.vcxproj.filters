@@ -36,6 +36,9 @@
     <ClCompile Include="vue_network.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="system_control.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h">
@@ -57,6 +60,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="vue_network.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="system_control.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

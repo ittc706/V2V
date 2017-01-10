@@ -16,6 +16,32 @@ private:
 	*/
 	vue_physics();
 
+public:
+	/*
+	* 析构函数，负责清理资源
+	*/
+	~vue_physics();
+
+	/*
+	* 将拷贝构造函数定义为删除
+	*/
+	vue_physics(const vue_physics& t_vue_physics) = delete;
+
+	/*
+	* 将移动构造函数定义为删除
+	*/
+	vue_physics(vue_physics&& t_vue_physics) = delete;
+
+	/*
+	* 将拷贝赋值运算符定义为删除
+	*/
+	vue_physics& operator=(const vue_physics& t_vue_physics) = delete;
+
+	/*
+	* 将移动赋值运算符定义为删除
+	*/
+	vue_physics& operator=(vue_physics&& t_vue_physics) = delete;
+
 	/*------------------私有字段------------------*/
 private:
 	/*

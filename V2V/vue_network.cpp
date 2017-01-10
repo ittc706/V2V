@@ -23,3 +23,8 @@ using namespace std;
 vue_network::vue_network() {
 
 }
+
+
+vue_network::~vue_network() {
+
+}
