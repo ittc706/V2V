@@ -33,15 +33,21 @@ system_control::~system_control() {
 
 void system_control::process() {
 	initialize();//初始化
+
+	drop_vue();//车辆撒点
 }
 
 
 void system_control::initialize() {
-	//容器context初始化
-	context::context_build();
+	//调用容器context的静态工厂方法生成单例模式下唯一对象
+	context::context_factory();
 
 	//为成员变量赋值
 	m_context = context::get_context();
 }
 
+
+void system_control::drop_vue() {
+
+}
 

@@ -59,24 +59,19 @@ private:
 	/*
 	* 取车辆ij之间的信道
 	*/
-	static double* get_channel_all(int i, int j);
+	static double* get_channel(int i, int j);
 
 	/*
 	* 存车辆ij之间的信道
 	*/
-	static void set_channel_all(int i, int j, double*);
-
-	/*
-	* 撒点
-	*/
-	static void drop_vue();
+	static void set_channel(int i, int j, double*);
 
 	/*------------------私有字段------------------*/
 private:
 	/*
 	* 车辆编号
 	*/
-	double m_id = -1;
+	double m_id = s_vue_count++;
 
 	/*
 	* 车速

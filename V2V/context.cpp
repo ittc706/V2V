@@ -29,10 +29,11 @@ context* context::get_context() {
 }
 
 void context::set_context(context* t_singleton_context) {
+	memory_clean::safe_delete(s_singleton_context);
 	s_singleton_context = t_singleton_context;
 }
 
-void context::context_build() {
+void context::context_factory() {
 	context* __context = new context();
 	set_context(__context);
 }

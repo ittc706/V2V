@@ -24,7 +24,7 @@ int vue_physics::s_vue_count = 0;
 
 std::vector<std::vector<double*>> vue_physics::s_channel_all(0);
 
-double* vue_physics::get_channel_all(int i, int j) {
+double* vue_physics::get_channel(int i, int j) {
 	if (i < j) {
 		return s_channel_all[i][j];
 	}
@@ -34,7 +34,7 @@ double* vue_physics::get_channel_all(int i, int j) {
 }
 
 
-void vue_physics::set_channel_all(int i, int j, double* t_channel) {
+void vue_physics::set_channel(int i, int j, double* t_channel) {
 	if (i < j) {
 		s_channel_all[i][j] = t_channel;
 	}
@@ -44,18 +44,13 @@ void vue_physics::set_channel_all(int i, int j, double* t_channel) {
 }
 
 
-void vue_physics::drop_vue() {
-
-}
-
-
 vue_physics::vue_physics() {
 
 }
 
 
 vue_physics::~vue_physics() {
-	m_id = s_vue_count++;
+	
 }
 
 

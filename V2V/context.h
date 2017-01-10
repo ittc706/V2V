@@ -26,7 +26,7 @@ public:
 	/*
 	* 单例模式下，生成唯一实体
 	*/
-	static void context_build();
+	static void context_factory();
 
 	/*----------------拷贝控制成员----------------*/
 private:

@@ -5,6 +5,9 @@ class context;
 class system_control {
 	/*------------------私有字段------------------*/
 private:
+	/*
+	* 持有容器的指针
+	*/
 	context* m_context = nullptr;
 
 	/*----------------拷贝控制成员----------------*/
@@ -53,4 +56,9 @@ private:
 	* 平台初始化
 	*/
 	void initialize();
+
+	/*
+	* 车辆撒点
+	*/
+	void drop_vue();
 };
