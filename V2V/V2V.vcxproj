@@ -111,6 +111,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
+    <ClCompile Include="context.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="system_control.cpp" />
@@ -121,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h" />
+    <ClInclude Include="context.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="system_control.h" />

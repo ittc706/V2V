@@ -1,11 +1,11 @@
 #pragma once
 
-class vue;
+class context;
 
 class system_control {
 	/*------------------私有字段------------------*/
 private:
-	vue* m_vue_array = nullptr;
+	context* m_context = nullptr;
 
 	/*----------------拷贝控制成员----------------*/
 public:
@@ -38,4 +38,19 @@ public:
 	* 将移动赋值运算符定义为删除
 	*/
 	system_control& operator=(system_control&& t_system_control) = delete;
+
+
+	/*--------------------接口--------------------*/
+public:
+	/*
+	* 系统运行唯一接口
+	*/
+	void process();
+
+	/*--------------------实现--------------------*/
+private:
+	/*
+	* 平台初始化
+	*/
+	void initialize();
 };

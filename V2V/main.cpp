@@ -7,6 +7,8 @@ using namespace std;
 
 int main() {
 	system_control s;
+
+	s.process();
 	
 	system("pause");
 }
