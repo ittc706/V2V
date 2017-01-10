@@ -1,5 +1,6 @@
 #pragma once
 
+#include<vector>
 
 class vue_physics {
 	/*------------------友元声明------------------*/
@@ -42,8 +43,41 @@ public:
 	*/
 	vue_physics& operator=(vue_physics&& t_vue_physics) = delete;
 
+	/*------------------静态成员------------------*/
+private:
+	/*
+	* 车辆计数
+	*/
+	static int s_vue_count;
+
+	/*
+	* 车辆之间的信道
+	* 前两层下标为车辆id，例如s_channel_all[i][j],且i<j
+	*/
+	static std::vector<std::vector<double*>> s_channel_all;
+
+	/*
+	* 取车辆ij之间的信道
+	*/
+	static double* get_channel_all(int i, int j);
+
+	/*
+	* 存车辆ij之间的信道
+	*/
+	static void set_channel_all(int i, int j, double*);
+
+	/*
+	* 撒点
+	*/
+	static void drop_vue();
+
 	/*------------------私有字段------------------*/
 private:
+	/*
+	* 车辆编号
+	*/
+	double m_id = -1;
+
 	/*
 	* 车速
 	*/
@@ -61,5 +95,8 @@ private:
 
 	/*----------------访问与编辑器----------------*/
 public:
-	
+
+	/*--------------------方法--------------------*/
+public:
+	void update_location();
 };
