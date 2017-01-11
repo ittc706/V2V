@@ -1,8 +1,14 @@
 #pragma once
 
 class vue;
+class gtt;
 
 class context {
+	/*------------------友元声明------------------*/
+	/*
+	* 将system_control设为context的友元，提供其构造容器类唯一实例的权限
+	*/
+	friend class system_control;
 	/*------------------静态成员字段------------------*/
 private:
 	/*
@@ -22,7 +28,7 @@ private:
 	*/
 	static void set_context(context* t_singleton_context);
 
-public:
+private:
 	/*
 	* 单例模式下，生成唯一实体
 	*/
@@ -70,4 +76,13 @@ private:
 public:
 	void set_vue_array(vue* t_vue_array);
 	vue* get_vue_array();
+
+	/*
+	* 场景类实体指针、编辑器、访问器
+	*/
+private:
+	gtt* m_gtt = nullptr;
+	void set_gtt(gtt* t_gtt);
+	gtt* get_gtt();
 };
+

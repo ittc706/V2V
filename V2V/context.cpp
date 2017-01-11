@@ -53,3 +53,11 @@ void context::set_vue_array(vue* t_vue_array) {
 vue* context::get_vue_array() {
 	return m_vue_array;
 }
+
+void context::set_gtt(gtt* t_gtt) {
+	m_gtt = t_gtt;
+}
+
+gtt* context::get_gtt() {
+	return m_gtt;
+}

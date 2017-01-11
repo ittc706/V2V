@@ -13,7 +13,7 @@ private:
 	/*----------------拷贝控制成员----------------*/
 public:
 	/*
-	* 默认构造函数，控制三层实体指针的初始化
+	* 默认构造函数
 	*/
 	system_control();
 
@@ -61,4 +61,9 @@ private:
 	* 车辆撒点
 	*/
 	void drop_vue();
+
+	/*
+	* 更新信道
+	*/
+	void update_channel();
 };

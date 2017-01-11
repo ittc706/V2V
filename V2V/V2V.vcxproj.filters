@@ -42,6 +42,12 @@
     <ClCompile Include="context.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="IMTA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gtt_highspeed.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h">
@@ -69,6 +75,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="context.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMTA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gtt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gtt_highspeed.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

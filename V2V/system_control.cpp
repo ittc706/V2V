@@ -20,6 +20,9 @@
 #include"function.h"
 #include"context.h"
 #include"vue.h"
+#include"gtt.h"
+#include"gtt_highspeed.h"
+
 
 using namespace std;
 
@@ -44,10 +47,18 @@ void system_control::initialize() {
 
 	//为成员变量赋值
 	m_context = context::get_context();
+
+	//<Warn>
+	m_context->set_gtt(new gtt_highspeed());
 }
 
 
 void system_control::drop_vue() {
+	m_context->get_gtt()->drop_vue();
+}
+
+
+void system_control::update_channel() {
 
 }
 
