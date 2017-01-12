@@ -20,6 +20,8 @@
 #include"vue_physics.h"
 #include"context.h"
 #include"gtt.h"
+#include"gtt_highspeed.h"
+#include"config.h"
 #include"imta.h"
 #include"function.h"
 
@@ -85,30 +87,30 @@ vue_physics::~vue_physics() {
 
 
 void vue_physics::update_location() {
-	auto p = context::get_context()->get_gtt();
+	auto p = (gtt_highspeed*)context::get_context()->get_gtt();
 	if (m_vangle == 0)
 	{
-		if ((m_absx + p->get_freshtime()*m_speed)>(p->get_road_length() / 2))
+		if ((m_absx + p->get_precise_config()->get_freshtime()*m_speed)>(p->get_precise_config()->get_road_length() / 2))
 		{
-			m_absx = (m_absx + p->get_freshtime()*m_speed) - p->get_road_length();
+			m_absx = (m_absx + p->get_precise_config()->get_freshtime()*m_speed) - p->get_precise_config()->get_road_length();
 			m_relx = m_absx;
 		}
 		else
 		{
-			m_absx = m_absx + p->get_freshtime()*m_speed;
+			m_absx = m_absx + p->get_precise_config()->get_freshtime()*m_speed;
 			m_relx = m_absx;
 		}
 	}
 	else
 	{
-		if ((m_absx - p->get_freshtime()*m_speed)<(-p->get_road_length() / 2))
+		if ((m_absx - p->get_precise_config()->get_freshtime()*m_speed)<(-p->get_precise_config()->get_road_length() / 2))
 		{
-			m_absx = m_absx - p->get_freshtime()*m_speed + p->get_road_length();
+			m_absx = m_absx - p->get_precise_config()->get_freshtime()*m_speed + p->get_precise_config()->get_road_length();
 			m_relx = m_absx;
 		}
 		else
 		{
-			m_absx = m_absx - p->get_freshtime()*m_speed;
+			m_absx = m_absx - p->get_precise_config()->get_freshtime()*m_speed;
 			m_relx = m_absx;
 		}
 	}

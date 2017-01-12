@@ -82,7 +82,7 @@ public:
 	* 配置文件加载对象、编辑器、访问器
 	*/
 private:
-	config_loader* m_config_loader;
+	config_loader* m_config_loader = nullptr;
 	void set_config_loader(config_loader* t_config_loader);
 public:
 	config_loader* get_config_loader();
@@ -155,6 +155,7 @@ public:
 	*/
 private:
 	std::vector<v2v_event*> m_event_array;
+	void event_array_initialize();
 public:
 	std::vector<v2v_event*>& get_event_array();
 
@@ -170,11 +171,6 @@ public:
 
 	/*--------------------实现--------------------*/
 private:
-	/*
-	* 初始化容器的成员
-	*/
-	void initialize();
-
 	/*
 	* 为容器的成员注入依赖项，并执行相应的初始化动作
 	*/

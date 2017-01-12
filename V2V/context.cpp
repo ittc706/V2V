@@ -40,14 +40,13 @@ void context::set_context(context* t_singleton_context) {
 void context::context_factory() {
 	context* __context = new context();
 	set_context(__context);
+
+	//初始化成员，并为容器成员注入依赖项
+	get_context()->dependency_injecte();
 }
 
 context::context() {
-	//初始化容器成员
-	initialize();
 
-	//为容器成员注入依赖项
-	dependency_injecte();
 }
 
 context::~context() {
@@ -118,22 +117,23 @@ tmc* context::get_tmc() {
 	return m_tmc;
 }
 
+void context::event_array_initialize() {
+	m_event_array = vector<v2v_event*>(0);
+}
+
 vector<v2v_event*>& context::get_event_array() {
 	return m_event_array;
 }
 
 void context::initialize_tti_event_list() {
-	//<Warn>
-	m_tti_event_list = vector<list<int>>(100);
+	m_tti_event_list = vector<list<int>>(get_global_control_config()->get_ntti());
 }
 
 vector<std::list<int>>& context::get_tti_event_list() {
 	return m_tti_event_list;
 }
 
-void context::initialize() {
-	/* 容器成员在这里完成初始化 */
-
+void context::dependency_injecte() {
 	//初始化类加载器
 	set_config_loader(new config_loader());
 
@@ -147,14 +147,24 @@ void context::initialize() {
 
 	//初始化业务模型与控制单元对象
 	set_tmc(new tmc());
-}
 
-void context::dependency_injecte() {
+	//事件数组初始化
+	event_array_initialize();
+
+	//为参数配置对象注入依赖项，并执行初始化动作
 	get_global_control_config()->set_config_loader(get_config_loader());
 	get_global_control_config()->load();
-	get_gtt_config()->set_config_loader(get_config_loader());
-	get_tmc_config()->set_config_loader(get_config_loader());
 
+	get_gtt_config()->set_config_loader(get_config_loader());
+	get_gtt_config()->load();
+
+	get_tmc_config()->set_config_loader(get_config_loader());
+	get_tmc_config()->load();
+
+	//为地理拓扑单元对象注入依赖项
 	get_gtt()->set_config(get_gtt_config());
+
+	//在配置对象初始化完毕后，该对象才可以进行初始化
+	initialize_tti_event_list();
 
 }
