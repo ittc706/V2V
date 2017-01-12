@@ -34,7 +34,7 @@ public:
 	platform get_platform();
 	
 	/*
-	* 平台
+	* 仿真时长
 	*/
 private:
 	int m_ntti;

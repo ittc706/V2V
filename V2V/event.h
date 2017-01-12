@@ -44,9 +44,12 @@ public:
 	v2v_event& operator=(v2v_event&& t_v2v_event) = delete;
 	
 	/*--------------------字段--------------------*/
+	/*
+	* 传输时延
+	*/
 private:
 	int m_send_delay = 0;
-
+public:
 	int get_send_delay();
 
 	/*--------------------方法--------------------*/

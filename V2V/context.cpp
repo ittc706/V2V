@@ -23,6 +23,7 @@
 #include"gtt_highspeed.h"
 #include"vue.h"
 #include"tmc.h"
+#include"wt.h"
 
 using namespace std;
 
@@ -117,6 +118,14 @@ tmc* context::get_tmc() {
 	return m_tmc;
 }
 
+void context::wt_initialize() {
+	wt::initialize_resource();
+}
+
+wt* context::get_wt() {
+	return new wt();
+}
+
 void context::event_array_initialize() {
 	m_event_array = vector<v2v_event*>(0);
 }
@@ -163,6 +172,9 @@ void context::dependency_injecte() {
 
 	//为地理拓扑单元对象注入依赖项
 	get_gtt()->set_config(get_gtt_config());
+
+	//初始化无线传输单元共享资源
+	wt_initialize();
 
 	//在配置对象初始化完毕后，该对象才可以进行初始化
 	initialize_tti_event_list();

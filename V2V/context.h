@@ -8,6 +8,7 @@ class gtt_config;
 class tmc_config;
 class gtt;
 class tmc;
+class wt;
 class vue;
 class v2v_event;
 
@@ -140,6 +141,14 @@ private:
 	void set_tmc(tmc* t_tmc);
 public:
 	tmc* get_tmc();
+
+	/*
+	* wt对象，为非单例模式，可以请求数个wt类型的对象
+	*/
+private:
+	void wt_initialize();
+public:
+	wt* get_wt();
 
 	/*
 	* 车辆类数组指针

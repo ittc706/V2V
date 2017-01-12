@@ -129,6 +129,7 @@
     <ClCompile Include="vue_link.cpp" />
     <ClCompile Include="vue_network.cpp" />
     <ClCompile Include="vue_physics.cpp" />
+    <ClCompile Include="wt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="vue_link.h" />
     <ClInclude Include="vue_network.h" />
     <ClInclude Include="vue_physics.h" />
+    <ClInclude Include="wt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
