@@ -50,7 +50,7 @@ void gtt_highspeed::drop_vue() {
 			TotalTime[roadId] += pV;
 			double check = TotalTime[roadId];
 		}
-		m_pupr[roadId] = possion[roadId].size();//完成当前道路下总车辆数的赋值
+		m_pupr[roadId] = static_cast<int>(possion[roadId].size());//完成当前道路下总车辆数的赋值
 		tempVeUENum += m_pupr[roadId];
 	}
 
@@ -80,4 +80,8 @@ double gtt_highspeed::get_freshtime() {
 
 double gtt_highspeed::get_road_length() {
 	return m_road_length;
+}
+
+int gtt_highspeed::get_vue_num() {
+	return vue_physics::get_vue_num();
 }

@@ -58,12 +58,22 @@ private:
 	void initialize();
 
 	/*
-	* 车辆撒点
+	* gtt单元初始化
 	*/
-	void drop_vue();
+	void gtt_initialize();
+
+	/*
+	* tmc单元初始化
+	*/
+	void tmc_initialize();
 
 	/*
 	* 更新信道
 	*/
 	void update_channel();
+
+	/*
+	* 事件触发
+	*/
+	void event_trigger();
 };

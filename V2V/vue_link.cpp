@@ -24,7 +24,14 @@ vue_link::vue_link() {
 
 }
 
-
 vue_link::~vue_link() {
 
+}
+
+void vue_link::set_period_event_next_trigger_tti(int t_period_event_next_trigger_tti) {
+	m_period_event_next_trigger_tti = t_period_event_next_trigger_tti;
+}
+
+int vue_link::get_period_event_next_trigger_tti() {
+	return m_period_event_next_trigger_tti;
 }

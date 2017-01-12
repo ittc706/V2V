@@ -1,9 +1,9 @@
 /*
 * =====================================================================================
 *
-*       Filename:  IMTA.cpp
+*       Filename:  imta.cpp
 *
-*    Description:  IMTA
+*    Description:  imta
 *
 *        Version:  1.0
 *        Created:
@@ -19,23 +19,23 @@
 #include<cmath>
 #include<memory.h>
 #include<iostream>
-#include"IMTA.h"
+#include"imta.h"
 #include"Function.h"
 
 using namespace std;
 
-const double IMTA::s_PI = 3.1415926535897932384626433832795f;
-const double IMTA::s_PINeg = -3.1415926535897932384626433832795f;
-const double IMTA::s_PI2 = 6.283185307179586476925286766559f;
-const double IMTA::s_PI_HALF = 1.5707963267948966192313216916398f;
-const double IMTA::s_DEGREE_TO_PI = 0.01745329251994329576923690768489f;
-const double IMTA::s_SQRT_HALF = 0.70710678118654752440084436210485f;
-const double IMTA::s_SQRT_THREE = 1.73205080756887729f;
-const double IMTA::s_C = 299792458.0f;
-const double IMTA::s_FC = 6e9f;
+const double imta::s_PI = 3.1415926535897932384626433832795f;
+const double imta::s_PINeg = -3.1415926535897932384626433832795f;
+const double imta::s_PI2 = 6.283185307179586476925286766559f;
+const double imta::s_PI_HALF = 1.5707963267948966192313216916398f;
+const double imta::s_DEGREE_TO_PI = 0.01745329251994329576923690768489f;
+const double imta::s_SQRT_HALF = 0.70710678118654752440084436210485f;
+const double imta::s_SQRT_THREE = 1.73205080756887729f;
+const double imta::s_C = 299792458.0f;
+const double imta::s_FC = 6e9f;
 
 
-const double IMTA::s_ConstantUMiLoS[25] =
+const double imta::s_ConstantUMiLoS[25] =
 {
 	0.753065949852806f, 0.241023875447849f, 0.454091158552085f, -0.097177920212920f, -0.398944655540474f,
 	0.241023875447849f, 0.929354051080552f, 0.137998056490968f, -0.242351266621617f, -0.020759074542993f,
@@ -43,7 +43,7 @@ const double IMTA::s_ConstantUMiLoS[25] =
 	-0.097177920212920f, -0.242351266621617f, -0.175603398954279f, 0.915728740196339f, 0.249853229004786f,
 	-0.398944655540474f, -0.020759074542993f, -0.041377149612582f, 0.249853229004786f, 0.881063855850205f
 };
-const double IMTA::s_ConstantUMiNLoS[25] =
+const double imta::s_ConstantUMiNLoS[25] =
 {
 	0.913514893522226f, 0.0f, 0.178007039816570f, -0.365792336017060f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -51,7 +51,7 @@ const double IMTA::s_ConstantUMiNLoS[25] =
 	-0.365792336017060f, 0.0f, -0.178007039816570f, 0.913514893522227f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantUMiO2I[25] =
+const double imta::s_ConstantUMiO2I[25] =
 {
 	0.896950683840360f, 0.241943793527554f, 0.223605545793171f, -0.294861376620174f, 0.0f,
 	0.241943793527554f, 0.959179465107684f, -0.030708888757422f, 0.143160464655990f, 0.0f,
@@ -59,7 +59,7 @@ const double IMTA::s_ConstantUMiO2I[25] =
 	-0.294861376620174f, 0.143160464655990f, 0.036676495468768f, 0.944042734529146f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantSMaLoS[25] =
+const double imta::s_ConstantSMaLoS[25] =
 {
 	0.854017192528818f, -0.040746823503881f, 0.423846524961968f, -0.298912118384658f, 0.0f,
 	-0.040746823503881f, 0.958761974312789f, -0.023404035164252f, -0.280298812206218f, 0.0f,
@@ -67,7 +67,7 @@ const double IMTA::s_ConstantSMaLoS[25] =
 	-0.298912118384658f, -0.280298812206218f, -0.215103894600008f, 0.886461750943879f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantSMaNLoS[25] =
+const double imta::s_ConstantSMaNLoS[25] =
 {
 	0.888863320019977f, -0.028738390905236f, 0.394136210972923f, -0.231846394000744f, 0.0f,
 	-0.028738390905236f, 0.976874642167262f, 0.011594978528380f, -0.211555181576079f, 0.0f,
@@ -75,7 +75,7 @@ const double IMTA::s_ConstantSMaNLoS[25] =
 	-0.231846394000744f, -0.211555181576079f, 0.050292184084163f, 0.948136251262026f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantUMaLoS[25] =
+const double imta::s_ConstantUMaLoS[25] =
 {
 	0.806310951408682f, 0.245016774934418f, 0.479171304494613f, -0.120392914754038f, -0.213845356893992f,
 	0.245016774934418f, 0.924083471541761f, -0.108566442433108f, -0.271617534928914f, 0.021766026753229f,
@@ -83,7 +83,7 @@ const double IMTA::s_ConstantUMaLoS[25] =
 	-0.120392914754038f, -0.271617534928914f, -0.271600920527001f, 0.915216117252956f, -0.018489442540902f,
 	-0.213845356893992f, 0.021766026753229f, -0.055644441252067f, -0.018489442540902f, 0.974863190445988f
 };
-const double IMTA::s_ConstantUMaNLoS[25] =
+const double imta::s_ConstantUMaNLoS[25] =
 {
 	0.913941405256431f, 0.147728073775767f, 0.318005795482914f, -0.204352240055453f, 0.0f,
 	0.147728073775767f, 0.913941405256431f, 0.204352240055453f, -0.318005795482914f, 0.0f,
@@ -91,7 +91,7 @@ const double IMTA::s_ConstantUMaNLoS[25] =
 	-0.204352240055453f, -0.318005795482914f, 0.070397088759368f, 0.923123353576218f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantRMaLoS[25] =
+const double imta::s_ConstantRMaLoS[25] =
 {
 	0.965925826289068f, 0.0f, 0.0f, -0.258819045102521f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -99,7 +99,7 @@ const double IMTA::s_ConstantRMaLoS[25] =
 	-0.258819045102521f, 0.0f, 0.0f, 0.965925826289068f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_ConstantRMaNLoS[25] =
+const double imta::s_ConstantRMaNLoS[25] =
 {
 	0.955557150656242f, -0.173466133506044f, 0.0f, -0.238369529001059f, 0.0f,
 	-0.173466133506044f, 0.938008596337461f, 0.0f, 0.300082278256296f, 0.0f,
@@ -107,7 +107,7 @@ const double IMTA::s_ConstantRMaNLoS[25] =
 	-0.238369529001059f, 0.300082278256296f, 0.0f, 0.923650688258459f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 };
-const double IMTA::s_AngleOffset[s_SubPathNum] =
+const double imta::s_AngleOffset[s_SubPathNum] =
 {
 	7.8016217564146532088488977351458e-4f, -7.8016217564146532088488977351458e-4f,
 	0.00246615023306798769219317505587f, -0.00246615023306798769219317505587f,
@@ -120,17 +120,17 @@ const double IMTA::s_AngleOffset[s_SubPathNum] =
 	0.02652027798405383792135548122719f, -0.02652027798405383792135548122719f,
 	0.03761359070972979671228245975171f, -0.03761359070972979671228245975171f
 };
-const double IMTA::s_MidPathDelayOffset[s_MidPathNum] =
+const double imta::s_MidPathDelayOffset[s_MidPathNum] =
 {
 	0.0f, 5.0e-9f, 10.0e-9f
 };
-const int IMTA::s_MidPathIndex[s_SubPathNum] =
+const int imta::s_MidPathIndex[s_SubPathNum] =
 {
 	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 0, 0
 };
 
 
-void IMTA::randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation) {
+void imta::randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, double t_fStandardDeviation) {
 	long ulHalfNum = t_ulNumber / 2;
 	if (ulHalfNum)
 	{
@@ -159,7 +159,7 @@ void IMTA::randomGaussian(double *t_pfArray, long t_ulNumber, double t_fMean, do
 }
 
 
-void IMTA::randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
+void imta::randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, double t_fDownBound, bool t_bFlagZero)
 {
 	for (long ulTemp = 0; ulTemp != t_ulNumber; ++ulTemp)
 	{
@@ -173,7 +173,7 @@ void IMTA::randomUniform(double *t_pfArray, long t_ulNumber, double t_fUpBound, 
 }
 
 
-void IMTA::sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
+void imta::sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, bool t_bFlagFabs)
 {
 	double fTemp;
 	bool bFlagDone;
@@ -239,7 +239,7 @@ void IMTA::sortBubble(double *t_pfArray, int t_wNumber, bool t_bFlagDirection, b
 }
 
 
-void IMTA::selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
+void imta::selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_pbySecond)
 {
 	int byFisrtIndex;
 	int bySecondIndex;
@@ -275,7 +275,7 @@ void IMTA::selectMax(double *t_pfArray, int t_byNumber, int *t_pbyFirst, int *t_
 }
 
 
-IMTA::IMTA() {
+imta::imta() {
 	m_Gain = nullptr;
 	m_SinAoD = nullptr;
 	m_CosAoD = nullptr;
@@ -301,7 +301,7 @@ IMTA::IMTA() {
 	m_FFTIndex = nullptr;
 }
 
-IMTA::~IMTA() {
+imta::~imta() {
 	refresh();
 	memory_clean::safe_delete(m_TxAntSpacing, true);
 	memory_clean::safe_delete(m_RxAntSpacing, true);
@@ -309,7 +309,7 @@ IMTA::~IMTA() {
 	memory_clean::safe_delete(m_RxSlantAngle, true);
 }
 
-bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/) {
+bool imta::build(double* t_Pl, double t_fFrequency/*Hz*/, location &t_eLocation, antenna &t_eAntenna, double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/) {
 	m_Built = false;
 	m_AntGain = t_eAntenna.antGain * 0.1f;
 	m_TxAntNum = t_eAntenna.byTxAntNum;
@@ -504,7 +504,7 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	return true;
 }
 
-bool IMTA::enable(bool *t_pbEnable)
+bool imta::enable(bool *t_pbEnable)
 {
 	refresh();
     
@@ -662,10 +662,8 @@ bool IMTA::enable(bool *t_pbEnable)
 	return true;
 }
 
-void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
+void imta::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, double *t_pfSin, double *t_pfCos,double *t_pfH,double *t_pfHFFT)
 {
-	double fCos;
-	double fSin;
 
 	memset(t_pfH, 0, m_TxAntNum * m_RxAntNum * m_PathNum * 2 * sizeof(double));
 
@@ -763,7 +761,7 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 	return;
 }
 
-void IMTA::refresh(){
+void imta::refresh(){
 	memory_clean::safe_delete(m_Gain, true);
 	memory_clean::safe_delete(m_SinAoD, true);
 	memory_clean::safe_delete(m_CosAoD, true);

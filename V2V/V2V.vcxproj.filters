@@ -42,10 +42,13 @@
     <ClCompile Include="context.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="IMTA.cpp">
+    <ClCompile Include="gtt_highspeed.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="gtt_highspeed.cpp">
+    <ClCompile Include="imta.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,13 +80,16 @@
     <ClInclude Include="context.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="IMTA.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="gtt.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="gtt_highspeed.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="imta.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="event.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

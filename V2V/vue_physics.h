@@ -66,6 +66,11 @@ private:
 
 public:
 	/*
+	* 读取车辆数目
+	*/
+	static int get_vue_num();
+
+	/*
 	* 取车辆i,j之间的小尺度衰落
 	*/
 	static double* get_channel(int i, int j);

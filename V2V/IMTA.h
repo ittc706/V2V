@@ -8,7 +8,7 @@ enum location_type { //位置类型
 	None
 };
 
-struct Location {
+struct location {
 	bool manhattan;
 	location_type locationType;
 	double distance; //单位:m
@@ -21,7 +21,7 @@ struct Location {
 
 };
 
-struct Antenna {
+struct antenna {
 	double TxAngle; // degree
 	double RxAngle; // degree
 	double maxAttenu; // dB
@@ -35,9 +35,9 @@ struct Antenna {
 };
 
 /*===========================================
-*               IMTA信道模型
+*               imta信道模型
 * ==========================================*/
-class IMTA {
+class imta {
 	/*------------------静态------------------*/
 public:
 	static const double s_PI;
@@ -136,9 +136,9 @@ public:
 	int m_HNum;
 	int *m_FFTIndex;
 public:
-	IMTA();
-	~IMTA();
-	bool build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/);
+	imta();
+	~imta();
+	bool build(double* t_Pl, double t_fFrequency/*Hz*/, location &t_eLocation, antenna &t_eAntenna,  double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/);
 	bool enable(bool *t_pbEnable);
 	void calculate(double* t_HAfterFFT, double t_fT/*s*/, double *t_pfTemp, double *t_pfSin, double *t_pfCos, double *t_pfH, double *t_pfHFFT);
 	void refresh();

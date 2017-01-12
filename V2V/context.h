@@ -1,7 +1,11 @@
 #pragma once
+#include<vector>
+#include<list>
 
-class vue;
 class gtt;
+class tmc;
+class vue;
+class v2v_event;
 
 class context {
 	/*------------------友元声明------------------*/
@@ -10,6 +14,7 @@ class context {
 	*/
 	friend class system_control;
 	friend class gtt_highspeed;
+	friend class tmc;
 	/*------------------静态成员字段------------------*/
 private:
 	/*
@@ -70,13 +75,13 @@ public:
 
 	/*------------------容器成员------------------*/
 	/*
-	* 车辆类数组指针、编辑器、访问器
+	* tti、编辑器、访问器
 	*/
 private:
-	vue* m_vue_array = nullptr;
-	void set_vue_array(vue* t_vue_array);
+	int m_tti = 0;
 public:
-	vue* get_vue_array();
+	void increase_tti();
+	int get_tti();
 
 	/*
 	* 场景类实体指针、编辑器、访问器
@@ -86,5 +91,41 @@ private:
 	void set_gtt(gtt* t_gtt);
 public:
 	gtt* get_gtt();
+
+	/*
+	* tmc类实体指针、编辑器、访问器
+	*/
+private:
+	tmc* m_tmc = nullptr;
+	void set_tmc(tmc* t_tmc);
+public:
+	tmc* get_tmc();
+
+	/*
+	* 车辆类数组指针、编辑器、访问器
+	*/
+private:
+	vue* m_vue_array = nullptr;
+	void set_vue_array(vue* t_vue_array);
+public:
+	vue* get_vue_array();
+
+	/*
+	* 事件类数组
+	*/
+private:
+	std::vector<v2v_event*> m_event_array;
+public:
+	std::vector<v2v_event*>& get_event_array();
+
+	/*
+	* tti事件数组，
+	* 外层下标代表tti时刻
+	*/
+private:
+	std::vector<std::list<int>> m_tti_event_list;
+	void initialize_tti_event_list();
+public:
+	std::vector<std::list<int>>& get_tti_event_list();
 };
 

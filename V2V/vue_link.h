@@ -8,6 +8,10 @@ class vue_link {
 	*/
 	friend class vue;
 
+	/*
+	* 将tmc设为vue_link的友元，事件相关的字段需要通过tmc对象来配置
+	*/
+	friend class tmc;
 	/*----------------拷贝控制成员----------------*/
 private:
 	/*
@@ -41,4 +45,16 @@ public:
 	* 将移动赋值运算符定义为删除
 	*/
 	vue_link& operator=(vue_link&& t_vue_link) = delete;
+
+	/*--------------------字段--------------------*/
+	/*
+	* 周期事件下一次触发时刻
+	*/
+private:
+	int m_period_event_next_trigger_tti;
+	void set_period_event_next_trigger_tti(int t_period_event_next_trigger_tti);
+public:
+	int get_period_event_next_trigger_tti();
+
+	/*--------------------方法--------------------*/
 };

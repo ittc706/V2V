@@ -49,4 +49,5 @@ public:
 
 	double get_road_length() override;
 
+	int get_vue_num() override;
 };

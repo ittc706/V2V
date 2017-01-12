@@ -19,10 +19,10 @@
 #include"system_control.h"
 #include"function.h"
 #include"context.h"
-#include"vue.h"
 #include"gtt.h"
 #include"gtt_highspeed.h"
-
+#include"tmc.h"
+#include"vue.h"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ system_control::~system_control() {
 void system_control::process() {
 	initialize();//初始化
 
-	drop_vue();//车辆撒点
+	gtt_initialize();//车辆撒点
 }
 
 
@@ -48,17 +48,27 @@ void system_control::initialize() {
 	//为成员变量赋值
 	m_context = context::get_context();
 
-	//<Warn>
-	m_context->set_gtt(new gtt_highspeed());
+	//gtt单元初始化工作
+	gtt_initialize();
+
+	//tmc单元初始化工作
+	tmc_initialize();
 }
 
 
-void system_control::drop_vue() {
+void system_control::gtt_initialize() {
 	m_context->get_gtt()->drop_vue();
 }
 
+void system_control::tmc_initialize() {
+	m_context->get_tmc()->preparate();
+}
 
 void system_control::update_channel() {
 
+}
+
+void system_control::event_trigger() {
+	m_context->get_tmc()->event_trigger();
 }
 
