@@ -114,8 +114,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
+    <ClCompile Include="config.cpp" />
+    <ClCompile Include="config_loader.cpp" />
     <ClCompile Include="context.cpp" />
     <ClCompile Include="event.cpp" />
+    <ClCompile Include="gtt.cpp" />
     <ClCompile Include="gtt_highspeed.cpp" />
     <ClCompile Include="imta.cpp" />
     <ClCompile Include="main.cpp" />
@@ -129,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="config_loader.h" />
     <ClInclude Include="context.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="function.h" />

@@ -2,6 +2,10 @@
 #include<vector>
 #include<list>
 
+class config_loader;
+class global_control_config;
+class gtt_config;
+class tmc_config;
 class gtt;
 class tmc;
 class vue;
@@ -75,7 +79,43 @@ public:
 
 	/*------------------容器成员------------------*/
 	/*
-	* tti、编辑器、访问器
+	* 配置文件加载对象、编辑器、访问器
+	*/
+private:
+	config_loader* m_config_loader;
+	void set_config_loader(config_loader* t_config_loader);
+public:
+	config_loader* get_config_loader();
+
+	/*
+	* 全局控制配置参数对象
+	*/
+private:
+	global_control_config* m_global_control_config = nullptr;
+	void set_global_control_config(global_control_config* t_global_control_config);
+public:
+	global_control_config* get_global_control_config();
+
+	/*
+	* 地理拓扑与传播单元配置对象
+	*/
+private:
+	gtt_config* m_gtt_config = nullptr;
+	void set_gtt_config(gtt_config* t_gtt_config);
+public:
+	gtt_config* get_gtt_config();
+
+	/*
+	* 业务模型与控制单元配置对象
+	*/
+private:
+	tmc_config* m_tmc_config = nullptr;
+	void set_tmc_config(tmc_config* t_tmc_config);
+public:
+	tmc_config* get_tmc_config();
+
+	/*
+	* tti,仿真时刻
 	*/
 private:
 	int m_tti = 0;
@@ -84,7 +124,7 @@ public:
 	int get_tti();
 
 	/*
-	* 场景类实体指针、编辑器、访问器
+	* 场景类实体指针
 	*/
 private:
 	gtt* m_gtt = nullptr;
@@ -93,7 +133,7 @@ public:
 	gtt* get_gtt();
 
 	/*
-	* tmc类实体指针、编辑器、访问器
+	* tmc类实体指针
 	*/
 private:
 	tmc* m_tmc = nullptr;
@@ -102,7 +142,7 @@ public:
 	tmc* get_tmc();
 
 	/*
-	* 车辆类数组指针、编辑器、访问器
+	* 车辆类数组指针
 	*/
 private:
 	vue* m_vue_array = nullptr;
@@ -127,5 +167,17 @@ private:
 	void initialize_tti_event_list();
 public:
 	std::vector<std::list<int>>& get_tti_event_list();
+
+	/*--------------------实现--------------------*/
+private:
+	/*
+	* 初始化容器的成员
+	*/
+	void initialize();
+
+	/*
+	* 为容器的成员注入依赖项，并执行相应的初始化动作
+	*/
+	void dependency_injecte();
 };
 

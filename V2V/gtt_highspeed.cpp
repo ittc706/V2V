@@ -22,20 +22,22 @@
 #include"context.h"
 #include"vue.h"
 #include"function.h"
+#include"config.h"
 
 using namespace std;
 
 void gtt_highspeed::drop_vue() {
-	int* m_pupr = new int[m_road_num];//每条路上的车辆数
-	double* TotalTime = new double[m_road_num];//每条道路初始泊松撒点过程中所有车辆都已撒进区域内所用的总时间
-	std::list<double>* possion = new std::list<double>[m_road_num];//每条道路初始泊松撒点的车辆到达时间间隔list，单位s
+	gtt_highspeed_config* __config = get_precise_config();
+	int* m_pupr = new int[__config->m_road_num];//每条路上的车辆数
+	double* TotalTime = new double[__config->m_road_num];//每条道路初始泊松撒点过程中所有车辆都已撒进区域内所用的总时间
+	std::list<double>* possion = new std::list<double>[__config->m_road_num];//每条道路初始泊松撒点的车辆到达时间间隔list，单位s
 
 	//生成负指数分布的车辆到达间隔
 	int tempVeUENum = 0;
 	double lambda = 1 / 2.5;//均值为1/lambda，依照协议车辆到达时间间隔的均值为2.5s
-	for (int roadId = 0; roadId != m_road_num; roadId++) {
+	for (int roadId = 0; roadId != __config->m_road_num; roadId++) {
 		TotalTime[roadId] = 0;
-		while (TotalTime[roadId] * (m_speed / 3.6) < m_road_length) {
+		while (TotalTime[roadId] * (__config->m_speed / 3.6) < __config->m_road_length) {
 			double pV = 0.0;
 			while (true)
 			{
@@ -58,12 +60,12 @@ void gtt_highspeed::drop_vue() {
 	context::get_context()->set_vue_array(new vue[tempVeUENum]);
 	int VeUEId = 0;
 
-	for (int roadId = 0; roadId != m_road_num; roadId++) {
+	for (int roadId = 0; roadId != __config->m_road_num; roadId++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
 			auto p = context::get_context()->get_vue_array()[VeUEId].get_physics_level();
 		    p->m_absx = -1732 + (TotalTime[roadId] - possion[roadId].back())*(p->m_speed / 3.6);
-			p->m_absy = m_road_topo_ratio[roadId * 2 + 1]* m_road_width;
-			p->m_speed = m_speed;
+			p->m_absy = __config->m_road_topo_ratio[roadId * 2 + 1]* __config->m_road_width;
+			p->m_speed = __config->m_speed;
 			TotalTime[roadId] = TotalTime[roadId] - possion[roadId].back();
 			possion[roadId].pop_back();
 		}
@@ -75,13 +77,17 @@ void gtt_highspeed::drop_vue() {
 
 
 double gtt_highspeed::get_freshtime() {
-	return m_freshtime;
+	return get_precise_config()->m_freshtime;
 }
 
 double gtt_highspeed::get_road_length() {
-	return m_road_length;
+	return get_precise_config()->m_road_length;
 }
 
 int gtt_highspeed::get_vue_num() {
 	return vue_physics::get_vue_num();
+}
+
+gtt_highspeed_config* gtt_highspeed::get_precise_config() {
+	return (gtt_highspeed_config*)get_config();
 }

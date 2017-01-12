@@ -51,6 +51,18 @@
     <ClCompile Include="event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="tmc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="config_loader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gtt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complex.h">
@@ -90,6 +102,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tmc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="config_loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
