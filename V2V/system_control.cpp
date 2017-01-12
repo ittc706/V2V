@@ -36,8 +36,6 @@ system_control::~system_control() {
 
 void system_control::process() {
 	initialize();//初始化
-
-	gtt_initialize();//车辆撒点
 }
 
 
@@ -57,11 +55,11 @@ void system_control::initialize() {
 
 
 void system_control::gtt_initialize() {
-	m_context->get_gtt()->drop_vue();
+	m_context->get_gtt()->initialize();
 }
 
 void system_control::tmc_initialize() {
-	m_context->get_tmc()->preparate();
+	m_context->get_tmc()->initialize();
 }
 
 void system_control::update_channel() {

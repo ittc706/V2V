@@ -3,7 +3,10 @@
 
 class tmc {
 	/*------------------友元声明------------------*/
-
+	/*
+	* 将context设为友元，容器要为其注入依赖项
+	*/
+	friend class context;
 	/*------------------静态成员------------------*/
 
 
@@ -41,20 +44,20 @@ public:
 
 	/*--------------------字段--------------------*/
 	/*
-	* 周期事件周期、编辑器、访问器
+	* 场景配置参数对象
 	*/
 private:
-	int m_period_of_period_event;
-	void set_period_of_period_event(int t_period_of_period_event);
+	tmc_config* m_config;
+	void set_config(tmc_config* t_config);
 public:
-	int get_period_of_period_event();
+	tmc_config* get_config();
 
 	/*--------------------方法--------------------*/
 public:
 	/*
 	* 初始化工作，为每一个车辆类实体配置参数
 	*/
-	void preparate();
+	void initialize();
 
 	/*
 	* 事件触发，负责调用每辆车的同名方法，并维护容器context中的事件成员

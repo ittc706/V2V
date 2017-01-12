@@ -173,10 +173,10 @@ public:
 	* 外层下标代表tti时刻
 	*/
 private:
-	std::vector<std::list<int>> m_tti_event_list;
+	std::vector<std::list<v2v_event*>> m_tti_event_list;
 	void initialize_tti_event_list();
 public:
-	std::vector<std::list<int>>& get_tti_event_list();
+	std::vector<std::list<v2v_event*>>& get_tti_event_list();
 
 	/*--------------------实现--------------------*/
 private:

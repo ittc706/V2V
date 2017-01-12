@@ -1,5 +1,6 @@
 #pragma once
 
+#include<vector>
 
 class vue_link {
 	/*------------------友元声明------------------*/
@@ -51,10 +52,10 @@ public:
 	* 周期事件下一次触发时刻
 	*/
 private:
-	int m_period_event_next_trigger_tti;
-	void set_period_event_next_trigger_tti(int t_period_event_next_trigger_tti);
+	std::vector<int> m_period_event_next_trigger_tti;
+	void initialize_period_event_next_trigger_tti(int t_congestion_level_num);
 public:
-	int get_period_event_next_trigger_tti();
+	const std::vector<int>& get_period_event_next_trigger_tti();
 
 	/*--------------------方法--------------------*/
 };

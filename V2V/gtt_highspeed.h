@@ -7,7 +7,7 @@ class gtt_highspeed_config;
 class gtt_highspeed:public gtt{
 	/*--------------------½Ó¿Ú--------------------*/
 public:
-	void drop_vue() override;
+	void initialize() override;
 
 	int get_vue_num() override;
 

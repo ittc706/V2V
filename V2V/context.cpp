@@ -135,10 +135,10 @@ vector<v2v_event*>& context::get_event_array() {
 }
 
 void context::initialize_tti_event_list() {
-	m_tti_event_list = vector<list<int>>(get_global_control_config()->get_ntti());
+	m_tti_event_list = vector<list<v2v_event*>>(get_global_control_config()->get_ntti());
 }
 
-vector<std::list<int>>& context::get_tti_event_list() {
+vector<std::list<v2v_event*>>& context::get_tti_event_list() {
 	return m_tti_event_list;
 }
 
@@ -172,6 +172,9 @@ void context::dependency_injecte() {
 
 	//为地理拓扑单元对象注入依赖项
 	get_gtt()->set_config(get_gtt_config());
+
+	//为业务模型与控制单元注入依赖项
+	get_tmc()->set_config(get_tmc_config());
 
 	//初始化无线传输单元共享资源
 	wt_initialize();

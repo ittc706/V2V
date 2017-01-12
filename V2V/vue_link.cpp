@@ -28,10 +28,10 @@ vue_link::~vue_link() {
 
 }
 
-void vue_link::set_period_event_next_trigger_tti(int t_period_event_next_trigger_tti) {
-	m_period_event_next_trigger_tti = t_period_event_next_trigger_tti;
+void vue_link::initialize_period_event_next_trigger_tti(int t_congestion_level_num){
+	m_period_event_next_trigger_tti.assign(t_congestion_level_num,0);
 }
 
-int vue_link::get_period_event_next_trigger_tti() {
+const std::vector<int>& vue_link::get_period_event_next_trigger_tti() {
 	return m_period_event_next_trigger_tti;
 }

@@ -22,6 +22,7 @@
 #include"config.h"
 #include"context.h"
 #include"config_loader.h"
+#include"function.h"
 
 using namespace std;
 
@@ -215,6 +216,96 @@ config_loader* tmc_config::get_config_loader() {
 	return m_config_loader;
 }
 
-void tmc_config::load() {
+void tmc_config::set_congestion_level_num(int t_congestion_level_num) {
+	m_congestion_level_num = t_congestion_level_num;
+}
 
+int tmc_config::get_congestion_level_num() {
+	return m_congestion_level_num;
+}
+
+const std::vector<int>& tmc_config::get_periodic_event_period() {
+	return m_periodic_event_period;
+}
+
+void tmc_config::set_package_num(int t_package_num) {
+	m_package_num = t_package_num;
+}
+
+int tmc_config::get_package_num() {
+	return m_package_num;
+}
+
+const std::vector<int>& tmc_config::get_bit_num_per_package() {
+	return m_bit_num_per_package;
+}
+
+void tmc_config::load() {
+	//开始解析系统配置文件
+	switch (context::get_context()->get_global_control_config()->get_platform()) {
+	case Windows:
+		get_config_loader()->resolv_config_file("config\\tmc_config.xml");
+		break;
+	case Linux:
+		get_config_loader()->resolv_config_file("config/tmc_config.xml");
+		break;
+	default:
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = get_config_loader()->get_param("congestion_level_num")) != nullString) {
+		ss << temp;
+		int t_congestion_level_num;
+		ss >> t_congestion_level_num;
+		set_congestion_level_num(t_congestion_level_num);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("periodic_event_period")) != nullString) {
+		ss << temp;
+		string temp2;
+		while (ss >> temp2) {
+			m_periodic_event_period.push_back(config_loader::string_to_int(temp2));
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("package_num")) != nullString) {
+		ss << temp;
+		int t_package_num;
+		ss >> t_package_num;
+		set_package_num(t_package_num);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("bit_num_per_package")) != nullString) {
+		ss << temp;
+		string temp2;
+		while (ss >> temp2) {
+			m_bit_num_per_package.push_back(config_loader::string_to_int(temp2));
+		}
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	cout << "congestion_level_num: " << get_congestion_level_num() << endl;
+	array_print::print_vector_dim1(get_periodic_event_period());
+	cout << "package_num: " << get_package_num() << endl;
+	array_print::print_vector_dim1(get_bit_num_per_package());
 }

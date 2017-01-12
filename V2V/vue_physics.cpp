@@ -85,6 +85,9 @@ vue_physics::~vue_physics() {
 	
 }
 
+int vue_physics::get_congestion_level() {
+	return m_congestion_level;
+}
 
 void vue_physics::update_location() {
 	auto p = (gtt_highspeed*)context::get_context()->get_gtt();

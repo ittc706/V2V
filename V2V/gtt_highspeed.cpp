@@ -26,7 +26,7 @@
 
 using namespace std;
 
-void gtt_highspeed::drop_vue() {
+void gtt_highspeed::initialize() {
 	gtt_highspeed_config* __config = get_precise_config();
 	int* m_pupr = new int[__config->get_road_num()];//每条路上的车辆数
 	double* TotalTime = new double[__config->get_road_num()];//每条道路初始泊松撒点过程中所有车辆都已撒进区域内所用的总时间

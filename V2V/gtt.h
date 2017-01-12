@@ -21,7 +21,7 @@ public:
 
 	/*--------------------½Ó¿Ú--------------------*/
 
-	virtual void drop_vue() = 0;
+	virtual void initialize() = 0;
 
 	virtual int get_vue_num() = 0;
 };

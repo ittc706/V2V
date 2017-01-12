@@ -10,6 +10,7 @@ class vue_physics {
 	* 将vue设为vue_physics的友元，由于vue_physics的构造函数设为私有，但可由vue来调用
 	*/
 	friend class vue;
+	friend class gtt_highspeed;
 
 	/*----------------拷贝控制成员----------------*/
 private:
@@ -96,41 +97,55 @@ public:
 
 	
 	/*------------------私有字段------------------*/
-public:
 	/*
 	* 车辆编号
 	*/
+private:
 	double m_id = s_vue_count++;
 
 	/*
 	* 车速，km/h
 	*/
+private:
 	double m_speed = 0;
 
 	/*
 	* 速度方向,0代表向东，180代表向西
 	*/
+private:
 	double m_vangle = 0;
 
 	/*
 	* 绝对横坐标，单位m
 	*/
+private:
 	double m_absx = 0;
 
 	/*
 	* 绝对纵坐标，单位m
 	*/
+private:
 	double m_absy = 0;
 
 	/*
 	*相对横坐标，单位m
 	*/
+private:
 	double m_relx = 0;
 
 	/*
 	* 相对纵坐标，单位m
 	*/
+private:
 	double m_rely = 0;
+
+	/*
+	* 拥塞等级<Warn>:目前暂时设为0
+	*/
+private:
+	int m_congestion_level = 0;
+public:
+	int get_congestion_level();
 	/*----------------访问与编辑器----------------*/
 public:
 
