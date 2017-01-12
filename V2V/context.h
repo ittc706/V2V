@@ -9,6 +9,7 @@ class context {
 	* 将system_control设为context的友元，提供其构造容器类唯一实例的权限
 	*/
 	friend class system_control;
+	friend class gtt_highspeed;
 	/*------------------静态成员字段------------------*/
 private:
 	/*
@@ -73,8 +74,8 @@ public:
 	*/
 private:
 	vue* m_vue_array = nullptr;
-public:
 	void set_vue_array(vue* t_vue_array);
+public:
 	vue* get_vue_array();
 
 	/*
@@ -83,6 +84,7 @@ public:
 private:
 	gtt* m_gtt = nullptr;
 	void set_gtt(gtt* t_gtt);
+public:
 	gtt* get_gtt();
 };
 

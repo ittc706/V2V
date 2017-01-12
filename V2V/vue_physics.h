@@ -1,6 +1,8 @@
 #pragma once
 
 #include<vector>
+#include<random>
+#include<list>
 
 class vue_physics {
 	/*------------------友元声明------------------*/
@@ -46,48 +48,84 @@ public:
 	/*------------------静态成员------------------*/
 private:
 	/*
-	* 车辆计数
+	* 车辆总数
 	*/
 	static int s_vue_count;
 
 	/*
-	* 车辆之间的信道
+	* 车辆之间的小尺度衰落
 	* 前两层下标为车辆id，例如s_channel_all[i][j],且i<j
 	*/
 	static std::vector<std::vector<double*>> s_channel_all;
 
 	/*
-	* 取车辆ij之间的信道
+	* 车辆之间的大尺度衰落
+	* 前两层下标为车辆id，例如s_pl_all[i][j],且i<j
+	*/
+	static std::vector<std::vector<double>> s_pl_all;
+
+public:
+	/*
+	* 取车辆i,j之间的小尺度衰落
 	*/
 	static double* get_channel(int i, int j);
 
 	/*
-	* 存车辆ij之间的信道
+	* 存车辆i,j之间的小尺度衰落
 	*/
 	static void set_channel(int i, int j, double*);
 
+	/*
+	* 取车辆i,j之间的大尺度衰落
+	*/
+	static double get_pl(int i, int j);
+
+	/*
+	* 存车辆i,j之间的大尺度衰落
+	*/
+	static void set_pl(int i, int j, double);
+	/*
+	* 产生车辆i,j之间的信道
+	*/
+	static void channel_generator();
+
+	
 	/*------------------私有字段------------------*/
-private:
+public:
 	/*
 	* 车辆编号
 	*/
 	double m_id = s_vue_count++;
 
 	/*
-	* 车速
+	* 车速，km/h
 	*/
 	double m_speed = 0;
 
 	/*
-	* 横坐标
+	* 速度方向,0代表向东，180代表向西
 	*/
-	double m_x = 0;
+	double m_vangle = 0;
 
 	/*
-	* 纵坐标
+	* 绝对横坐标，单位m
 	*/
-	double m_y = 0;
+	double m_absx = 0;
 
+	/*
+	* 绝对纵坐标，单位m
+	*/
+	double m_absy = 0;
+
+	/*
+	*相对横坐标，单位m
+	*/
+	double m_relx = 0;
+
+	/*
+	* 相对纵坐标，单位m
+	*/
+	double m_rely = 0;
 	/*----------------访问与编辑器----------------*/
 public:
 

@@ -90,8 +90,10 @@ public:
 
 	//信道所需配置常量
 	int m_PathNum;
-	double m_Velocity;
-	double m_VAngle;
+	double m_Velocityi;
+	double m_Velocityj;
+	double m_VAnglei;
+	double m_VAnglej;
 	double m_C;
 	double m_PathShadowSTD;
 	double m_AoDRatio;
@@ -136,7 +138,7 @@ public:
 public:
 	IMTA();
 	~IMTA();
-	bool build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/);
+	bool build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna,  double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/);
 	bool enable(bool *t_pbEnable);
 	void calculate(double* t_HAfterFFT, double t_fT/*s*/, double *t_pfTemp, double *t_pfSin, double *t_pfCos, double *t_pfH, double *t_pfHFFT);
 	void refresh();

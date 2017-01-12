@@ -309,7 +309,7 @@ IMTA::~IMTA() {
 	memory_clean::safe_delete(m_RxSlantAngle, true);
 }
 
-bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocity/*km/h*/, double t_fVAngle/*degree*/) {
+bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation, Antenna &t_eAntenna, double t_fVelocityi/*km/h*/, double t_fVelocityj/*km/h*/, double t_fVAnglei/*degree*/, double t_fVAnglej/*degree*/) {
 	m_Built = false;
 	m_AntGain = t_eAntenna.antGain * 0.1f;
 	m_TxAntNum = t_eAntenna.byTxAntNum;
@@ -338,8 +338,10 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	}
 	m_TxAngle = t_eAntenna.TxAngle * s_DEGREE_TO_PI;
 	m_RxAngle = t_eAntenna.RxAngle * s_DEGREE_TO_PI;
-	m_Velocity = t_fVelocity / 3.6f * t_fFrequency * s_PI2 / s_C;
-	m_VAngle = t_fVAngle * s_DEGREE_TO_PI;
+	m_Velocityi = t_fVelocityi / 3.6f * t_fFrequency * s_PI2 / s_C;
+	m_Velocityj = t_fVelocityj / 3.6f * t_fFrequency * s_PI2 / s_C;
+	m_VAnglei = t_fVAnglei * s_DEGREE_TO_PI;
+	m_VAnglej = t_fVAnglej * s_DEGREE_TO_PI;
 	//FFT相关
 	m_FFTNum = 1;
 	m_FFTOrder = 0;
@@ -367,7 +369,6 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	switch (t_eLocation.locationType)
 	{
 	case Los:
-		m_LoS = true;
 		if (3 < t_eLocation.distance&&t_eLocation.distance < fDistanceBP)
 		{
 			m_PLSF = 22.7f * log10(t_eLocation.distance) + 27.0f + 20.0f * (log10(t_fFrequency) - 9.0f);//转换为GHz
@@ -498,18 +499,6 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 	m_K = pow(10.0f, m_KDB * 0.1f);
 	m_DS *= -m_DSRatio;
 
-	if (m_LoS)
-	{
-		m_C *= (1.1035f - 0.028f * m_KDB - 0.002f * pow(m_KDB, 2.0f) + 0.0001f * pow(m_KDB, 3.0f));
-		m_D = 0.7705f - 0.0433f * m_KDB + 0.0002f * pow(m_KDB, 2.0f) + 0.000017f * pow(m_KDB, 3.0f);
-		m_fSinAoALoS = sin(m_TxAngle);
-		m_CosAoALoS = cos(m_TxAngle - m_VAngle) * m_Velocity;
-		m_SinAoDLoS = sin(m_RxAngle);
-	}
-
-	//m_fSinAoALoS = sin(m_fRxAngle);
-	//m_fCosAoALoS = cos(m_fRxAngle);
-
 	m_Built = true;
 
 	return true;
@@ -517,17 +506,8 @@ bool IMTA::build(double* t_Pl, double t_fFrequency/*Hz*/, Location &t_eLocation,
 
 bool IMTA::enable(bool *t_pbEnable)
 {
-	//if (m_bBuilt == false)
-	//{
-	//	return false;
-	//}
 	refresh();
     
-	if (m_LoS)
-	{
-		m_PhaseLoS = new double[m_TxAntNum * m_RxAntNum * 2];
-	}
-
 	m_Gain = new double[m_PathNum * s_SubPathNum];
 	m_SinAoD = new double[m_PathNum * s_SubPathNum];
 	m_CosAoD = new double[m_PathNum * s_SubPathNum];
@@ -541,7 +521,6 @@ bool IMTA::enable(bool *t_pbEnable)
 	double fPowerTotal = 0.0f;
 	double *pfAoD = new double[m_PathNum];
 	double *pfAoA = new double[m_PathNum];
-//	int abyIndex[m_scbySubPathNum];
 	double *pfXAoD = new double[m_PathNum];
 	double *pfXAoA = new double[m_PathNum];
 	double fPowerMax;
@@ -570,27 +549,15 @@ bool IMTA::enable(bool *t_pbEnable)
 
 	selectMax(pfPathPower, static_cast<int>(m_PathNum), &m_PathFirst, &m_PathSecond);
 
-		if (m_LoS)
-	{
-		for (int byTempPath = 0; byTempPath != m_PathNum; ++ byTempPath)
-		{
-			pfPathPower[byTempPath] /= (1.0f + m_K);
-		}
-		pfPathPower[0] += (m_K / (1.0f + m_K));
-		fPowerMax = pfPathPower[0] > pfPathPower[m_PathFirst] ? pfPathPower[0] : pfPathPower[m_PathFirst];
-	}
-	else
-	{
-		fPowerMax = pfPathPower[m_PathFirst];
-	}
+	fPowerMax = pfPathPower[m_PathFirst];
 	    
-		randomUniform(pfXAoD, m_PathNum, 1.0f, -1.0f, true);
-	    randomUniform(pfXAoA, m_PathNum, 1.0f, -1.0f, true);
-		randomGaussian(pfAoD, m_PathNum, 0.0f, m_AoD / 7.0f);//在winner 2 是除以5.0f
-		randomGaussian(pfAoA, m_PathNum, 0.0f, m_AoA / 7.0f);
+	randomUniform(pfXAoD, m_PathNum, 1.0f, -1.0f, true);
+	randomUniform(pfXAoA, m_PathNum, 1.0f, -1.0f, true);
+	randomGaussian(pfAoD, m_PathNum, 0.0f, m_AoD / 7.0f);//在winner 2 是除以5.0f
+	randomGaussian(pfAoA, m_PathNum, 0.0f, m_AoA / 7.0f);
 		
 
-		for (int byTempPath = 0; byTempPath != m_PathNum; ++ byTempPath)
+	for (int byTempPath = 0; byTempPath != m_PathNum; ++ byTempPath)
 		{
 			if (pfXAoD[byTempPath] > 0.0f)
 			{
@@ -613,18 +580,6 @@ bool IMTA::enable(bool *t_pbEnable)
 
 		}
 
-	if (m_LoS)
-	{
-		pfPathPower[0] -= (m_K / (1.0f + m_K));
-		for (int byTempPath = 0; byTempPath != m_PathNum; ++ byTempPath)
-		{
-			pfAoD[m_PathNum - 1 - byTempPath] = pfAoD[m_PathNum - 1 - byTempPath] - pfAoD[0] + m_TxAngle;
-			pfAoA[m_PathNum - 1 - byTempPath] = pfAoA[m_PathNum - 1 - byTempPath] - pfAoA[0] + m_RxAngle;
-			pfPathDelay[byTempPath] /= m_D;
-		}
-	}
-
-
 	for (int byTempPath = 0; byTempPath != m_PathNum; ++byTempPath)
 	{
 		pfPathPower[byTempPath] /= s_SubPathNum;
@@ -644,28 +599,14 @@ bool IMTA::enable(bool *t_pbEnable)
 				m_Gain[byTempPath * s_SubPathNum + byTempSubPath] = pow(10.0f, m_Gain[byTempPath * s_SubPathNum + byTempSubPath]);
 				m_Gain[byTempPath * s_SubPathNum + byTempSubPath] *= pfPathPower[byTempPath];
 				m_Gain[byTempPath * s_SubPathNum + byTempSubPath] = sqrt(m_Gain[byTempPath * s_SubPathNum + byTempSubPath]);
-				//if (m_bLoS)
-	   //        { 
-    //            m_pfGain[byTempPath * m_scbySubPathNum + byTempSubPath]/=sqrt(1.0f / (1.0f + m_fK);//前面在计算Pn时候已经除过了，因而不需要再去除
-				//}
 			    m_SinAoD[byTempPath * s_SubPathNum + byTempSubPath] = pfAoD[byTempPath] + s_AngleOffset[byTempSubPath] * m_AoDRatio;
 				m_SinAoD[byTempPath * s_SubPathNum + byTempSubPath] = sin(m_SinAoD[byTempPath * s_SubPathNum + byTempSubPath]);
-			   
-				//m_pfSinAoA[byTempPath * m_scbySubPathNum + byTempSubPath] = pfAoA[byTempPath] + m_sacfAngleOffset[abyIndex[byTempSubPath]] * m_fAoARatio;
 			   	m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] = pfAoA[byTempPath] + s_AngleOffset[byTempSubPath] * m_AoARatio;
-				m_CosAoA[byTempPath * s_SubPathNum + byTempSubPath] = cos(m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] - m_VAngle) * m_Velocity;
-		     	m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] = sin(m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath]);
+				m_CosAoA[byTempPath * s_SubPathNum + byTempSubPath] = cos(m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] - m_VAnglei) * m_Velocityi + cos(m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] - m_VAnglej) * m_Velocityj;		     	
+				m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath] = sin(m_SinAoA[byTempPath * s_SubPathNum + byTempSubPath]);
 				
 			}
 	}
-
-
-		if (m_LoS)
-	{
-	     	m_GainLoS= m_MaxAttenu;
-			m_GainLoS = sqrt(m_K / (1.0f + m_K) * pow(10.0f, m_GainLoS));
-		}
-
 
 	double *pfPhasePol = new double[m_PathNum * s_SubPathNum * 4];
 	double *pfSlantVV = new double[m_TxAntNum * m_RxAntNum];
@@ -706,26 +647,6 @@ bool IMTA::enable(bool *t_pbEnable)
 				}
 			}
 		}
-
-	if (m_LoS)
-		{
-			randomUniform(pfPhasePol, 1, s_PI, s_PINeg, false);
-			for (int byTempTxAnt = 0; byTempTxAnt != m_TxAntNum; ++ byTempTxAnt)
-			{
-				for (int byTempRxAnt = 0; byTempRxAnt != m_RxAntNum; ++ byTempRxAnt)
-				{
-					m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2] =
-						(pfSlantVV[byTempTxAnt * m_RxAntNum + byTempRxAnt] +
-						pfSlantHH[byTempTxAnt * m_RxAntNum + byTempRxAnt]) *
-						cos(pfPhasePol[0]);
-					m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2 + 1] =
-						(pfSlantVV[byTempTxAnt * m_RxAntNum + byTempRxAnt] +
-						pfSlantHH[byTempTxAnt * m_RxAntNum + byTempRxAnt]) *
-						sin(pfPhasePol[0]);
-				}
-			}
-		}
-
 
 	memory_clean::safe_delete(pfPhasePol, true);
 	memory_clean::safe_delete(pfSlantVV, true);
@@ -779,22 +700,6 @@ void IMTA::calculate(double* t_HAfterFFT, double t_fT/*s */, double *t_pfTemp, d
 								m_Phase[byTempTxAnt * m_RxAntNum * m_PathNum * s_SubPathNum * 2 + byTempRxAnt * m_PathNum * s_SubPathNum * 2 + byTempPath * s_SubPathNum * 2 + byTempSubPath * 2] +
 								t_pfCos[byTempTxAnt * m_RxAntNum * m_PathNum * s_SubPathNum + byTempRxAnt * m_PathNum * s_SubPathNum + byTempPath * s_SubPathNum + byTempSubPath] *
 								m_Phase[byTempTxAnt * m_RxAntNum * m_PathNum * s_SubPathNum * 2 + byTempRxAnt * m_PathNum * s_SubPathNum * 2 + byTempPath * s_SubPathNum * 2 + byTempSubPath * 2+ 1]);
-				    }
-
-
-                    if (m_LoS && byTempPath == 0)
-				   {
-					fSin = m_RxAntSpacing[byTempRxAnt] * m_SinAoDLoS + m_TxAntSpacing[byTempTxAnt] * m_fSinAoALoS + m_CosAoALoS * t_fT;
-					fCos = cos(fSin);
-					fSin = sin(fSin);
-					t_pfH[byTempTxAnt * m_RxAntNum * m_PathNum  * 2 + byTempRxAnt * m_PathNum  * 2 + byTempPath * 2] +=
-					m_GainLoS *
-					(fCos * m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2] -
-					 fSin * m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2 + 1]);
-				    t_pfH[byTempTxAnt * m_RxAntNum * m_PathNum  * 2 + byTempRxAnt * m_PathNum  * 2 + byTempPath * 2+ 1] +=
-					m_GainLoS *
-					(fSin * m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2] +
-					fCos * m_PhaseLoS[byTempTxAnt * m_RxAntNum * 2 + byTempRxAnt * 2 + 1]);
 				    }
 				}
 			}
