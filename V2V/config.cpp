@@ -208,6 +208,115 @@ void gtt_urban_config::load() {
 
 }
 
+void rrm_config::set_config_loader(config_loader* t_config_loader) {
+	m_config_loader = t_config_loader;
+}
+
+config_loader* rrm_config::get_config_loader() {
+	return m_config_loader;
+}
+
+void rrm_config::set_total_bandwidth(int t_total_bandwidth) {
+	m_total_bandwidth = t_total_bandwidth;
+}
+
+int rrm_config::get_total_bandwidth() {
+	return m_total_bandwidth;
+}
+
+void rrm_config::set_modulation_type(int t_modulation_type) {
+	m_modulation_type = t_modulation_type;
+}
+
+int rrm_config::get_modulation_type() {
+	return m_modulation_type;
+}
+
+void rrm_config::set_code_rate(double t_code_rate) {
+	m_code_rate = t_code_rate;
+}
+
+double rrm_config::get_code_rate() {
+	return m_code_rate;
+}
+
+void rrm_config::set_drop_sinr_boundary(double t_drop_sinr_boundary) {
+	m_drop_sinr_boundary = t_drop_sinr_boundary;
+}
+
+double rrm_config::get_drop_sinr_boundary() {
+	return m_drop_sinr_boundary;
+}
+
+void rrm_config::load() {
+	//开始解析系统配置文件
+	switch (context::get_context()->get_global_control_config()->get_platform()) {
+	case Windows:
+		get_config_loader()->resolv_config_file("config\\rrm_config.xml");
+		break;
+	case Linux:
+		get_config_loader()->resolv_config_file("config/rrm_config.xml");
+		break;
+	default:
+		throw logic_error("Platform Config Error!");
+	}
+
+	stringstream ss;
+
+	const string nullString("");
+	string temp;
+
+	if ((temp = get_config_loader()->get_param("total_bandwidth")) != nullString) {
+		ss << temp;
+		int t_total_bandwidth;
+		ss >> t_total_bandwidth;
+		t_total_bandwidth *= 1000 * 1000;
+		set_total_bandwidth(t_total_bandwidth);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("modulation_type")) != nullString) {
+		ss << temp;
+		int t_modulation_type;
+		ss >> t_modulation_type;
+		set_modulation_type(t_modulation_type);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("code_rate")) != nullString) {
+		ss << temp;
+		double t_code_rate;
+		ss >> t_code_rate;
+		set_code_rate(t_code_rate);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	if ((temp = get_config_loader()->get_param("drop_sinr_boundary")) != nullString) {
+		ss << temp;
+		double t_drop_sinr_boundary;
+		ss >> t_drop_sinr_boundary;
+		set_drop_sinr_boundary(t_drop_sinr_boundary);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
+	cout << "total_bandwidth: " << get_total_bandwidth() << endl;
+	cout << "modulation_type: " << get_modulation_type() << endl;
+	cout << "code_rate: " << get_code_rate() << endl;
+	cout << "drop_sinr_boundary: " << get_drop_sinr_boundary() << endl;
+}
+
 void tmc_config::set_config_loader(config_loader* t_config_loader) {
 	m_config_loader = t_config_loader;
 }

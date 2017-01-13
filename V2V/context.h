@@ -5,8 +5,10 @@
 class config_loader;
 class global_control_config;
 class gtt_config;
+class rrm_config;
 class tmc_config;
 class gtt;
+class rrm;
 class tmc;
 class wt;
 class vue;
@@ -89,7 +91,7 @@ public:
 	config_loader* get_config_loader();
 
 	/*
-	* 全局控制配置参数对象
+	* global_control配置参数对象
 	*/
 private:
 	global_control_config* m_global_control_config = nullptr;
@@ -98,7 +100,7 @@ public:
 	global_control_config* get_global_control_config();
 
 	/*
-	* 地理拓扑与传播单元配置对象
+	* gtt配置参数对象
 	*/
 private:
 	gtt_config* m_gtt_config = nullptr;
@@ -107,7 +109,16 @@ public:
 	gtt_config* get_gtt_config();
 
 	/*
-	* 业务模型与控制单元配置对象
+	* rrm配置参数对象
+	*/
+private:
+	rrm_config* m_rrm_config = nullptr;
+	void set_rrm_config(rrm_config* t_rrm_config);
+public:
+	rrm_config* get_rrm_config();
+
+	/*
+	* tmc配置参数对象
 	*/
 private:
 	tmc_config* m_tmc_config = nullptr;
@@ -125,7 +136,7 @@ public:
 	int get_tti();
 
 	/*
-	* 场景类实体指针
+	* gtt实体指针
 	*/
 private:
 	gtt* m_gtt = nullptr;
@@ -134,7 +145,16 @@ public:
 	gtt* get_gtt();
 
 	/*
-	* tmc类实体指针
+	* rrm实体指针
+	*/
+private:
+	rrm* m_rrm = nullptr;
+	void set_rrm(rrm* t_rrm);
+public:
+	rrm* get_rrm();
+
+	/*
+	* tmc实体指针
 	*/
 private:
 	tmc* m_tmc = nullptr;

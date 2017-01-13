@@ -1,5 +1,6 @@
 #pragma once
 
+#include<vector>
 
 enum event_type {
 	PERIOD
@@ -82,7 +83,7 @@ public:
 	/*
 	* 构造函数
 	*/
-	receiver_event(sender_event* t_sender_event);
+	receiver_event(sender_event* t_sender_event, int t_receiver_vue_id);
 
 	/*
 	* 析构函数，负责清理资源
@@ -115,8 +116,8 @@ public:
 	*/
 private:
 	int m_event_id;
-public:
 	void set_event_id(int t_event_id);
+public:
 	int get_event_id();
 
 	/*
@@ -124,8 +125,8 @@ public:
 	*/
 private:
 	int m_from_vue_id;
-public:
 	void set_from_vue_id(int t_from_vue_id);
+public:
 	int get_from_vue_id();
 
 	/*
@@ -133,7 +134,50 @@ public:
 	*/
 private:
 	int m_to_vue_id;
-public:
 	void set_to_vue_id(int t_to_vue_id);
+public:
 	int get_to_vue_id();
+
+	/*
+	* 数据包总数
+	*/
+private:
+	int m_package_num;
+
+	/*
+	* 每个包的bit数量
+	*/
+private:
+	std::vector<int> m_bit_num_per_package;
+
+	/*
+	* 标记即将要传输的bit所在的包序号
+	*/
+private:
+	int m_package_idx = 0;
+
+	/*
+	* 当前包剩余bit数目
+	*/
+private:
+	int m_remain_bit_num;
+
+	/*
+	* 标记是否传输完毕(无论是否发生丢包)
+	*/
+private:
+	bool m_is_finished = false;
+public:
+	bool get_is_finished();
+
+	/*
+	* 标记是否发生丢包
+	*/
+private:
+	bool m_is_loss = false;
+public:
+	bool get_is_loss();
+
+	/*--------------------接口--------------------*/
+	void transimit(int t_transimit_max_bit_num);
 };

@@ -21,9 +21,10 @@
 #include"config_loader.h"
 #include"config.h"
 #include"gtt_highspeed.h"
-#include"vue.h"
+#include"rrm.h"
 #include"tmc.h"
 #include"wt.h"
+#include"vue.h"
 
 using namespace std;
 
@@ -78,6 +79,14 @@ gtt_config* context::get_gtt_config() {
 	return m_gtt_config;
 }
 
+void context::set_rrm_config(rrm_config* t_rrm_config) {
+	m_rrm_config = t_rrm_config;
+}
+
+rrm_config* context::get_rrm_config() {
+	return m_rrm_config;
+}
+
 void context::set_tmc_config(tmc_config* t_tmc_config) {
 	m_tmc_config = t_tmc_config;
 }
@@ -108,6 +117,14 @@ void context::set_gtt(gtt* t_gtt) {
 
 gtt* context::get_gtt() {
 	return m_gtt;
+}
+
+void context::set_rrm(rrm* t_rrm) {
+	m_rrm = t_rrm;
+}
+
+rrm* context::get_rrm() {
+	return m_rrm;
 }
 
 void context::set_tmc(tmc* t_tmc) {
@@ -149,6 +166,7 @@ void context::dependency_injecte() {
 	//初始化配置参数对象
 	set_global_control_config(new global_control_config());
 	set_gtt_config(new gtt_highspeed_config());
+	set_rrm_config(new rrm_config());
 	set_tmc_config(new tmc_config());
 
 	//为配置参数对象注入依赖项(配置文件加载器)，并执行初始化动作(加载配置文件)
@@ -158,19 +176,22 @@ void context::dependency_injecte() {
 	get_gtt_config()->set_config_loader(get_config_loader());
 	get_gtt_config()->load();
 
+	get_rrm_config()->set_config_loader(get_config_loader());
+	get_rrm_config()->load();
+
 	get_tmc_config()->set_config_loader(get_config_loader());
 	get_tmc_config()->load();
 
-	//初始化gtt对象
+	//初始化gtt对象，并为其注入依赖项(配置参数对象)
 	set_gtt(new gtt_highspeed());
-
-	//为gtt对象注入依赖项(配置参数对象)
 	get_gtt()->set_config(get_gtt_config());
 
-	//初始化tmc对象
-	set_tmc(new tmc());
+	//初始化rrm对象，并为其注入依赖项(配置参数对象)
+	set_rrm(new rrm());
+	get_rrm()->set_config(get_rrm_config());
 
-	//为tmc注入依赖项(配置参数对象)
+	//初始化tmc对象，并为其注入依赖项(配置参数对象)
+	set_tmc(new tmc());
 	get_tmc()->set_config(get_tmc_config());
 
 	//初始化wt共享资源

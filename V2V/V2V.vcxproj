@@ -123,6 +123,7 @@
     <ClCompile Include="imta.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="rrm.cpp" />
     <ClCompile Include="system_control.cpp" />
     <ClCompile Include="tmc.cpp" />
     <ClCompile Include="vue.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="gtt_highspeed.h" />
     <ClInclude Include="imta.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="rrm.h" />
     <ClInclude Include="system_control.h" />
     <ClInclude Include="tmc.h" />
     <ClInclude Include="vue.h" />

@@ -66,9 +66,35 @@ public:
 	* 接收事件列表
 	*/
 private:
-	std::list<receiver_event*> m_receiver_events_list;
+	std::list<receiver_event*> m_receiver_event_list;
+
+	/*
+	* 成功传输事件链表
+	*/
+private:
+	std::list<receiver_event*> m_success_event_list;
+public:
+	const std::list<receiver_event*>& get_success_event_list();
+
+	/*
+	* 传输失败事件链表(发生了丢包)
+	* 一个消息有N个包，任意一个丢包就算丢包
+	*/
+private:
+	std::list<receiver_event*> m_loss_event_list;
+public:
+	const std::list<receiver_event*>& get_loss_event_list();
 	
 	/*--------------------接口--------------------*/
 public:
+	/*
+	* 接收连接
+	* 维护接受事件列表
+	*/
 	void receive_connection(sender_event* t_sender_event);
+
+	/*
+	* 接收信息
+	*/
+	void receive();
 };

@@ -147,6 +147,78 @@ public:
 };
 
 
+class rrm_config {
+	/*------------------友元声明------------------*/
+	/*
+	* 将context设为友元，容器要为其注入依赖项
+	*/
+	friend class context;
+
+	/*------------------静态成员------------------*/
+	/*
+	* 每个RB的带宽(Hz)
+	*/
+	static const int s_BANDWIDTH_OF_RB = 12 * 1000 * 15;
+
+	/*
+	* 单位(个),由于RB带宽为180kHz，TTI为1ms，因此单位TTI单位RB传输的比特数为180k*1ms=180
+	*/
+	static const int s_BIT_NUM_PER_RB = 180;
+
+	/*--------------------字段--------------------*/
+	/*
+	* 类加载器对象
+	*/
+private:
+	config_loader* m_config_loader;
+	void set_config_loader(config_loader* t_config_loader);
+public:
+	config_loader* get_config_loader();
+
+	/*
+	* 总带宽
+	*/
+private:
+	int m_total_bandwidth;
+	void set_total_bandwidth(int t_total_bandwidth);
+public:
+	int get_total_bandwidth();
+
+	/*
+	* 调制方式
+	* 2:QOSK
+	* 4:16QAM
+	* 6:64QAM
+	*/
+private:
+	int m_modulation_type;
+	void set_modulation_type(int t_modulation_type);
+public:
+	int get_modulation_type();
+
+	/*
+	* 信道编码码率
+	*/
+private:
+	double m_code_rate;
+	void set_code_rate(double t_code_rate);
+public:
+	double get_code_rate();
+
+	/*
+	* 丢包临界sinr
+	*/
+private:
+	double m_drop_sinr_boundary;
+	void set_drop_sinr_boundary(double t_drop_sinr_boundary);
+public:
+	double get_drop_sinr_boundary();
+	/*--------------------接口--------------------*/
+public:
+	void load();
+};
+
+
 class tmc_config {
 	/*------------------友元声明------------------*/
 	/*
