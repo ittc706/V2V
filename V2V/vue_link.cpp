@@ -16,6 +16,8 @@
 * =====================================================================================
 */
 
+#include"context.h"
+#include"config.h"
 #include"vue.h"
 #include"vue_physics.h"
 #include"vue_link.h"
@@ -55,9 +57,31 @@ void vue_link::receive_connection(sender_event* t_sender_event) {
 }
 
 void vue_link::receive() {
+	context* __context = context::get_context();
 	std::list<receiver_event*>::iterator it = m_receiver_event_list.begin();
 
 	while (it != m_receiver_event_list.end()) {
 		receiver_event* __cur_event = *it;
+
+		double factor = __context->get_rrm_config()->get_modulation_type()* __context->get_rrm_config()->get_code_rate();
+
+		//该编码方式下，该pattern在一个tti最多可传输的有效信息bit数量
+		int transimit_max_bit_num= (int)((double)(__context->get_rrm_config()->get_rb_num_per_pattern() * rrm_config::s_BIT_NUM_PER_RB)* factor);
+		__cur_event->transimit(transimit_max_bit_num);
+
+		double sinr = 5;//<Warn>:这里需要调用wt模块来完成sinr的计算
+
+		if (sinr < __context->get_rrm_config()->get_drop_sinr_boundary()) {
+			__cur_event->set_is_loss();//记录丢包
+		}
+
+		if (__cur_event->get_is_finished()) {
+			if (__cur_event->get_is_loss()) {
+				m_loss_event_list.push_back(__cur_event);
+			}
+			else {
+				m_success_event_list.push_back(__cur_event);
+			}
+		}
 	}
 }

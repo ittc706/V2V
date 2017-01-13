@@ -26,6 +26,8 @@
 
 using namespace std;
 
+std::default_random_engine vue_network::s_engine(0);
+
 vue_network::vue_network() {
 
 }
@@ -61,10 +63,19 @@ void vue_network::send_connection() {
 	list<sender_event*>::iterator it = m_sender_event_list.begin();
 	while (it != m_sender_event_list.end()) {
 		sender_event* __sender_event = *it;
+
+		//Ñ¡Ôñ·¢ËÍÆµ¶Î
+		__sender_event->set_pattern_idx(select_pattern());
+
 		for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
 			if (vue_id == __sender_event->get_vue_id()) continue;
 			vue_ary[vue_id].get_link_level()->receive_connection(__sender_event);
 		}
 		it = m_sender_event_list.erase(it);
 	}
+}
+
+int vue_network::select_pattern() {
+	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num());
+	return u(s_engine);
 }

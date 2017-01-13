@@ -155,6 +155,7 @@ class rrm_config {
 	friend class context;
 
 	/*------------------静态成员------------------*/
+public:
 	/*
 	* 每个RB的带宽(Hz)
 	*/
@@ -183,6 +184,25 @@ private:
 	void set_total_bandwidth(int t_total_bandwidth);
 public:
 	int get_total_bandwidth();
+
+	/*
+	* 一个可用资源块的rb数量
+	*/
+private:
+	int m_rb_num_per_pattern;
+	void set_rb_num_per_pattern(int t_rb_num_per_pattern);
+public:
+	int get_rb_num_per_pattern();
+
+	/*
+	* pattern数量
+	*/
+private:
+	int m_pattern_num;
+	void set_pattern_num();
+public:
+	int get_pattern_num();
+
 
 	/*
 	* 调制方式

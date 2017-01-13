@@ -2,6 +2,10 @@
 <total_bandwidth>10</total_bandwidth>
 
 
+<!--一个pattern的rb数量-->
+<rb_num_per_pattern>10</rb_num_per_pattern>
+
+
 <!--调制方式
 	2:QOSK
 	4:16QAM

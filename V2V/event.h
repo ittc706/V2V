@@ -67,7 +67,14 @@ private:
 public:
 	int get_vue_id();
 
-
+	/*
+	* 占用频段
+	*/
+private:
+	int m_pattern_idx;
+public:
+	void set_pattern_idx(int t_pattern_idx);
+	int get_pattern_idx();
 	/*--------------------方法--------------------*/
 };
 
@@ -176,6 +183,7 @@ public:
 private:
 	bool m_is_loss = false;
 public:
+	void set_is_loss();
 	bool get_is_loss();
 
 	/*--------------------接口--------------------*/

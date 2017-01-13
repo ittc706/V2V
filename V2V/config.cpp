@@ -224,6 +224,22 @@ int rrm_config::get_total_bandwidth() {
 	return m_total_bandwidth;
 }
 
+void rrm_config::set_rb_num_per_pattern(int t_rb_num_per_pattern) {
+	m_rb_num_per_pattern = t_rb_num_per_pattern;
+}
+
+int rrm_config::get_rb_num_per_pattern() {
+	return m_rb_num_per_pattern;
+}
+
+void rrm_config::set_pattern_num() {
+	m_pattern_num = get_total_bandwidth() / s_BANDWIDTH_OF_RB / get_rb_num_per_pattern();
+}
+
+int rrm_config::get_pattern_num() {
+	return m_pattern_num;
+}
+
 void rrm_config::set_modulation_type(int t_modulation_type) {
 	m_modulation_type = t_modulation_type;
 }
@@ -278,6 +294,17 @@ void rrm_config::load() {
 	else
 		throw logic_error("ConfigLoaderError");
 
+	if ((temp = get_config_loader()->get_param("rb_num_per_pattern")) != nullString) {
+		ss << temp;
+		int t_rb_num_per_pattern;
+		ss >> t_rb_num_per_pattern;
+		set_rb_num_per_pattern(t_rb_num_per_pattern);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
 	if ((temp = get_config_loader()->get_param("modulation_type")) != nullString) {
 		ss << temp;
 		int t_modulation_type;
@@ -311,7 +338,11 @@ void rrm_config::load() {
 	else
 		throw logic_error("ConfigLoaderError");
 
+	set_pattern_num();
+
 	cout << "total_bandwidth: " << get_total_bandwidth() << endl;
+	cout << "rb_num_per_pattern: " << get_rb_num_per_pattern() << endl;
+	cout << "pattern_num: " << get_pattern_num() << endl;
 	cout << "modulation_type: " << get_modulation_type() << endl;
 	cout << "code_rate: " << get_code_rate() << endl;
 	cout << "drop_sinr_boundary: " << get_drop_sinr_boundary() << endl;

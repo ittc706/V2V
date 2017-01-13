@@ -44,6 +44,14 @@ int sender_event::get_vue_id() {
 	return m_vue_id;
 }
 
+void sender_event::set_pattern_idx(int t_pattern_idx) {
+	m_pattern_idx = t_pattern_idx;
+}
+
+int sender_event::get_pattern_idx() {
+	return m_pattern_idx;
+}
+
 receiver_event::receiver_event(sender_event* t_sender_event, int t_receiver_vue_id) {
 	set_event_id(t_sender_event->get_event_id());
 	set_from_vue_id(t_sender_event->get_vue_id());
@@ -85,6 +93,10 @@ int receiver_event::get_to_vue_id() {
 
 bool receiver_event::get_is_finished() {
 	return m_is_finished;
+}
+
+void receiver_event::set_is_loss() {
+	m_is_loss = true;
 }
 
 bool receiver_event::get_is_loss() {

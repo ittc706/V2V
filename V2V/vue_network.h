@@ -1,5 +1,6 @@
 #pragma once
 
+#include<random>
 #include<vector>
 
 class sender_event;
@@ -15,6 +16,10 @@ class vue_network {
 	* 将tmc设为vue_link的友元，事件相关的字段需要通过tmc对象来配置
 	*/
 	friend class tmc;
+
+	/*------------------静态成员------------------*/
+private:
+	static std::default_random_engine s_engine;
 
 	/*----------------拷贝控制成员----------------*/
 private:
@@ -82,4 +87,11 @@ private:
 	/*--------------------接口--------------------*/
 public:
 	void send_connection();
+
+	/*--------------------实现--------------------*/
+private:
+	/*
+	* 选择占用的资源块编号
+	*/
+	int select_pattern();
 };
