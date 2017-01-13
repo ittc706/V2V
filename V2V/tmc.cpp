@@ -23,6 +23,7 @@
 #include"vue.h"
 #include"vue_physics.h"
 #include"vue_link.h"
+#include"vue_network.h"
 #include"event.h"
 #include"config.h"
 
@@ -47,33 +48,41 @@ tmc_config* tmc::get_config() {
 void tmc::initialize() {
 	context* __context = context::get_context();
 
-	__context->initialize_tti_event_list();//初始化tti_event_list成员
+	__context->set_tti_event_list();//初始化tti_event_list成员
 
 	default_random_engine e;
 	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
 		//初始化车辆类的period_event_next_trigger_tti字段
-		__context->get_vue_array()[vue_id].get_link_level()->initialize_period_event_next_trigger_tti(__context->get_tmc_config()->get_congestion_level_num());
+		__context->get_vue_array()[vue_id].get_network_level()->set_periodic_event_next_trigger_tti(__context->get_tmc_config()->get_congestion_level_num());
 		
 		//为每辆车配置初始化事件触发时刻
 		for (int congestion_level = 0; congestion_level < __context->get_tmc_config()->get_congestion_level_num(); congestion_level++) {
-			uniform_int_distribution<int> u(0, get_config()->get_periodic_event_period()[congestion_level]);//<Warn>
-			__context->get_vue_array()[vue_id].get_link_level()->m_period_event_next_trigger_tti[congestion_level] = u(e);
+			uniform_int_distribution<int> u(0, get_config()->get_periodic_event_period()[congestion_level]);
+			__context->get_vue_array()[vue_id].get_network_level()->m_periodic_event_next_trigger_tti[congestion_level] = u(e);
 		}	
 	}
+
 }
 
 void tmc::event_trigger() {
 	context* __context = context::get_context();
 	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
 		int tti = __context->get_tti();
+		//<Warn>:下面这句会导致，若拥塞等级改变前后，车辆永远不触发事件了
 		int congestion_level = __context->get_vue_array()[vue_id].get_physics_level()->get_congestion_level();
-		if (__context->get_vue_array()[vue_id].get_link_level()->get_period_event_next_trigger_tti()[congestion_level] != tti)continue;
-		v2v_event* __v2v_event = new v2v_event();
-		__context->get_event_array().push_back(__v2v_event);
-		__context->get_tti_event_list()[tti].push_back(__v2v_event);
+		if (__context->get_vue_array()[vue_id].get_network_level()->get_periodic_event_next_trigger_tti()[congestion_level] != tti)continue;
+		
+		sender_event* __sender_event = new sender_event();
+		__sender_event->set_vue_id(vue_id);
+
+		__context->get_event_array().push_back(__sender_event);
+		__context->get_tti_event_list()[tti].push_back(__sender_event);
+
+		//将事件状态标记为待发状态
+		__context->get_vue_array()[vue_id].get_network_level()->add_sender_event(__sender_event);
 
 		for (int congestion_level = 0; congestion_level < __context->get_tmc_config()->get_congestion_level_num(); congestion_level++) {
-			__context->get_vue_array()[vue_id].get_link_level()->m_period_event_next_trigger_tti[congestion_level] = tti + __context->get_tmc_config()->get_periodic_event_period()[congestion_level];
+			__context->get_vue_array()[vue_id].get_network_level()->m_periodic_event_next_trigger_tti[congestion_level] = tti + __context->get_tmc_config()->get_periodic_event_period()[congestion_level];
 		}
 	}
 }

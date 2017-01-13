@@ -29,7 +29,7 @@ default_random_engine wt::s_engine(0);
 
 std::vector<double>* wt::m_qpsk_mi = nullptr;
 
-void wt::initialize_resource() {
+void wt::set_resource() {
 	ifstream in;
 	if (context::get_context()->get_global_control_config()->get_platform()== Windows) {
 		in.open("wt\\qpsk_mi.md");

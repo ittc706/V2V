@@ -21,21 +21,59 @@
 
 using namespace std;
 
-int v2v_event::s_event_count = 0;
+int sender_event::s_event_count = 0;
 
-v2v_event::v2v_event() {
-
-}
-
-v2v_event::~v2v_event() {
+sender_event::sender_event() {
 
 }
 
-int v2v_event::get_send_delay() {
-	return m_send_delay;
+sender_event::~sender_event() {
+
 }
 
-void v2v_event::increase_send_delay() {
-	++m_send_delay;
+int sender_event::get_event_id() {
+	return m_event_id;
 }
+
+void sender_event::set_vue_id(int t_vue_id) {
+	m_vue_id = t_vue_id;
+}
+
+int sender_event::get_vue_id() {
+	return m_vue_id;
+}
+
+receiver_event::receiver_event(sender_event* t_sender_event) {
+	set_event_id(t_sender_event->get_event_id());
+	set_from_vue_id(t_sender_event->get_vue_id());
+}
+
+receiver_event::~receiver_event() {
+
+}
+
+void receiver_event::set_event_id(int t_event_id) {
+	m_event_id = t_event_id;
+}
+
+int receiver_event::get_event_id() {
+	return m_event_id;
+}
+
+void receiver_event::set_from_vue_id(int t_from_vue_id) {
+	m_from_vue_id = t_from_vue_id;
+}
+
+int receiver_event::get_from_vue_id() {
+	return m_from_vue_id;
+}
+
+void receiver_event::set_to_vue_id(int t_to_vue_id) {
+	m_to_vue_id = t_to_vue_id;
+}
+
+int receiver_event::get_to_vue_id() {
+	return m_to_vue_id;
+}
+
 

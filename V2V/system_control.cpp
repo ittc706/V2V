@@ -40,33 +40,16 @@ void system_control::process() {
 
 
 void system_control::initialize() {
-	//调用容器context的静态工厂方法生成单例模式下唯一对象
+	//产生容器唯一单例
 	context::context_factory();
 
 	//为成员变量赋值
 	m_context = context::get_context();
 
 	//gtt单元初始化工作
-	gtt_initialize();
+	m_context->get_gtt()->initialize();
 
 	//tmc单元初始化工作
-	tmc_initialize();
-}
-
-
-void system_control::gtt_initialize() {
-	m_context->get_gtt()->initialize();
-}
-
-void system_control::tmc_initialize() {
 	m_context->get_tmc()->initialize();
-}
-
-void system_control::update_channel() {
-
-}
-
-void system_control::event_trigger() {
-	m_context->get_tmc()->event_trigger();
 }
 

@@ -7,7 +7,7 @@
 class vue_physics {
 	/*------------------友元声明------------------*/
 	/*
-	* 将vue设为vue_physics的友元，由于vue_physics的构造函数设为私有，但可由vue来调用
+	* 将vue设为友元，由于vue_physics的构造函数设为私有，但可由vue来调用
 	*/
 	friend class vue;
 	friend class gtt_highspeed;
@@ -96,12 +96,23 @@ public:
 	static void channel_generator();
 
 	
-	/*------------------私有字段------------------*/
+	/*--------------------字段--------------------*/
+	/*
+	* 指向上层的指针
+	*/
+private:
+	vue* m_superior_level;
+	void set_superior_level(vue* t_superior_level);
+public:
+	vue* get_superior_level();
+
 	/*
 	* 车辆编号
 	*/
 private:
-	double m_id = s_vue_count++;
+	int m_vue_id = s_vue_count++;
+public:
+	int get_vue_id();
 
 	/*
 	* 车速，km/h

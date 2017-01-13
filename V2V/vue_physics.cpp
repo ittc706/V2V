@@ -206,3 +206,16 @@ void vue_physics::channel_generator() {
 	}
 	memory_clean::safe_delete(__imta, true);
 }
+
+
+void vue_physics::set_superior_level(vue* t_superior_level) {
+	m_superior_level = t_superior_level;
+}
+
+vue* vue_physics::get_superior_level() {
+	return m_superior_level;
+}
+
+int vue_physics::get_vue_id() {
+	return m_vue_id;
+}

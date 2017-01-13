@@ -28,6 +28,10 @@ vue::vue() {
 	m_physics_level = new vue_physics();
 	m_link_level = new vue_link();
 	m_network_level = new vue_network();
+
+	m_physics_level->set_superior_level(this);
+	m_link_level->set_superior_level(this);
+	m_network_level->set_superior_level(this);
 }
 
 vue::~vue() {

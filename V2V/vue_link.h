@@ -1,11 +1,16 @@
 #pragma once
 
 #include<vector>
+#include<list>
+
+class sender_event;
+class receiver_event;
+class vue;
 
 class vue_link {
 	/*------------------友元声明------------------*/
 	/*
-	* 将vue设为vue_link的友元，由于vue_link的构造函数设为私有，但可由vue来调用
+	* 将vue设为友元，由于vue_link的构造函数设为私有，但可由vue来调用
 	*/
 	friend class vue;
 
@@ -49,13 +54,21 @@ public:
 
 	/*--------------------字段--------------------*/
 	/*
-	* 周期事件下一次触发时刻
+	* 指向上层的指针
 	*/
 private:
-	std::vector<int> m_period_event_next_trigger_tti;
-	void initialize_period_event_next_trigger_tti(int t_congestion_level_num);
+	vue* m_superior_level;
+	void set_superior_level(vue* t_superior_level);
 public:
-	const std::vector<int>& get_period_event_next_trigger_tti();
+	vue* get_superior_level();
 
-	/*--------------------方法--------------------*/
+	/*
+	* 接收事件列表
+	*/
+private:
+	std::list<receiver_event*> m_receiver_events_list;
+	
+	/*--------------------接口--------------------*/
+public:
+	void receive_connection(sender_event* t_sender_event);
 };

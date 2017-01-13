@@ -27,7 +27,7 @@ private:
 	/*
 	* 公共资源资源初始化，交由容器调用
 	*/
-	static void initialize_resource();
+	static void set_resource();
 	/*----------------字段------------------*/
 private:
 	/*

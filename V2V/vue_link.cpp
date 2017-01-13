@@ -16,7 +16,10 @@
 * =====================================================================================
 */
 
+#include"vue.h"
+#include"vue_physics.h"
 #include"vue_link.h"
+#include"event.h"
 
 using namespace std;
 
@@ -28,10 +31,18 @@ vue_link::~vue_link() {
 
 }
 
-void vue_link::initialize_period_event_next_trigger_tti(int t_congestion_level_num){
-	m_period_event_next_trigger_tti.assign(t_congestion_level_num,0);
+void vue_link::set_superior_level(vue* t_superior_level) {
+	m_superior_level = t_superior_level;
 }
 
-const std::vector<int>& vue_link::get_period_event_next_trigger_tti() {
-	return m_period_event_next_trigger_tti;
+vue* vue_link::get_superior_level() {
+	return m_superior_level;
+}
+
+void vue_link::receive_connection(sender_event* t_sender_event) {
+	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
+	receiver_event* __receiver_event = new receiver_event(t_sender_event);
+	__receiver_event->set_to_vue_id(vue_id);
+
+	m_receiver_events_list.push_back(__receiver_event);
 }

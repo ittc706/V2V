@@ -10,7 +10,7 @@ class gtt;
 class tmc;
 class wt;
 class vue;
-class v2v_event;
+class sender_event;
 
 class context {
 	/*------------------友元声明------------------*/
@@ -146,7 +146,7 @@ public:
 	* wt对象，为非单例模式，可以请求数个wt类型的对象
 	*/
 private:
-	void wt_initialize();
+	void set_wt();
 public:
 	wt* get_wt();
 
@@ -163,20 +163,20 @@ public:
 	* 事件类数组
 	*/
 private:
-	std::vector<v2v_event*> m_event_array;
-	void event_array_initialize();
+	std::vector<sender_event*> m_event_array;
+	void set_event_array();
 public:
-	std::vector<v2v_event*>& get_event_array();
+	std::vector<sender_event*>& get_event_array();
 
 	/*
 	* tti事件数组，
 	* 外层下标代表tti时刻
 	*/
 private:
-	std::vector<std::list<v2v_event*>> m_tti_event_list;
-	void initialize_tti_event_list();
+	std::vector<std::list<sender_event*>> m_tti_event_list;
+	void set_tti_event_list();
 public:
-	std::vector<std::list<v2v_event*>>& get_tti_event_list();
+	std::vector<std::list<sender_event*>>& get_tti_event_list();
 
 	/*--------------------实现--------------------*/
 private:

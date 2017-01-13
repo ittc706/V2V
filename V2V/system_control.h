@@ -56,24 +56,4 @@ private:
 	* 平台初始化
 	*/
 	void initialize();
-
-	/*
-	* gtt单元初始化
-	*/
-	void gtt_initialize();
-
-	/*
-	* tmc单元初始化
-	*/
-	void tmc_initialize();
-
-	/*
-	* 更新信道
-	*/
-	void update_channel();
-
-	/*
-	* 事件触发
-	*/
-	void event_trigger();
 };
