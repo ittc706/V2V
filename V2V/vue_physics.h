@@ -47,55 +47,45 @@ public:
 	vue_physics& operator=(vue_physics&& t_vue_physics) = delete;
 
 	/*------------------静态成员------------------*/
-private:
+
 	/*
 	* 车辆总数
 	*/
+private:
 	static int s_vue_count;
+public:
+	static int get_vue_num();
 
 	/*
 	* 车辆之间的小尺度衰落
 	* 前两层下标为车辆id，例如s_channel_all[i][j],且i<j
 	*/
+private:
 	static std::vector<std::vector<double*>> s_channel_all;
+	static void set_channel(int i, int j, double* t_channel);
+public:
+	static double* get_channel(int i, int j);
 
 	/*
 	* 车辆之间的大尺度衰落
 	* 前两层下标为车辆id，例如s_pl_all[i][j],且i<j
 	*/
+private:
 	static std::vector<std::vector<double>> s_pl_all;
-
+	static void set_pl(int i, int j, double t_pl);
 public:
-	/*
-	* 读取车辆数目
-	*/
-	static int get_vue_num();
-
-	/*
-	* 取车辆i,j之间的小尺度衰落
-	*/
-	static double* get_channel(int i, int j);
-
-	/*
-	* 存车辆i,j之间的小尺度衰落
-	*/
-	static void set_channel(int i, int j, double*);
-
-	/*
-	* 取车辆i,j之间的大尺度衰落
-	*/
 	static double get_pl(int i, int j);
 
 	/*
-	* 存车辆i,j之间的大尺度衰落
+	* 车辆与车辆之间的距离
+	* 前两层下标为车辆id，例如s_distance_all[i][j],且i<j
 	*/
-	static void set_pl(int i, int j, double);
-	/*
-	* 产生车辆i,j之间的信道
-	*/
-	static void channel_generator();
+private:
+	static std::vector<std::vector<double>> s_distance_all;
+	static void set_distance(int i, int j, double t_distance);
+public:
+	static double get_distance(int i, int j);
 
-	
 	/*--------------------字段--------------------*/
 	/*
 	* 指向上层的指针

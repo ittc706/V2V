@@ -15,7 +15,7 @@ class vue_link {
 	friend class vue;
 
 	/*
-	* 将tmc设为vue_link的友元，事件相关的字段需要通过tmc对象来配置
+	* 将tmc设为友元，事件相关的字段需要通过tmc对象来配置
 	*/
 	friend class tmc;
 	/*----------------拷贝控制成员----------------*/

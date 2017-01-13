@@ -11,5 +11,7 @@ public:
 
 	int get_vue_num() override;
 
+	void update_channel() override;
+
 	gtt_highspeed_config* get_precise_config();
 };

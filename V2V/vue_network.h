@@ -2,6 +2,8 @@
 
 #include<random>
 #include<vector>
+#include<list>
+#include<set>
 
 class sender_event;
 
@@ -13,13 +15,45 @@ class vue_network {
 	friend class vue;
 
 	/*
-	* 将tmc设为vue_link的友元，事件相关的字段需要通过tmc对象来配置
+	* 将tmc设为友元，事件相关的字段需要通过tmc对象来配置
 	*/
 	friend class tmc;
 
+	/*
+	* 将rrm设为友元，事件相关的字段需要通过rrm对象来配置
+	*/
+	friend class rrm;
+
+	/*
+	* 将vue_link设为友元
+	*/
+	friend class vue_link;
+
 	/*------------------静态成员------------------*/
 private:
+	/*
+	* 随机数引擎
+	*/
 	static std::default_random_engine s_engine;
+
+	/*
+	* 正在传输的车辆id
+	* 外层下标为pattern编号
+	*/
+	static std::vector<std::set<int>> s_vue_id_per_pattern;
+
+	/*
+	* 传输完毕的车辆id
+	* 外层下标为pattern编号
+	*/
+	static std::vector<std::set<int>> s_vue_id_per_pattern_finished;
+
+public:
+	/*
+	* 用于更新s_vue_id_per_pattern
+	* 从s_vue_id_per_pattern删去s_vue_id_per_pattern_finished
+	*/
+	static void update_vue_id_per_pattern();
 
 	/*----------------拷贝控制成员----------------*/
 private:
@@ -86,6 +120,9 @@ private:
 
 	/*--------------------接口--------------------*/
 public:
+	/*
+	* 收发车辆进行连接(程序意义上的连接)
+	*/
 	void send_connection();
 
 	/*--------------------实现--------------------*/

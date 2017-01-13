@@ -61,4 +61,8 @@ public:
 	*/
 	void initialize();
 
+	/*
+	* ÔËÐÐ
+	*/
+	void schedule();
 };

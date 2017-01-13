@@ -146,6 +146,24 @@ public:
 	int get_to_vue_id();
 
 	/*
+	* 收发车辆之间的距离
+	*/
+private:
+	double m_distance;
+	void set_distance(double t_distance);
+public:
+	double get_distance();
+
+	/*
+	* 占用频段
+	*/
+private:
+	int m_pattern_idx;
+public:
+	void set_pattern_idx(int t_pattern_idx);
+	int get_pattern_idx();
+
+	/*
 	* 数据包总数
 	*/
 private:

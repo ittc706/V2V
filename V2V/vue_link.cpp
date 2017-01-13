@@ -21,6 +21,7 @@
 #include"vue.h"
 #include"vue_physics.h"
 #include"vue_link.h"
+#include"vue_network.h"
 #include"event.h"
 
 using namespace std;
@@ -82,6 +83,7 @@ void vue_link::receive() {
 			else {
 				m_success_event_list.push_back(__cur_event);
 			}
+			vue_network::s_vue_id_per_pattern_finished[__cur_event->get_pattern_idx()].insert(__cur_event->get_from_vue_id());
 		}
 	}
 }

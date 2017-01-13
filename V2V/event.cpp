@@ -19,6 +19,7 @@
 #include"context.h"
 #include"event.h"
 #include"config.h"
+#include"vue_physics.h"
 
 using namespace std;
 
@@ -61,6 +62,9 @@ receiver_event::receiver_event(sender_event* t_sender_event, int t_receiver_vue_
 	m_bit_num_per_package = context::get_context()->get_tmc_config()->get_bit_num_per_package();
 
 	m_remain_bit_num = m_bit_num_per_package[0];
+
+	//<Warn>¼ÆËã¾àÀë
+	set_distance(vue_physics::get_distance(get_from_vue_id(), get_to_vue_id()));
 }
 
 receiver_event::~receiver_event() {
@@ -89,6 +93,22 @@ void receiver_event::set_to_vue_id(int t_to_vue_id) {
 
 int receiver_event::get_to_vue_id() {
 	return m_to_vue_id;
+}
+
+void receiver_event::set_distance(double t_distance) {
+	m_distance = t_distance;
+}
+
+double receiver_event::get_distance() {
+	return m_distance;
+}
+
+void receiver_event::set_pattern_idx(int t_pattern_idx) {
+	m_pattern_idx = t_pattern_idx;
+}
+
+int receiver_event::get_pattern_idx() {
+	return m_pattern_idx;
 }
 
 bool receiver_event::get_is_finished() {

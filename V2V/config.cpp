@@ -50,6 +50,14 @@ int global_control_config::get_ntti() {
 	return m_ntti;
 }
 
+void global_control_config::set_fresh_period(int t_fresh_period) {
+	m_fresh_period = t_fresh_period;
+}
+
+int global_control_config::get_fresh_period() {
+	return m_fresh_period;
+}
+
 void global_control_config::load() {
 	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
 	ifstream inPlatformWindows("config\\global_control_config.xml"),
@@ -95,7 +103,19 @@ void global_control_config::load() {
 	else
 		throw logic_error("ConfigLoaderError");
 
+	if ((temp = get_config_loader()->get_param("fresh_period")) != nullString) {
+		ss << temp;
+		int t_fresh_period;
+		ss >> t_fresh_period;
+		set_fresh_period(t_fresh_period);
+		ss.clear();//清除标志位
+		ss.str("");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
 	cout << "ntti: " << get_ntti() << endl;
+	cout << "fresh_period: " << get_fresh_period() << endl;
 }
 
 void gtt_config::set_config_loader(config_loader* t_config_loader) {

@@ -44,6 +44,15 @@ private:
 public:
 	int get_ntti();
 
+	/*
+	* 信道刷新周期
+	*/
+private:
+	int m_fresh_period;
+	void set_fresh_period(int t_fresh_period);
+public:
+	int get_fresh_period();
+
 	/*--------------------接口--------------------*/
 public:
 	void load();

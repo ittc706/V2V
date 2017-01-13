@@ -24,4 +24,6 @@ public:
 	virtual void initialize() = 0;
 
 	virtual int get_vue_num() = 0;
+
+	virtual void update_channel() = 0;
 };
