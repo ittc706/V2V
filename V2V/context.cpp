@@ -135,12 +135,13 @@ tmc* context::get_tmc() {
 	return m_tmc;
 }
 
-void context::set_wt() {
+void context::set_wt(wt* t_wt) {
 	wt::set_resource();
+	m_wt = t_wt;
 }
 
 wt* context::get_wt() {
-	return new wt();
+	return m_wt;
 }
 
 void context::set_event_array() {
@@ -195,7 +196,7 @@ void context::dependency_injecte() {
 	get_tmc()->set_config(get_tmc_config());
 
 	//初始化wt共享资源
-	set_wt();
+	set_wt(new wt());
 
 	//事件数组初始化
 	set_event_array();

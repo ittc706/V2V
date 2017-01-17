@@ -166,7 +166,8 @@ public:
 	* wt对象，为非单例模式，可以请求数个wt类型的对象
 	*/
 private:
-	void set_wt();
+	wt* m_wt = nullptr;
+	void set_wt(wt* t_wt);
 public:
 	wt* get_wt();
 

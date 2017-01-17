@@ -16,6 +16,7 @@
 * =====================================================================================
 */
 
+#include<iostream>
 #include"context.h"
 #include"event.h"
 #include"config.h"
@@ -55,16 +56,15 @@ int sender_event::get_pattern_idx() {
 
 receiver_event::receiver_event(sender_event* t_sender_event, int t_receiver_vue_id) {
 	set_event_id(t_sender_event->get_event_id());
-	set_from_vue_id(t_sender_event->get_vue_id());
-	set_to_vue_id(t_receiver_vue_id);
+	set_send_vue_id(t_sender_event->get_vue_id());
+	set_receive_vue_id(t_receiver_vue_id);
 
 	m_package_num = context::get_context()->get_tmc_config()->get_package_num();
 	m_bit_num_per_package = context::get_context()->get_tmc_config()->get_bit_num_per_package();
 
 	m_remain_bit_num = m_bit_num_per_package[0];
 
-	//<Warn>¼ÆËã¾àÀë
-	set_distance(vue_physics::get_distance(get_from_vue_id(), get_to_vue_id()));
+	set_distance(vue_physics::get_distance(get_send_vue_id(), get_receive_vue_id()));
 }
 
 receiver_event::~receiver_event() {
@@ -79,20 +79,20 @@ int receiver_event::get_event_id() {
 	return m_event_id;
 }
 
-void receiver_event::set_from_vue_id(int t_from_vue_id) {
-	m_from_vue_id = t_from_vue_id;
+void receiver_event::set_send_vue_id(int t_send_vue_id) {
+	m_send_vue_id = t_send_vue_id;
 }
 
-int receiver_event::get_from_vue_id() {
-	return m_from_vue_id;
+int receiver_event::get_send_vue_id() {
+	return m_send_vue_id;
 }
 
-void receiver_event::set_to_vue_id(int t_to_vue_id) {
-	m_to_vue_id = t_to_vue_id;
+void receiver_event::set_receive_vue_id(int t_receive_vue_id) {
+	m_receive_vue_id = t_receive_vue_id;
 }
 
-int receiver_event::get_to_vue_id() {
-	return m_to_vue_id;
+int receiver_event::get_receive_vue_id() {
+	return m_receive_vue_id;
 }
 
 void receiver_event::set_distance(double t_distance) {

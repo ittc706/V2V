@@ -93,6 +93,7 @@ void vue_network::send_connection() {
 }
 
 int vue_network::select_pattern() {
-	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num());
+	//<Warn>:u(a,b),其中ab是否是闭区间，验证一下
+	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
 	return u(s_engine);
 }

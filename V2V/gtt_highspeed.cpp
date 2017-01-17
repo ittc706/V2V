@@ -36,7 +36,7 @@ void gtt_highspeed::initialize() {
 
 	//生成负指数分布的车辆到达间隔
 	int tempVeUENum = 0;
-	double lambda = 1 / 2.5;//均值为1/lambda，依照协议车辆到达时间间隔的均值为2.5s
+	double lambda = 1 / 5.0;//均值为1/lambda，依照协议车辆到达时间间隔的均值为2.5s
 	for (int roadId = 0; roadId != __config->get_road_num(); roadId++) {
 		TotalTime[roadId] = 0;
 		while (TotalTime[roadId] * (__config->get_speed() / 3.6) < __config->get_road_length()) {
@@ -60,14 +60,14 @@ void gtt_highspeed::initialize() {
 
 	//进行车辆的撒点
 	context::get_context()->set_vue_array(new vue[tempVeUENum]);
-	int VeUEId = 0;
+	int vue_id = 0;
 
 	for (int roadId = 0; roadId != __config->get_road_num(); roadId++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
-			auto p = context::get_context()->get_vue_array()[VeUEId].get_physics_level();
+			auto p = context::get_context()->get_vue_array()[vue_id++].get_physics_level();
+			p->m_speed = __config->get_speed();
 		    p->m_absx = -1732 + (TotalTime[roadId] - possion[roadId].back())*(p->m_speed / 3.6);
 			p->m_absy = __config->get_road_topo_ratio()[roadId * 2 + 1]* __config->get_road_width();
-			p->m_speed = __config->get_speed();
 			TotalTime[roadId] = TotalTime[roadId] - possion[roadId].back();
 			possion[roadId].pop_back();
 		}
@@ -105,7 +105,6 @@ void gtt_highspeed::update_channel() {
 	int imta_id = 0;
 	for (int vue_id_i = 0; vue_id_i < vue_physics::s_vue_count; vue_id_i++) {
 		for (int vue_id_j = vue_id_i + 1; vue_id_j < vue_physics::s_vue_count; vue_id_j++) {
-			cout << vue_id_i << "," << vue_id_j << endl;
 			auto vuei = context::get_context()->get_vue_array()[vue_id_i].get_physics_level();
 			auto vuej = context::get_context()->get_vue_array()[vue_id_j].get_physics_level();
 
@@ -113,7 +112,6 @@ void gtt_highspeed::update_channel() {
 			_location.manhattan = false;
 
 			double angle = 0;
-
 			_location.distance = sqrt(pow((vuei->m_absx - vuej->m_absx), 2.0f) + pow((vuei->m_absy - vuej->m_absy), 2.0f));
 
 			vue_physics::set_distance(vue_id_i, vue_id_j, _location.distance);

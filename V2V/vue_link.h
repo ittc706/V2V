@@ -2,6 +2,7 @@
 
 #include<vector>
 #include<list>
+#include<utility>
 
 class sender_event;
 class receiver_event;
@@ -97,4 +98,11 @@ public:
 	* 接收信息
 	*/
 	void receive();
+
+	/*--------------------实现--------------------*/
+private:
+	/*
+	* 计算子载波区间
+	*/
+	std::pair<int,int> get_subcarrier_interval(int t_pattern_idx);
 };

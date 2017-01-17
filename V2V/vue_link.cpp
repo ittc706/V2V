@@ -18,6 +18,7 @@
 
 #include"context.h"
 #include"config.h"
+#include"wt.h"
 #include"vue.h"
 #include"vue_physics.h"
 #include"vue_link.h"
@@ -70,7 +71,15 @@ void vue_link::receive() {
 		int transimit_max_bit_num= (int)((double)(__context->get_rrm_config()->get_rb_num_per_pattern() * rrm_config::s_BIT_NUM_PER_RB)* factor);
 		__cur_event->transimit(transimit_max_bit_num);
 
-		double sinr = 5;//<Warn>:这里需要调用wt模块来完成sinr的计算
+		//计算SINR
+		pair<int, int> subcarrier_interval = get_subcarrier_interval(__cur_event->get_pattern_idx());
+		wt* __wt = context::get_context()->get_wt();
+		
+
+		double sinr = __wt->calculate_sinr(__cur_event->get_send_vue_id(),
+			__cur_event->get_receive_vue_id(),
+			subcarrier_interval,
+			vue_network::s_vue_id_per_pattern[__cur_event->get_pattern_idx()]);
 
 		if (sinr < __context->get_rrm_config()->get_drop_sinr_boundary()) {
 			__cur_event->set_is_loss();//记录丢包
@@ -83,7 +92,17 @@ void vue_link::receive() {
 			else {
 				m_success_event_list.push_back(__cur_event);
 			}
-			vue_network::s_vue_id_per_pattern_finished[__cur_event->get_pattern_idx()].insert(__cur_event->get_from_vue_id());
+			vue_network::s_vue_id_per_pattern_finished[__cur_event->get_pattern_idx()].insert(__cur_event->get_send_vue_id());
+			
+			it = m_receiver_event_list.erase(it);
+		}
+		else {
+			++it;
 		}
 	}
+}
+
+pair<int, int> vue_link::get_subcarrier_interval(int t_pattern_idx) {
+	int subcarrier_num_per_pattern = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
+	return pair<int, int>(subcarrier_num_per_pattern*t_pattern_idx, subcarrier_num_per_pattern*(t_pattern_idx + 1));
 }

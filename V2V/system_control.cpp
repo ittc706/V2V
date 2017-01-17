@@ -51,6 +51,8 @@ void system_control::process() {
 
 		m_context->increase_tti();
 	}
+
+	m_context->get_tmc()->statistic();
 }
 
 

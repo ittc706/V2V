@@ -131,19 +131,19 @@ public:
 	* 发送车辆id
 	*/
 private:
-	int m_from_vue_id;
-	void set_from_vue_id(int t_from_vue_id);
+	int m_send_vue_id;
+	void set_send_vue_id(int t_send_vue_id);
 public:
-	int get_from_vue_id();
+	int get_send_vue_id();
 
 	/*
 	* 接收车辆id
 	*/
 private:
-	int m_to_vue_id;
-	void set_to_vue_id(int t_to_vue_id);
+	int m_receive_vue_id;
+	void set_receive_vue_id(int t_receive_vue_id);
 public:
-	int get_to_vue_id();
+	int get_receive_vue_id();
 
 	/*
 	* 收发车辆之间的距离

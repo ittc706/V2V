@@ -63,4 +63,9 @@ public:
 	* 事件触发，负责调用每辆车的同名方法，并维护容器context中的事件成员
 	*/
 	void event_trigger();
+
+	/*
+	* 统计各项信息
+	*/
+	void statistic();
 };

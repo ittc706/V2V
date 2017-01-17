@@ -17,6 +17,7 @@
 */
 
 #include<random>
+#include<fstream>
 #include"context.h"
 #include"gtt.h"
 #include"tmc.h"
@@ -83,6 +84,25 @@ void tmc::event_trigger() {
 
 		for (int congestion_level = 0; congestion_level < __context->get_tmc_config()->get_congestion_level_num(); congestion_level++) {
 			__context->get_vue_array()[vue_id].get_network_level()->m_periodic_event_next_trigger_tti[congestion_level] = tti + __context->get_tmc_config()->get_periodic_event_period()[congestion_level];
+		}
+	}
+}
+
+
+void tmc::statistic() {
+	//<Warn>
+	ofstream loss_package_distance = ofstream("log\\loss_package_distance.txt");
+	ofstream distance = ofstream("log\\distance.txt");
+	context* __context = context::get_context();
+	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
+		
+		for (receiver_event* __receiver_event : __context->get_vue_array()[vue_id].get_link_level()->get_loss_event_list()) {
+			loss_package_distance << __receiver_event->get_distance() << " ";
+			distance << __receiver_event->get_distance() << " ";
+		}
+
+		for (receiver_event* __receiver_event : __context->get_vue_array()[vue_id].get_link_level()->get_success_event_list()) {
+			distance << __receiver_event->get_distance() << " ";
 		}
 	}
 }

@@ -21,6 +21,8 @@
 #include"context.h"
 #include"config.h"
 #include"wt.h"
+#include"vue_physics.h"
+#include"vue_network.h"
 
 
 using namespace std;
@@ -51,20 +53,26 @@ wt::~wt() {
 
 }
 
-double wt::calculate_sinr(int t_vue_id, int t_subcarrier_idx_start, int t_subcarrier_idx_end, int t_pattern_idx) {
-	//子载波数量
-	int subcarrier_num = t_subcarrier_idx_end - t_subcarrier_idx_start + 1;
+double wt::calculate_sinr(int t_send_vue_id, int t_receive_vue_id, const std::pair<int, int>& t_subcarrier_interval, const set<int>& t_sending_vue_id_set) {
+	m_ploss = vue_physics::get_pl(t_send_vue_id, t_receive_vue_id);
+	int subcarrier_num = t_subcarrier_interval.second - t_subcarrier_interval.first + 1;
+	m_pt = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
+	m_sigma = pow(10, -17.4);
 
-	//配置本次函数调用的参数
-	configuration(t_vue_id, t_pattern_idx, subcarrier_num);
+	m_inter_ploss.clear();
+
+	for (int inter_vue_id : t_sending_vue_id_set) {
+		if (t_send_vue_id == inter_vue_id) continue;
+		m_inter_ploss.push_back(vue_physics::get_pl(t_receive_vue_id, inter_vue_id));
+	}
 
 	/*****求每个子载波上的信噪比****/
 	vector<double> sinr(subcarrier_num);//每个子载波上的信噪比，维度为nt的向量
-	for (int subcarrier_idx = t_subcarrier_idx_start; subcarrier_idx <= t_subcarrier_idx_end; subcarrier_idx++) {
-		int relative_subcarrier_idx = subcarrier_idx - t_subcarrier_idx_start;//相对的子载波下标
+	for (int subcarrier_idx = t_subcarrier_interval.first; subcarrier_idx <= t_subcarrier_interval.second; subcarrier_idx++) {
+		int relative_subcarrier_idx = subcarrier_idx - t_subcarrier_interval.first;//相对的子载波下标
 
-		m_h = read_h(t_vue_id, subcarrier_idx);//读入当前子载波的信道响应矩阵
-		m_inter_h = read_inter_h(t_vue_id, subcarrier_idx, t_pattern_idx);//读入当前子载波干扰相应矩阵数组
+		m_h = read_h(t_send_vue_id, t_receive_vue_id, subcarrier_idx);//读入当前子载波的信道响应矩阵
+		m_inter_h = read_inter_h(t_sending_vue_id_set, t_send_vue_id,t_receive_vue_id,subcarrier_idx);//读入当前子载波干扰相应矩阵数组
 
 		double h_sum1 = 0;
 		for (int r = 0; r < m_nr; r++) {
@@ -104,42 +112,35 @@ double wt::calculate_sinr(int t_vue_id, int t_subcarrier_idx_start, int t_subcar
 	return sinreff;
 }
 
-void wt::configuration(int t_vue_id, int t_pattern_idx, int t_subcarrier_num) {
-	//<Warn>
-	/*m_ploss = m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_Ploss;
-	m_Pt = pow(10, (23 - 10 * log10(t_subcarrier_num * 15 * 1000)) / 10);
-	m_sigma = pow(10, -17.4);
-
-	m_inter_ploss.clear();
-	for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->getSystemPoint()->getRRMPoint()->m_InterferenceVeUEIdVec[t_PatternIdx]) {
-		m_inter_ploss.push_back(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferencePloss[interferenceVeUEId]);
-	}*/
-}
-
-matrix wt::read_h(int t_vue_id, int t_subcarrier_idx) {
+matrix wt::read_h(int t_send_vue_id, int t_receive_vue_id, int t_subcarrier_idx) {
 	matrix res(m_nr, m_nt);
-	//<Warn>
-	/*for (int row = 0; row < m_nr; row++) {
+	double* p = vue_physics::get_channel(t_send_vue_id, t_receive_vue_id);
+	for (int row = 0; row < m_nr; row++) {
 		for (int col = 0; col < m_nt; col++) {
-			res[row][col] = complex(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_H[row * 2048 + t_SubCarrierIdx * 2], m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_H[row * 2048 + t_SubCarrierIdx * 2 + 1]);
+			res[row][col] = complex(p[row * 2048 + t_subcarrier_idx * 2], p[row * 2048 + t_subcarrier_idx * 2 + 1]);
 		}
-	}*/
+	}
 	return res;
 }
 
-std::vector<matrix> wt::read_inter_h(int t_vue_id, int t_subcarrier_idx, int t_pattern_idx) {
+std::vector<matrix> wt::read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_subcarrier_idx) {
 	vector<matrix> res;
 	//<Warn>
-	/*for (int interferenceVeUEId : m_VeUEAry[t_VeUEId]->getSystemPoint()->getRRMPoint()->m_InterferenceVeUEIdVec[t_PatternIdx]) {
-		Matrix m(m_Nr, m_Nt);
-		for (int row = 0; row < m_Nr; row++) {
-			for (int col = 0; col < m_Nt; col++) {
-				m[row][col] = Complex(m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2],
-					m_VeUEAry[t_VeUEId]->getSystemPoint()->getGTTPoint()->m_InterferenceH[interferenceVeUEId][row * 2048 + t_SubCarrierIdx * 2 + 1]);
+	for (int inter_vue_id : t_sending_vue_id_set) {
+		if (inter_vue_id == t_send_vue_id) continue;
+		if (inter_vue_id == t_receive_vue_id) continue;
+		
+		double* p = vue_physics::get_channel(inter_vue_id, t_receive_vue_id);
+
+		matrix m(m_nr, m_nt);
+		for (int row = 0; row < m_nr; row++) {
+			for (int col = 0; col < m_nt; col++) {
+				m[row][col] = complex(p[row * 2048 + t_subcarrier_idx * 2],
+					p[row * 2048 + t_subcarrier_idx * 2 + 1]);
 			}
 		}
 		res.push_back(m);
-	}*/
+	}
 	return res;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include<set>
 #include<random>
 #include<utility>
 #include<memory>
@@ -87,24 +88,23 @@ public:
 
 	/*
 	* 计算载干比
+	* t_send_vue_id:当前链路的发送端车辆id
+	* t_receive_vue_id:当前链路的接收端车辆id
+	* t_subcarrier_interval:该链路占用的子载波区间
+	* t_sending_vue_id_set:在该子载波区间进行发送的车辆id列表，包括t_send_vue_id
 	*/
-	double calculate_sinr(int t_vue_id, int t_subcarrier_idx_start, int t_subcarrier_idx_end, int t_pattern_idx);
+	double calculate_sinr(int t_send_vue_id, int t_receive_vue_id, const std::pair<int, int>& t_subcarrier_interval, const std::set<int>& t_sending_vue_id_set);
 
 private:
 	/*
-	* 每次调用calculate_sinr前需要进行参数配置
-	*/
-	void configuration(int t_vue_id, int t_pattern_idx, int t_subcarrier_num);
-
-	/*
 	* 读取对应子载波的信道响应矩阵
 	*/
-	matrix read_h(int t_vue_id, int t_subcarrier_idx);
+	matrix read_h(int t_send_vue_id, int t_receive_vue_id, int t_subcarrier_idx);
 
 	/*
 	* 读取对应车辆在对应子载波上的干扰矩阵数组
 	*/
-	std::vector<matrix> read_inter_h(int t_vue_id, int t_subcarrier_idx, int t_pattern_idx);
+	std::vector<matrix> read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_subcarrier_idx);
 
 	/*
 	* 二分法查找算法
