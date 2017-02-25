@@ -58,6 +58,14 @@ int global_control_config::get_fresh_period() {
 	return m_fresh_period;
 }
 
+void global_control_config::set_gtt_mode(gtt_mode t_gtt_mode) {
+	m_gtt_mode = t_gtt_mode;
+}
+
+gtt_mode global_control_config::get_gtt_mode() {
+	return m_gtt_mode;
+}
+
 void global_control_config::load() {
 	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
 	ifstream inPlatformWindows("config\\global_control_config.xml"),
@@ -104,8 +112,30 @@ void global_control_config::load() {
 	else
 		throw logic_error("ConfigLoaderError");
 
+	if ((temp = get_config_loader()->get_param("gtt_mode")) != nullString) {
+		if (temp == "HIGHSPEED")
+			set_gtt_mode(HIGHSPEED);
+		else if (temp == "URBAN")
+			set_gtt_mode(URBAN);
+		else
+			throw logic_error("ConfigLoaderError");
+	}
+	else
+		throw logic_error("ConfigLoaderError");
+
 	cout << "ntti: " << get_ntti() << endl;
 	cout << "fresh_period: " << get_fresh_period() << endl;
+	cout << "gtt_mode: " << (get_gtt_mode() == URBAN ? "URBAN" : "HIGHSPEED") << endl;
+	cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
+}
+
+gtt_config* gtt_config::gtt_config_bind_by_mode(gtt_mode t_mode) {
+	if (t_mode == HIGHSPEED) {
+		return new gtt_highspeed_config();
+	}
+	else if (t_mode == URBAN) {
+		return new gtt_urban_config();
+	}
 }
 
 void gtt_config::set_config_loader(config_loader* t_config_loader) {
@@ -202,6 +232,7 @@ void gtt_highspeed_config::load() {
 	cout << "road_width: " << get_road_width() << endl;
 	cout << "speed: " << get_speed() << endl;
 	cout << "freshtime: " << get_freshtime() << endl;
+	cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
 }
 
 void gtt_urban_config::load() {
@@ -256,6 +287,7 @@ void gtt_urban_config::load() {
 	cout << "road_width: " << get_road_width() << endl;
 	cout << "speed: " << get_speed() << endl;
 	cout << "freshtime: " << get_freshtime() << endl;
+	cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
 }
 
 int gtt_urban_config::get_road_num() {
@@ -422,6 +454,7 @@ void rrm_config::load() {
 	cout << "modulation_type: " << get_modulation_type() << endl;
 	cout << "code_rate: " << get_code_rate() << endl;
 	cout << "drop_sinr_boundary: " << get_drop_sinr_boundary() << endl;
+	cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
 }
 
 void tmc_config::set_config_loader(config_loader* t_config_loader) {
@@ -507,7 +540,8 @@ void tmc_config::load() {
 		throw logic_error("ConfigLoaderError");
 
 	cout << "congestion_level_num: " << get_congestion_level_num() << endl;
-	array_print::print_vector_dim1(get_periodic_event_period());
+	cout << "periodic_event_period: "; array_print::print_vector_dim1(get_periodic_event_period());
 	cout << "package_num: " << get_package_num() << endl;
-	array_print::print_vector_dim1(get_bit_num_per_package());
+	cout << "bit_num_per_package: "; array_print::print_vector_dim1(get_bit_num_per_package());
+	cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
 }

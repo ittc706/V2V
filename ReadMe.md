@@ -34,3 +34,8 @@
 # version_2017_1_7(增加了vue的层级结构)
 
 # version_2017_1_3(修改了矩阵类库的命名规则)
+
+# version_2017_2_25(调整)
+* 修复了一处bug:receive的pattern_idx没有赋值
+* 调整了容器初始化的顺序
+* 增加了urban的配置文件

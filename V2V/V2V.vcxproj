@@ -138,6 +138,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="config_loader.h" />
     <ClInclude Include="context.h" />
+    <ClInclude Include="enumeration.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="gtt.h" />

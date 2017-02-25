@@ -47,55 +47,54 @@ void context::set_context(context* t_singleton_context) {
 void context::context_build() {
 	context* __context = new context();
 	set_context(__context);
+
+	__context->initialize();
 }
 
 context::context() {
-	//初始化系统控制对象
+
+}
+
+void context::initialize() {
 	set_system_control(new system_control());
 	get_system_control()->set_context(this);
 
-	//初始化配置文件加载器
 	set_config_loader(new config_loader());
 
-	//初始化配置参数对象
 	set_global_control_config(new global_control_config());
-	set_gtt_config(new gtt_highspeed_config());
-	set_rrm_config(new rrm_config());
-	set_tmc_config(new tmc_config());
-
-	//为配置参数对象注入依赖项(配置文件加载器)，并执行初始化动作(加载配置文件)
 	get_global_control_config()->set_config_loader(get_config_loader());
 	get_global_control_config()->load();
 
+	set_gtt_config(gtt_config::gtt_config_bind_by_mode(get_global_control_config()->get_gtt_mode()));
 	get_gtt_config()->set_config_loader(get_config_loader());
 	get_gtt_config()->load();
 
+	set_rrm_config(new rrm_config());
 	get_rrm_config()->set_config_loader(get_config_loader());
 	get_rrm_config()->load();
 
+	set_tmc_config(new tmc_config());
 	get_tmc_config()->set_config_loader(get_config_loader());
 	get_tmc_config()->load();
 
-	//初始化gtt对象，并为其注入依赖项(配置参数对象)
-	set_gtt(new gtt_highspeed());
+	set_gtt(gtt::gtt_bind_by_mode(get_global_control_config()->get_gtt_mode()));
 	get_gtt()->set_config(get_gtt_config());
 
-	//初始化rrm对象，并为其注入依赖项(配置参数对象)
 	set_rrm(new rrm());
 	get_rrm()->set_config(get_rrm_config());
 
-	//初始化tmc对象，并为其注入依赖项(配置参数对象)
 	set_tmc(new tmc());
 	get_tmc()->set_config(get_tmc_config());
 
-	//初始化wt共享资源
 	set_wt(new wt());
 
-	//事件数组初始化
 	set_event_array();
 
-	//在配置对象初始化完毕后，该对象才可以进行初始化
 	set_tti_event_list();
+}
+
+void context::dependcy_inject() {
+	
 }
 
 context::~context() {

@@ -1,13 +1,9 @@
 #pragma once
 
 #include<vector>
+#include"enumeration.h"
 
 #define INVALID -1
-
-enum platform{
-	Windows,
-	Linux
-};
 
 class config_loader;
 
@@ -55,6 +51,15 @@ private:
 public:
 	int get_fresh_period();
 
+	/*
+	* 信道刷新周期
+	*/
+private:
+	gtt_mode m_gtt_mode;
+	void set_gtt_mode(gtt_mode t_gtt_mode);
+public:
+	gtt_mode get_gtt_mode();
+
 	/*--------------------接口--------------------*/
 public:
 	void load();
@@ -67,6 +72,12 @@ class gtt_config {
 	* 将context设为友元，容器要为其注入依赖项
 	*/
 	friend class context;
+
+	/*--------------------字段--------------------*/
+	/*
+	* 根据gtt模式来生成gtt_config配置文件对象
+	*/
+	static gtt_config* gtt_config_bind_by_mode(gtt_mode t_mode);
 
 	/*--------------------字段--------------------*/
 	/*

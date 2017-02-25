@@ -2,11 +2,6 @@
 
 #include<vector>
 
-enum event_type {
-	PERIOD
-};
-
-
 class sender_event {
 	/*------------------ÓÑÔªÉùÃ÷------------------*/
 	/*

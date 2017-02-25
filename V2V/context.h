@@ -55,6 +55,16 @@ private:
 	*/
 	context();
 
+	/*
+	* 单例对象生成
+	*/
+	void initialize();
+
+	/*
+	* 依赖注入
+	*/
+	void dependcy_inject();
+
 public:
 	/*
 	* 析构函数，负责清理资源
