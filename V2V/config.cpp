@@ -227,6 +227,57 @@ void gtt_highspeed_config::load() {
 void gtt_urban_config::load() {
 
 }
+int gtt_urban_config::get_road_num() {
+	return m_road_num;
+}
+
+void gtt_urban_config::set_road_length_ew(double t_road_length_ew) {
+	m_road_length_ew = t_road_length_ew;
+}
+
+double gtt_urban_config::get_road_length_ew() {
+	return m_road_length_ew;
+}
+
+void gtt_urban_config::set_road_length_sn(double t_road_length_sn) {
+	m_road_length_sn = t_road_length_sn;
+}
+
+double gtt_urban_config::get_road_length_sn() {
+	return m_road_length_sn;
+}
+void gtt_urban_config::set_road_width(double t_road_width) {
+	m_road_width = t_road_width;
+}
+
+double gtt_urban_config::get_road_width() {
+	return m_road_width;
+}
+
+void gtt_urban_config::set_speed(double t_speed) {
+	m_speed = t_speed;
+}
+
+double gtt_urban_config::get_speed() {
+	return m_speed;
+}
+
+const double* gtt_urban_config::get_road_topo_ratio() {
+	return m_road_topo_ratio;
+}
+
+auto gtt_urban_config::get_wrap_around_road() ->const int(*)[9]{
+	return m_wrap_around_road;
+}
+
+void gtt_urban_config::set_freshtime(double t_freshtime) {
+	m_freshtime = t_freshtime;
+}
+
+double gtt_urban_config::get_freshtime() {
+	return m_freshtime;
+}
+
 
 void rrm_config::set_config_loader(config_loader* t_config_loader) {
 	m_config_loader = t_config_loader;

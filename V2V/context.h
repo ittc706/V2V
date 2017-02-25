@@ -21,6 +21,7 @@ class context {
 	*/
 	friend class system_control;
 	friend class gtt_highspeed;
+	friend class gtt_urban;
 	friend class tmc;
 	/*------------------¾²Ì¬³ÉÔ±×Ö¶Î------------------*/
 private:

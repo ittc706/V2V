@@ -21,6 +21,7 @@
 #include"config_loader.h"
 #include"config.h"
 #include"gtt_highspeed.h"
+#include"gtt_urban.h"
 #include"rrm.h"
 #include"tmc.h"
 #include"wt.h"
