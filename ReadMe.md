@@ -39,3 +39,5 @@
 * 修复了一处bug:receive的pattern_idx没有赋值
 * 调整了容器初始化的顺序
 * 增加了urban的配置文件
+
+# version_2017_2_25(小bug)
