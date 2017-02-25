@@ -2,6 +2,8 @@
 
 #include<vector>
 
+#define INVALID -1
+
 enum platform{
 	Windows,
 	Linux
@@ -96,7 +98,7 @@ public:
 	* 路长,单位m
 	*/
 private:
-	double m_road_length = 3464;
+	double m_road_length = INVALID;
 	void set_road_length(double t_road_length);
 public:
 	double get_road_length();
@@ -105,7 +107,7 @@ public:
 	* 路宽，单位m
 	*/
 private:
-	double m_road_width = 4;
+	double m_road_width = INVALID;
 	void set_road_width(double t_road_width);
 public:
 	double get_road_width();
@@ -114,7 +116,7 @@ public:
 	* 车速,km/h
 	*/
 private:
-	double m_speed = 140;
+	double m_speed = INVALID;
 	void set_speed(double t_speed);
 public:
 	double get_speed();
@@ -138,7 +140,7 @@ public:
 	* 车辆位置刷新时间,单位s
 	*/
 private:
-	double m_freshtime = 0.1;
+	double m_freshtime = INVALID;
 	void set_freshtime(double t_freshtime);
 public:
 	double get_freshtime();
@@ -166,8 +168,8 @@ public:
 	* 路长，分为东西向和南北向,单位m
 	*/
 private:
-	double m_road_length_ew = 433;
-	double m_road_length_sn = 250;
+	double m_road_length_ew = INVALID;
+	double m_road_length_sn = INVALID;
 	void set_road_length_ew(double t_road_length_ew);
 	void set_road_length_sn(double t_road_length_sn);
 public:
@@ -178,7 +180,7 @@ public:
 	* 路宽，单位m
 	*/
 private:
-	double m_road_width = 7;
+	double m_road_width = INVALID;
 	void set_road_width(double t_road_width);
 public:
 	double get_road_width();
@@ -187,7 +189,7 @@ public:
 	* 车速,km/h
 	*/
 private:
-	double m_speed = 30;
+	double m_speed = INVALID;
 	void set_speed(double t_speed);
 public:
 	double get_speed();
@@ -233,12 +235,12 @@ private:
 
 public:
 	const double* get_road_topo_ratio();
-	auto get_wrap_around_road() ->const int(*)[9];
+	const int(*get_wrap_around_road())[9];
 	/*
 	* 车辆位置刷新时间,单位s
 	*/
 private:
-	double m_freshtime = 0.1;
+	double m_freshtime = INVALID;
 	void set_freshtime(double t_freshtime);
 public:
 	double get_freshtime();

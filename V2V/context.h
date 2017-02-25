@@ -46,7 +46,7 @@ private:
 	/*
 	* 单例模式下，生成唯一实体
 	*/
-	static void context_factory();
+	static void context_build();
 
 	/*----------------拷贝控制成员----------------*/
 private:
@@ -82,6 +82,15 @@ public:
 	context& operator=(context&& t_context) = delete;
 
 	/*------------------容器成员------------------*/
+	/*
+	* 系统控制器对象、编辑器、访问器
+	*/
+private:
+	system_control* m_system_control = nullptr;
+	void set_system_control(system_control* t_system_control);
+public:
+	system_control* get_system_control();
+
 	/*
 	* 配置文件加载对象、编辑器、访问器
 	*/
