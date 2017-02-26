@@ -44,3 +44,6 @@
 
 # version_2017_2_25(调整)
 * 将global_config中的刷新时间删除，将gtt_config_highspeed/urban中的刷新时间从单位s改为单位TTI
+
+# version_2017_2_25(debug)
+* 输出文件的路径问题，Linux平台会有问题
