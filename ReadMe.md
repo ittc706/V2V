@@ -41,3 +41,6 @@
 * 增加了urban的配置文件
 
 # version_2017_2_25(小bug)
+
+# version_2017_2_25(调整)
+* 将global_config中的刷新时间删除，将gtt_config_highspeed/urban中的刷新时间从单位s改为单位TTI
