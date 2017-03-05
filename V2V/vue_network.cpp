@@ -16,6 +16,7 @@
 * =====================================================================================
 */
 
+#include<map>
 #include"context.h"
 #include"config.h"
 #include"gtt.h"
@@ -96,4 +97,22 @@ int vue_network::select_pattern() {
 	//<Warn>:u(a,b),其中ab是否是闭区间，验证一下
 	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
 	return u(s_engine);
+}
+
+
+int vue_network::select_pattern_enhanced() {
+	map<int,int> vue_id_pattern_idx_map;
+	for (int pattern_idx = 0; pattern_idx < context::get_context()->get_rrm_config()->get_pattern_num(); pattern_idx++) {
+		//<Warn>:目前不考虑同一个车辆同时发送不同的消息
+		if (vue_id_pattern_idx_map.find(pattern_idx) != vue_id_pattern_idx_map.end()) {
+			throw logic_error("error");
+		}
+		vue_id_pattern_idx_map[pattern_idx] = pattern_idx;
+	}
+	
+	for (map<int, int>::value_type& m : vue_id_pattern_idx_map) {
+		//
+	}
+
+	return -1;
 }
