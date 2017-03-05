@@ -33,7 +33,7 @@ void gtt_urban::initialize() {
 	int* m_pupr = new int[__config->get_road_num()];//每条路上的车辆数
 	
 	int tempVeUENum = 0;
-	int Lambda = static_cast<int>((__config->get_road_length_ew() + __config->get_road_length_sn()) * 2 * 3.6 / (2.5 * 15));
+	int Lambda = static_cast<int>((__config->get_road_length_ew() + __config->get_road_length_sn()) * 2 * 3.6 / (8 * __config->get_speed()));
 	for (int temp = 0; temp != __config->get_road_num(); ++temp)
 	{
 		int k = 0;
@@ -51,6 +51,7 @@ void gtt_urban::initialize() {
 
 	//进行车辆的撒点
 	context::get_context()->set_vue_array(new vue[tempVeUENum]);
+	cout << "vuenum: " << tempVeUENum << endl;
 	int vue_id = 0;
 	int DistanceFromBottomLeft = 0;
 
@@ -175,7 +176,7 @@ void gtt_urban::update_channel() {
 			__imta[imta_id].build(&t_Pl, imta::s_FC, _location, _antenna, vuei->m_speed, vuej->m_speed, vuei->m_vangle, vuej->m_vangle);//计算了结果代入信道模型计算UE之间信道系数
 
 			vue_physics::set_pl(vue_id_i, vue_id_j, t_Pl);
-			if (t_Pl >= 100)
+			if (true)
 			{
 				bool *flag = new bool();
 				*flag = true;
@@ -197,10 +198,6 @@ void gtt_urban::update_channel() {
 				memory_clean::safe_delete(ch_buffer, true);
 				memory_clean::safe_delete(ch_sin, true);
 				memory_clean::safe_delete(ch_cos, true);
-				memory_clean::safe_delete(_antenna.TxSlantAngle, true);
-				memory_clean::safe_delete(_antenna.TxAntSpacing, true);
-				memory_clean::safe_delete(_antenna.RxSlantAngle, true);
-				memory_clean::safe_delete(_antenna.RxAntSpacing, true);
 				memory_clean::safe_delete(FFT, true);
 			}
 			memory_clean::safe_delete(_antenna.TxSlantAngle, true);
