@@ -33,7 +33,7 @@ void gtt_urban::initialize() {
 	int* m_pupr = new int[__config->get_road_num()];//每条路上的车辆数
 	
 	int tempVeUENum = 0;
-	int Lambda = static_cast<int>((__config->get_road_length_ew() + __config->get_road_length_sn()) * 2 * 3.6 / (8 * __config->get_speed()));
+	int Lambda = static_cast<int>((__config->get_road_length_ew() + __config->get_road_length_sn()) * 2 * 3.6 / (2.5 * __config->get_speed()));
 	for (int temp = 0; temp != __config->get_road_num(); ++temp)
 	{
 		int k = 0;
@@ -55,14 +55,14 @@ void gtt_urban::initialize() {
 	int vue_id = 0;
 	int DistanceFromBottomLeft = 0;
 
-	//ofstream vue_coordinate;
+	ofstream vue_coordinate;
 
-	//if (context::get_context()->get_global_control_config()->get_platform() == Windows) {
-	//vue_coordinate.open("log\\vue_coordinate.txt");
-	//}
-	//else {
-	//vue_coordinate.open("log/vue_coordinate.txt");
-	//}
+	if (context::get_context()->get_global_control_config()->get_platform() == Windows) {
+	vue_coordinate.open("log\\vue_coordinate.txt");
+	}
+	else {
+	vue_coordinate.open("log/vue_coordinate.txt");
+	}
 
 	for (int RoadIdx = 0; RoadIdx != __config->get_road_num(); RoadIdx++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[RoadIdx]; uprIdx++) {
@@ -93,14 +93,14 @@ void gtt_urban::initialize() {
 			p->m_absy = __config->get_road_topo_ratio()[RoadIdx * 2 + 1] * (__config->get_road_length_ew() + 2 * __config->get_road_width()) + p->m_rely;
 			p->m_speed = __config->get_speed()/3.6;
 			//将撒点后的坐标输出到txt文件
-			//vue_coordinate << p->m_absx << " ";
-			//vue_coordinate << p->m_absy << " ";
-			//vue_coordinate << endl;
+			vue_coordinate << p->m_absx << " ";
+			vue_coordinate << p->m_absy << " ";
+			vue_coordinate << endl;
 		}
 	}
 	memory_clean::safe_delete(m_pupr, true);
 
-	//vue_coordinate.close();
+	vue_coordinate.close();
 
 	vue_physics::s_channel_all.assign(get_vue_num(), std::vector<double*>(get_vue_num(), nullptr));
 	vue_physics::s_pl_all.assign(get_vue_num(), std::vector<double>(get_vue_num(), 0));
@@ -176,7 +176,7 @@ void gtt_urban::update_channel() {
 			__imta[imta_id].build(&t_Pl, imta::s_FC, _location, _antenna, vuei->m_speed, vuej->m_speed, vuei->m_vangle, vuej->m_vangle);//计算了结果代入信道模型计算UE之间信道系数
 
 			vue_physics::set_pl(vue_id_i, vue_id_j, t_Pl);
-			if (true)
+			if (t_Pl>1e-15)
 			{
 				bool *flag = new bool();
 				*flag = true;

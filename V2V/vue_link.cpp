@@ -84,6 +84,7 @@ void vue_link::receive() {
 			int vue_receive_id = __cur_event->get_receive_vue_id();
 
 			if (vue_physics::get_channel(vue_send_id, vue_receive_id)==nullptr) {
+
 				sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
 			}
 			else{
