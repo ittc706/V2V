@@ -133,7 +133,12 @@ private:
 	int select_pattern();
 
 	/*
+	* 选择占用的资源块编号
+	*/
+	int select_pattern_base();
+
+	/*
 	* 加强版随机选择
 	*/
-	int select_pattern_enhanced();
+	int select_pattern_based_on_sensing();
 };

@@ -136,8 +136,6 @@ void gtt_urban::fresh_location() {
 			auto vuei = context::get_context()->get_vue_array()[vue_id1].get_physics_level();
 			auto vuej = context::get_context()->get_vue_array()[vue_id2].get_physics_level();
 			vue_physics::set_distance(vue_id2, vue_id1, sqrt(pow((vuei->m_absx - vuej->m_absx), 2.0f) + pow((vuei->m_absy - vuej->m_absy), 2.0f)));
-
-
 		}
 	}
 
