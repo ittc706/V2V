@@ -16,7 +16,7 @@
 * =====================================================================================
 */
 
-#include<map>
+#include<iostream>
 #include"context.h"
 #include"config.h"
 #include"gtt.h"
@@ -80,7 +80,7 @@ void vue_network::send_connection() {
 		sender_event* __sender_event = *it;
 
 		//选择发送频段
-		int pattern_idx = select_pattern_base();
+		int pattern_idx = select_pattern();
 
 		//<Warn>:当没有可选Pattern时，进行退避，下一TTI继续选择，可以修改为退避一段时间，需要在sender_event中添加退避窗大小等参数，并且给定最长退避时间(超过此设定值，可直接判定丢包)
 		if (pattern_idx == -1) continue;
@@ -108,6 +108,7 @@ int vue_network::select_pattern() {
 		return select_pattern_based_on_sensing();
 		break;
 	case 3:
+		return -1;
 		break;
 	default:
 		throw logic_error("altorithm config error");
@@ -137,13 +138,12 @@ int vue_network::select_pattern_based_on_sensing() {
 		}
 	}
 
-	//求出功率阈值
-	double power_boundary = send_power / pow(10, __context->get_rrm_config()->get_drop_sinr_boundary() / 10);
-
+	//求出功率阈值	
+	double power_boundary = send_power * 1e-13;
 	//计算候选pattern
 	vector<int> candidate_pattern;
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
-		if (pattern_cumulative_power[pattern_idx] > power_boundary) {
+		if (pattern_cumulative_power[pattern_idx] < power_boundary) {
 			candidate_pattern.push_back(pattern_idx);
 		}
 	}
