@@ -115,7 +115,8 @@ void sender_event::transimit() {
 }
 
 bool sender_event::is_transmit_time_slot(int t_tti) {
-	return t_tti%m_slot_time_idx == 0;
+	int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
+	return t_tti% granularity == m_slot_time_idx;
 }
 
 void sender_event::update(int t_transimit_max_bit_num) {

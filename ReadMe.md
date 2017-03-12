@@ -74,4 +74,7 @@
 * sender_event增加与数据包相关的字段，并删除receiver_event中与数据包相关的字段
 * 增加receiver_event中的丢包字段
 
+# version_2017_3_12(debug)
+* 更改slot_time_idx的初始值，更改判断是否在可传输时隙的逻辑
+
 

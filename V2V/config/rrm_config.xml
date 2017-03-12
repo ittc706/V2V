@@ -31,3 +31,7 @@
 <select_altorithm>3</select_altorithm>
 
 
+<!--时分粒度，例如奇偶时分方式就设为2-->
+<time_division_granularity>2</time_division_granularity>
+
+
