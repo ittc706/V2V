@@ -55,21 +55,17 @@ wt::~wt() {
 
 }
 
-double wt::calculate_sinr(int t_tti, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const set<sender_event*>& t_sending_sender_event_set) {
+double wt::calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const std::set<int>& t_sending_vue_id_set) {
 	m_ploss = vue_physics::get_pl(t_send_vue_id, t_receive_vue_id);
 	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
 	m_pt = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
 	m_sigma = pow(10, -17.4);
 
 	m_inter_ploss.clear();
-	vector<int> sending_vue_id_vec;
 
-	for (sender_event *__sender_event : t_sending_sender_event_set) {
-		int inter_vue_id = __sender_event->get_vue_id();
+	for (int inter_vue_id : t_sending_vue_id_set) {
 		if (t_send_vue_id == inter_vue_id) continue;
-		if (!__sender_event->is_transmit_time_slot(t_tti)) continue;
 		m_inter_ploss.push_back(vue_physics::get_pl(t_receive_vue_id, inter_vue_id));
-		sending_vue_id_vec.push_back(inter_vue_id);
 	}
 
 	/*****求每个子载波上的信噪比****/
@@ -77,7 +73,7 @@ double wt::calculate_sinr(int t_tti, int t_send_vue_id, int t_receive_vue_id, in
 	for (int subcarrier_idx = 0; subcarrier_idx <subcarrier_num; subcarrier_idx++) {
 
 		m_h = read_h(t_send_vue_id, t_receive_vue_id, t_pattern_idx, subcarrier_idx);//读入当前子载波的信道响应矩阵
-		m_inter_h = read_inter_h(sending_vue_id_vec, t_send_vue_id, t_receive_vue_id, t_pattern_idx, subcarrier_idx);//读入当前子载波干扰相应矩阵数组
+		m_inter_h = read_inter_h(t_sending_vue_id_set, t_send_vue_id, t_receive_vue_id, t_pattern_idx, subcarrier_idx);//读入当前子载波干扰相应矩阵数组
 
 		double h_sum1 = 0;
 		for (int r = 0; r < m_nr; r++) {
@@ -131,7 +127,7 @@ matrix wt::read_h(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, in
 	return res;
 }
 
-std::vector<matrix> wt::read_inter_h(const std::vector<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx) {
+std::vector<matrix> wt::read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx) {
 	vector<matrix> res;
 	//<Warn>
 	for (int inter_vue_id : t_sending_vue_id_set) {

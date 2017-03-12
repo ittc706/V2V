@@ -69,4 +69,9 @@
 * 地理位置尚未更新slot_time_idx字段
 * 下一步：将信道更新模块抽象出来(将其与当前v2v项目解耦，便于其他项目调用)，为该模块添加适配v2v的适配器
 
+# version_2017_3_12(增加选择算法)
+* 将车辆link_level的receive方法删除，接收逻辑放到receiver_event的receive方法中
+* sender_event增加与数据包相关的字段，并删除receiver_event中与数据包相关的字段
+* 增加receiver_event中的丢包字段
+
 

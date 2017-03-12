@@ -26,7 +26,8 @@
 <!--¶ª°üÁÙ½çsinr
 	1:base
 	2:based on sensing
-	3:-->
-<select_altorithm>2</select_altorithm>
+	3:base on sensing classical
+	-->
+<select_altorithm>3</select_altorithm>
 
 
