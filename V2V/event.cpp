@@ -54,7 +54,20 @@ int sender_event::get_pattern_idx() {
 	return m_pattern_idx;
 }
 
+void sender_event::set_slot_time_idx(int t_slot_time_idx) {
+	m_slot_time_idx = t_slot_time_idx;
+}
+
+int sender_event::get_slot_time_idx() {
+	return m_slot_time_idx;
+}
+
+bool sender_event::is_transmit_time_slot(int t_tti) {
+	return t_tti%m_slot_time_idx == 0;
+}
+
 receiver_event::receiver_event(sender_event* t_sender_event, int t_receiver_vue_id) {
+	set_sender_event(t_sender_event);
 	set_event_id(t_sender_event->get_event_id());
 	set_send_vue_id(t_sender_event->get_vue_id());
 	set_receive_vue_id(t_receiver_vue_id);
@@ -70,6 +83,14 @@ receiver_event::receiver_event(sender_event* t_sender_event, int t_receiver_vue_
 
 receiver_event::~receiver_event() {
 
+}
+
+void receiver_event::set_sender_event(sender_event * t_sender_event) {
+	m_sender_event = t_sender_event;
+}
+
+sender_event* receiver_event::get_sender_event() {
+	return m_sender_event;
 }
 
 void receiver_event::set_event_id(int t_event_id) {
@@ -137,5 +158,9 @@ void receiver_event::transimit(int t_transimit_max_bit_num) {
 	else {
 		m_remain_bit_num -= t_transimit_max_bit_num;
 	}
+}
+
+bool receiver_event::is_transmit_time_slot(int t_tti) {
+	return get_sender_event()->is_transmit_time_slot(t_tti);
 }
 

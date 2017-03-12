@@ -43,8 +43,8 @@ rrm_config* rrm::get_config() {
 }
 
 void rrm::initialize() {
-	vue_network::s_vue_id_per_pattern.assign(m_config->get_pattern_num(),set<int>());
-	vue_network::s_vue_id_per_pattern_finished.assign(m_config->get_pattern_num(), set<int>());
+	vue_network::s_sender_event_per_pattern.assign(m_config->get_pattern_num(),set<sender_event*>());
+	vue_network::s_sender_event_per_pattern_finished.assign(m_config->get_pattern_num(), set<sender_event*>());
 }
 
 void rrm::schedule() {

@@ -70,7 +70,19 @@ private:
 public:
 	void set_pattern_idx(int t_pattern_idx);
 	int get_pattern_idx();
+
+	/*
+	* 时隙编号
+	*/
+private:
+	int m_slot_time_idx;
+	void set_slot_time_idx(int t_slot_time_idx);
+public:
+	int get_slot_time_idx();
 	/*--------------------方法--------------------*/
+
+public:
+	bool is_transmit_time_slot(int t_tti);
 };
 
 
@@ -113,6 +125,16 @@ public:
 	receiver_event& operator=(receiver_event&& t_receiver_event) = delete;
 
 	/*--------------------字段--------------------*/
+
+	/*
+	* 发送事件指针
+	*/
+private:
+	sender_event *m_sender_event;
+	void set_sender_event(sender_event * t_sender_event);
+public:
+	sender_event* get_sender_event();
+
 	/*
 	* 事件id，与发送事件相同
 	*/
@@ -200,5 +222,14 @@ public:
 	bool get_is_loss();
 
 	/*--------------------接口--------------------*/
+public:
+	/*
+	* 进行传输
+	*/
 	void transimit(int t_transimit_max_bit_num);
+
+	/*
+	*　判断该时隙是否可以进行传输
+	*/
+	bool is_transmit_time_slot(int t_tti);
 };

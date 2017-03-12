@@ -60,10 +60,14 @@ void vue_link::receive_connection(sender_event* t_sender_event) {
 
 void vue_link::receive() {
 	context* __context = context::get_context();
+	int tti = __context->get_tti();
 	std::list<receiver_event*>::iterator it = m_receiver_event_list.begin();
 
 	while (it != m_receiver_event_list.end()) {
 		receiver_event* __cur_event = *it;
+
+		//当该事件所对应的发送车辆不在该时隙传输时，continue
+		if (!__cur_event->is_transmit_time_slot(tti)) continue;
 
 		double factor = __context->get_rrm_config()->get_modulation_type()* __context->get_rrm_config()->get_code_rate();
 
@@ -82,10 +86,13 @@ void vue_link::receive() {
 			sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
 		}
 		else {
-			sinr = __wt->calculate_sinr(vue_send_id,
+			sinr = __wt->calculate_sinr(
+				tti,
+				vue_send_id,
 				vue_receive_id,
 				__cur_event->get_pattern_idx(),
-				vue_network::s_vue_id_per_pattern[__cur_event->get_pattern_idx()]);
+				vue_network::s_sender_event_per_pattern[__cur_event->get_pattern_idx()]
+			);
 		}
 
 		if (sinr < __context->get_rrm_config()->get_drop_sinr_boundary()) {
@@ -99,7 +106,10 @@ void vue_link::receive() {
 			else {
 				m_success_event_list.push_back(__cur_event);
 			}
-			vue_network::s_vue_id_per_pattern_finished[__cur_event->get_pattern_idx()].insert(__cur_event->get_send_vue_id());
+			//<Warn>:这里将传输完毕的sender_event插入vue_network::s_sender_event_per_pattern_finished，依据的是该sender_event对应的任意一个receiver_event传输完毕
+			//当每个receiver_event传输事件不同时，这样就会发生错误
+			//应该将其改为，当sender_event对应的所有receiver_event传输完毕时，才插入
+			vue_network::s_sender_event_per_pattern_finished[__cur_event->get_pattern_idx()].insert(__cur_event->get_sender_event());
 
 			it = m_receiver_event_list.erase(it);
 		}

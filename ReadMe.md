@@ -61,4 +61,12 @@
 
 # version_2017_3_7(debug)
 
+# version_2017_3_12(增加时分复用)
+* 车辆的physics层增加slot_time_idx字段
+* sender_event和receiver_event各自增加判断给定tti是否为可传输时隙的方法(is_transmit_time_slot(tti))，其中receiver_event的该方法会回调它所对应的sender_event的该方法
+* sender_event增加slot_time_idx字段
+* 修改vue_network中的数据结构，存放给定pattern的所有发送事件，而非给定pattern的所有车辆id
+* 地理位置尚未更新slot_time_idx字段
+* 下一步：将信道更新模块抽象出来(将其与当前v2v项目解耦，便于其他项目调用)，为该模块添加适配v2v的适配器
+
 

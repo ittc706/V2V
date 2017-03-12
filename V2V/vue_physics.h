@@ -156,6 +156,17 @@ private:
 	int m_congestion_level = 0;
 public:
 	int get_congestion_level();
+
+	/*
+	* 发送时隙编号，用于时分复用，该区域编号在地理位置更新后更新
+	* 该编号假设由基站告知，并且假设基站无缝无重合划分整个区域
+	* TTI%m_slot_time_idx==0 来判断是否可以发送
+	*/
+private:
+	int m_slot_time_idx = 1;
+	void set_slot_time_idx(int t_slot_time_idx);
+public:
+	int get_slot_time_idx();
 	/*----------------访问与编辑器----------------*/
 public:
 

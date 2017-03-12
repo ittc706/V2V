@@ -37,16 +37,16 @@ private:
 	static std::default_random_engine s_engine;
 
 	/*
-	* 正在传输的车辆id(发送车辆)
+	* 正在传输的发送事件
 	* 外层下标为pattern编号
 	*/
-	static std::vector<std::set<int>> s_vue_id_per_pattern;
+	static std::vector<std::set<sender_event*>> s_sender_event_per_pattern;
 
 	/*
-	* 传输完毕的车辆id
+	* 传输完毕的发送事件
 	* 外层下标为pattern编号
 	*/
-	static std::vector<std::set<int>> s_vue_id_per_pattern_finished;
+	static std::vector<std::set<sender_event*>> s_sender_event_per_pattern_finished;
 
 public:
 	/*

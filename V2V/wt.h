@@ -6,6 +6,8 @@
 #include<memory>
 #include"matrix.h"
 
+class sender_event;
+
 class wt {
 	/*------------------友元声明------------------*/
 	/*
@@ -93,7 +95,7 @@ public:
 	* t_pattern_idx:当前占用的pattern_idx
 	* t_sending_vue_id_set:在该子载波区间进行发送的车辆id列表，包括t_send_vue_id
 	*/
-	double calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const std::set<int>& t_sending_vue_id_set);
+	double calculate_sinr(int t_tti, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const std::set<sender_event*>& t_sending_sender_event_set);
 
 private:
 	/*
@@ -104,7 +106,7 @@ private:
 	/*
 	* 读取对应车辆在对应子载波上的干扰矩阵数组
 	*/
-	std::vector<matrix> read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx);
+	std::vector<matrix> read_inter_h(const std::vector<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx);
 
 	/*
 	* 二分法查找算法
