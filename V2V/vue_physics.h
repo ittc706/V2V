@@ -13,6 +13,8 @@ class vue_physics {
 	friend class vue;
 	friend class gtt_highspeed;
 	friend class gtt_urban;
+	friend class receiver_event;
+	friend class vue_network;
 
 	/*----------------拷贝控制成员----------------*/
 private:
@@ -143,11 +145,18 @@ private:
 	*/
 private:
 	double m_rely = 0;
+
 	/*
 	* 所在街区id
 	*/
 private:
 	int m_road_id = -1;
+
+	/*
+	* 各个pattern上是否有接收信号,true表示有，false表示没有
+	*/
+private:
+	bool *m_pattern_occupied;
 
 	/*
 	* 拥塞等级<Warn>:目前暂时设为0

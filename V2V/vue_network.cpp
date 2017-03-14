@@ -25,6 +25,7 @@
 #include"vue_link.h"
 #include"vue_network.h"
 #include"event.h"
+#include<memory.h>
 
 using namespace std;
 
@@ -103,6 +104,8 @@ int vue_network::select_pattern() {
 	case 3:
 		return select_pattern_based_on_sensing_classical();
 		break;
+	case 4:
+		return select_sensing();
 	default:
 		throw logic_error("altorithm config error");
 	}
@@ -113,6 +116,30 @@ int vue_network::select_pattern_base() {
 	return u(s_engine);
 }
 
+int vue_network::select_sensing() {
+	context* __context = context::get_context();
+	int pattern_num = __context->get_rrm_config()->get_pattern_num();
+	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
+	auto p = __context->get_vue_array()[vue_id].get_physics_level();
+	//候选pattern向量
+	vector<int> candidate_pattern;
+
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+		if (p->m_pattern_occupied[pattern_idx] == false){
+			candidate_pattern.push_back(pattern_idx);
+		}
+	}
+
+	//选择完毕后清空pattern使用情况数组
+	memset(p->m_pattern_occupied, false, sizeof(p->m_pattern_occupied));
+
+	//如果无可选pattern，返回-1
+	if (candidate_pattern.size() == 0) return -1;
+
+	uniform_int_distribution<int> u(0, static_cast<int>(candidate_pattern.size()) - 1);
+
+	return candidate_pattern[u(s_engine)];
+}
 
 int vue_network::select_pattern_based_on_sensing() {
 	context* __context = context::get_context();

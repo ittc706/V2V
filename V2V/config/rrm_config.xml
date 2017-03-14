@@ -27,8 +27,9 @@
 	1:base
 	2:based on sensing
 	3:base on sensing classical
+        4:sensing
 	-->
-<select_altorithm>3</select_altorithm>
+<select_altorithm>4</select_altorithm>
 
 
 <!--时分粒度，例如奇偶时分方式就设为2-->

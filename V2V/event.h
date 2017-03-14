@@ -10,6 +10,7 @@ class sender_event {
 	* 将tmc设为友元，事件相关的字段需要通过tmc对象来配置
 	*/
 	friend class tmc;
+	friend class vue;
 	/*------------------静态成员------------------*/
 private:
 	static int s_event_count;

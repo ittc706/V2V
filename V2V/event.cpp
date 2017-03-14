@@ -241,8 +241,13 @@ void receiver_event::receive(int t_package_idx,bool t_is_finished) {
 		);
 	}
 
+	auto p = __context->get_vue_array()[vue_receive_id].get_physics_level();
+
 	if (sinr < __context->get_rrm_config()->get_drop_sinr_boundary()) {
 		set_package_loss(t_package_idx);//¼ÇÂ¼¶ª°ü
+	}
+	else {
+		p->m_pattern_occupied[pattern_idx] = true;
 	}
 
 	if (t_is_finished) {

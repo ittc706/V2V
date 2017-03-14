@@ -142,4 +142,10 @@ private:
 	* 加强版随机选择(古典式)
 	*/
 	int select_pattern_based_on_sensing_classical();
+
+	/*
+	* 依据是否接收到信号来判断该频段是否被占用
+	*/
+	int select_sensing();
+
 };
