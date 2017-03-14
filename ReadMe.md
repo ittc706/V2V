@@ -83,3 +83,7 @@
 
 # version_2017_3_14(debug)
 * 修改了sender_event#transimit的逻辑，干扰车辆set的选择，增加一个条件，判断当前事件是否在可发时段
+
+
+# version_2017_3_14(增加作图)
+* 增加了画图的.m文件
