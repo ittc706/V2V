@@ -227,8 +227,7 @@ void receiver_event::receive(int t_package_idx,bool t_is_finished) {
 	int vue_receive_id = get_receiver_vue_id();
 	int pattern_idx = get_pattern_idx();
 
-	//get_channel只为确保信道计算过，因为pl是在计算信道时才附带计算的
-	vue_physics::get_channel(vue_send_id, vue_receive_id, pattern_idx);
+
 	if (vue_physics::get_pl(vue_send_id, vue_receive_id) <1e-15) {
 		sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
 	}

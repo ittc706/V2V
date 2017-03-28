@@ -105,3 +105,6 @@
 
 # version_2017_3_28(debug)
 * 由于每个事件的每个包传输完毕都会再次选择频段，即包传输完毕后，会添加到对应车辆的send_event_list中，而此时send_connection函数中，只有事件触发时才需要建立receive_event
+
+# version_2017_3_28(删除小尺度衰落计算)
+* 尚有一些残余，后续再清除

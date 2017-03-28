@@ -60,17 +60,6 @@ private:
 public:
 	static int get_vue_num();
 
-	/*
-	* 车辆之间的小尺度衰落
-	* 前两层下标为车辆id，例如s_channel_all[i][j],且i<j
-	* 最内层下标为pattern_idx
-	*/
-private:
-	static std::vector<std::vector<std::vector<std::pair<bool,double*>>>> s_channel_all;
-	static void set_channel(int t_vue_id1, int t_vue_id2, int t_pattern_idx, bool t_isCalculated, double* t_channel);
-	static void clean_channel();
-public:
-	static double* get_channel(int t_vue_id1, int t_vue_id2, int t_pattern_idx);
 
 	/*
 	* 车辆之间的大尺度衰落

@@ -58,7 +58,7 @@ wt::~wt() {
 double wt::calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const std::set<int>& t_sending_vue_id_set) {
 	m_ploss = vue_physics::get_pl(t_send_vue_id, t_receive_vue_id);
 	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
-	m_pt = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
+	m_pt = pow(10, (29 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
 	m_sigma = pow(10, -17.4);
 
 	m_inter_ploss.clear();
@@ -71,34 +71,12 @@ double wt::calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern
 	/*****求每个子载波上的信噪比****/
 	vector<double> sinr(subcarrier_num);//每个子载波上的信噪比，维度为nt的向量
 	for (int subcarrier_idx = 0; subcarrier_idx <subcarrier_num; subcarrier_idx++) {
-
-		//m_h = read_h(t_send_vue_id, t_receive_vue_id, t_pattern_idx, subcarrier_idx);//读入当前子载波的信道响应矩阵
-		//m_inter_h = read_inter_h(t_sending_vue_id_set, t_send_vue_id, t_receive_vue_id, t_pattern_idx, subcarrier_idx);//读入当前子载波干扰相应矩阵数组
-
-		//double h_sum1 = 0;
-		//for (int r = 0; r < m_nr; r++) {
-		//	h_sum1 += complex::abs(m_h[r][0])*complex::abs(m_h[r][0]);
-		//}
-
-		//double molecule = m_pt*m_ploss*h_sum1*h_sum1;
 		double molecule = m_pt*m_ploss;
-
-		/*double h_sum2 = 0;
-		for (int j = 0; j < m_inter_h.size(); j++) {
-			double weight = m_pt*m_inter_ploss[j];
-			complex tmp(0, 0);
-			for (int r = 0; r < m_nr; r++) {
-				tmp += m_h[r][0] * m_inter_h[j][r][0];
-			}
-			h_sum2 += weight * complex::abs(tmp)*complex::abs(tmp);
-		}*/
 		double h_sum2 = 0;
-		for (int j = 0; j < m_inter_h.size(); j++) {
+		for (int j = 0; j < m_inter_ploss.size(); j++) {
 			double weight = m_pt*m_inter_ploss[j];
 			h_sum2 += weight;
 		}
-
-		//double denominator = h_sum1*m_sigma + h_sum2;
 		double denominator = m_sigma + h_sum2;
 
 		sinr[subcarrier_idx] = 10 * log10(molecule / denominator);
@@ -120,71 +98,6 @@ double wt::calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern
 	return sinreff;
 }
 
-matrix wt::read_h(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx) {
-	if (context::get_context()->get_global_control_config()->get_fast_fading_switch()) {
-		matrix res(m_nr, m_nt);
-		double* p = vue_physics::get_channel(t_send_vue_id, t_receive_vue_id, t_pattern_idx);
-		if (p == nullptr) throw logic_error("error");
-
-		int point_num_per_pattern = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
-		for (int row = 0; row < m_nr; row++) {
-			for (int col = 0; col < m_nt; col++) {
-				res[row][col] = complex(p[row * (point_num_per_pattern * 2) + t_subcarrier_idx * 2], p[row * (point_num_per_pattern * 2) + t_subcarrier_idx * 2 + 1]);
-			}
-		}
-		return res;
-	}
-	else {
-		matrix res(m_nr, m_nt);
-		for (int row = 0; row < m_nr; row++) {
-			for (int col = 0; col < m_nt; col++) {
-				res[row][col] = pow(10, 0.6);
-			}
-		}
-		return res;
-	}
-}
-
-std::vector<matrix> wt::read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx) {
-	if (context::get_context()->get_global_control_config()->get_fast_fading_switch()) {
-		vector<matrix> res;
-		for (int inter_vue_id : t_sending_vue_id_set) {
-			if (inter_vue_id == t_send_vue_id) continue;
-			if (inter_vue_id == t_receive_vue_id) continue;
-
-			double* p = vue_physics::get_channel(inter_vue_id, t_receive_vue_id, t_pattern_idx);
-			if (p == nullptr) continue;//该信道响应矩阵没有计算，即该信道强度很弱，已被忽略
-
-			matrix m(m_nr, m_nt);
-			int point_num_per_pattern = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
-
-			for (int row = 0; row < m_nr; row++) {
-				for (int col = 0; col < m_nt; col++) {
-					m[row][col] = complex(p[row * (point_num_per_pattern * 2) + t_subcarrier_idx * 2],
-						p[row * (point_num_per_pattern * 2) + t_subcarrier_idx * 2 + 1]);
-				}
-			}
-			res.push_back(m);
-		}
-		return res;
-	}
-	else {
-		vector<matrix> res;
-		for (int inter_vue_id : t_sending_vue_id_set) {
-			if (inter_vue_id == t_send_vue_id) continue;
-			if (inter_vue_id == t_receive_vue_id) continue;
-
-			matrix m(m_nr, m_nt);
-			for (int row = 0; row < m_nr; row++) {
-				for (int col = 0; col < m_nt; col++) {
-					m[row][col] = pow(10, 0.6);
-				}
-			}
-			res.push_back(m);
-		}
-		return res;
-	}
-}
 
 int wt::closest(std::vector<double> t_vec, double t_target) {
 	int left_index = 0;

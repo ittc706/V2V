@@ -63,17 +63,6 @@ private:
 	*/
 	double m_sigma;
 
-	/*
-	* 每个子载波有一个nr*nt的信道矩阵
-	*/
-	matrix m_h;
-
-	/*
-	* 每个子载波有一组nr*nt的干扰信道矩阵
-	* 下标为干扰源编号
-	*/
-	std::vector<matrix> m_inter_h;
-
 	
 
 	/*------------------接口------------------*/
@@ -98,16 +87,6 @@ public:
 	double calculate_sinr(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, const std::set<int>& t_sending_vue_id_set);
 
 private:
-	/*
-	* 读取对应子载波的信道响应矩阵
-	*/
-	matrix read_h(int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx);
-
-	/*
-	* 读取对应车辆在对应子载波上的干扰矩阵数组
-	*/
-	std::vector<matrix> read_inter_h(const std::set<int>& t_sending_vue_id_set, int t_send_vue_id, int t_receive_vue_id, int t_pattern_idx, int t_subcarrier_idx);
-
 	/*
 	* 二分法查找算法
 	*/
