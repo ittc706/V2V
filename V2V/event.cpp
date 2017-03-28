@@ -43,9 +43,14 @@ int sender_event::get_event_id() {
 	return m_event_id;
 }
 
-void sender_event::add_receiver_event(receiver_event* t_receiver_event) {
+void sender_event::add_receiver_event_vec(receiver_event* t_receiver_event) {
 	m_receiver_event_vec.push_back(t_receiver_event);
 }
+
+const std::vector<receiver_event*>& sender_event::get_receiver_event_vec() {
+	return m_receiver_event_vec;
+}
+
 
 void sender_event::set_sender_vue(vue* t_sender_vue) {
 	m_sender_vue = t_sender_vue;
