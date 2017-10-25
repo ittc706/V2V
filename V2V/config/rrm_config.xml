@@ -1,16 +1,16 @@
-<!--总带宽，单位M-->
+<!--鎬诲甫瀹斤紝鍗曚綅M-->
 <total_bandwidth>10</total_bandwidth>
 
 
-<!--一个pattern的rb数量-->
+<!--涓�涓猵attern鐨剅b鏁伴噺-->
 <rb_num_per_pattern>10</rb_num_per_pattern>
 
 
-<!--丢包临界sinr-->
+<!--涓㈠寘涓寸晫sinr-->
 <drop_sinr_boundary>1.99</drop_sinr_boundary>
 
 
-<!--丢包临界sinr
+<!--涓㈠寘涓寸晫sinr
 	1:base
 	2:based on sensing
 	3:base on sensing classical
@@ -19,7 +19,7 @@
 <select_altorithm>1</select_altorithm>
 
 
-<!--时分粒度，例如奇偶时分方式就设为2-->
+<!--鏃跺垎绮掑害锛屼緥濡傚鍋舵椂鍒嗘柟寮忓氨璁句负2-->
 <time_division_granularity>1</time_division_granularity>
 
 
