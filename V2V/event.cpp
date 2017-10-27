@@ -97,10 +97,6 @@ void sender_event::transimit() {
 
 	//当前正在传输的package序号
 	int cur_transimiting_package_idx = get_package_idx();
-
-	if (cur_transimiting_package_idx == 4) {
-		cout << "here" << endl;
-	}
 	
 	//更新sender_event状态
 	update();
@@ -229,24 +225,24 @@ void receiver_event::receive(int t_package_idx,bool t_is_finished) {
 	int pattern_idx = get_pattern_idx();
 
 
-	if (vue_physics::get_pl(vue_send_id, vue_receive_id) <1e-15) {
-		sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
+	//if (vue_physics::get_pl(vue_send_id, vue_receive_id) <1e-15) {
+	//	sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
+	//}
+	//else {
+	//当前pattern下，发送车辆的id，为什么用set，因为可能同一个频段上，同一个车辆触发了不同的事件，但是只需要统计车辆id，因此用set
+	set<int> sending_vue_id_vec;
+	for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
+		if (__sender_event->is_transmit_time_slot(tti))
+			sending_vue_id_vec.insert(__sender_event->get_sender_vue_id());
 	}
-	else {
-		//当前pattern下，发送车辆的id，为什么用set，因为可能同一个频段上，同一个车辆触发了不同的事件，但是只需要统计车辆id，因此用set
-		set<int> sending_vue_id_vec;
-		for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
-			if (__sender_event->is_transmit_time_slot(tti))
-				sending_vue_id_vec.insert(__sender_event->get_sender_vue_id());
-		}
 
-		sinr = __wt->calculate_sinr(
-			vue_send_id,
-			vue_receive_id,
-			get_pattern_idx(),
-			sending_vue_id_vec
-		);
-	}
+	sinr = __wt->calculate_sinr(
+		vue_send_id,
+		vue_receive_id,
+		get_pattern_idx(),
+		sending_vue_id_vec
+	);
+	//}
 
 	auto p = __context->get_vue_array()[vue_receive_id].get_physics_level();
 

@@ -3,7 +3,7 @@
 
 
 <!--一个pattern的rb数量-->
-<rb_num_per_pattern>10</rb_num_per_pattern>
+<rb_num_per_pattern>5</rb_num_per_pattern>
 
 
 <!--丢包临界sinr-->

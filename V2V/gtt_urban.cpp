@@ -61,12 +61,7 @@ void gtt_urban::initialize() {
 
 	ofstream vue_coordinate;
 
-	if (context::get_context()->get_global_control_config()->get_platform() == Windows) {
-	vue_coordinate.open("log\\vue_coordinate.txt");
-	}
-	else {
 	vue_coordinate.open("log/vue_coordinate.txt");
-	}
 
 	default_random_engine e((unsigned)time(0));
 	uniform_real_distribution<double> u(0, 2 * (__config->get_road_length_ew() + __config->get_road_length_sn()));
@@ -140,7 +135,17 @@ void gtt_urban::fresh_location() {
 		}
 	}
 
+	if (context::get_context()->get_tti() == 0) {
+		ofstream distance_pl;
+		distance_pl.open("log/distance_pl.txt");
+		for (int vue_id1 = 0; vue_id1 < get_vue_num(); vue_id1++) {
+			for (int vue_id2 = 0; vue_id2 < vue_id1; vue_id2++) {
+				distance_pl << vue_physics::get_distance(vue_id2, vue_id1) << " " << vue_physics::get_pl(vue_id1, vue_id2) << endl;
+			}
+		}
 
+		distance_pl.close();
+	}
 }
 
 void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {

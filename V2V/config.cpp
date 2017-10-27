@@ -34,14 +34,6 @@ config_loader* global_control_config::get_config_loader() {
 	return m_config_loader;
 }
 
-void global_control_config::set_platform(platform t_platform) {
-	m_platform = t_platform;
-}
-
-platform global_control_config::get_platform() {
-	return m_platform;
-}
-
 void global_control_config::set_ntti(int t_ntti) {
 	m_ntti = t_ntti;
 }
@@ -59,33 +51,8 @@ gtt_mode global_control_config::get_gtt_mode() {
 }
 
 void global_control_config::load() {
-	//首先先判断当前的平台，利用路径的表示在两个平台下的差异来判断
-	ifstream inPlatformWindows("config\\global_control_config.xml"),
-		inPlatformLinux("config/global_control_config.xml");
-
-	if (inPlatformWindows.is_open()) {
-		set_platform(Windows);
-		cout << "您当前的平台为：Windows" << endl;
-	}
-	else if (inPlatformLinux.is_open()) {
-		set_platform(Linux);
-		cout << "您当前的平台为：Linux" << endl;
-	}
-	else
-		throw logic_error("PlatformError");
-
-
 	//开始解析配置文件
-	switch (get_platform()) {
-	case Windows:
-		get_config_loader()->resolv_config_file("config\\global_control_config.xml");
-		break;
-	case Linux:
-		get_config_loader()->resolv_config_file("config/global_control_config.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+	get_config_loader()->resolv_config_file("config/global_control_config.xml");
 
 	const string nullString("");
 	string temp;
@@ -170,18 +137,8 @@ int gtt_highspeed_config::get_freshtime() {
 }
 
 void gtt_highspeed_config::load() {
-
 	//开始解析系统配置文件
-	switch (context::get_context()->get_global_control_config()->get_platform()) {
-	case Windows:
-		get_config_loader()->resolv_config_file("config\\gtt_highspeed_config.xml");
-		break;
-	case Linux:
-		get_config_loader()->resolv_config_file("config/gtt_highspeed_config.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+	get_config_loader()->resolv_config_file("config/gtt_highspeed_config.xml");
 
 	const string nullString("");
 	string temp;
@@ -220,16 +177,7 @@ void gtt_highspeed_config::load() {
 
 void gtt_urban_config::load() {
 	//开始解析系统配置文件
-	switch (context::get_context()->get_global_control_config()->get_platform()) {
-	case Windows:
-		get_config_loader()->resolv_config_file("config\\gtt_urban_config.xml");
-		break;
-	case Linux:
-		get_config_loader()->resolv_config_file("config/gtt_urban_config.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+	get_config_loader()->resolv_config_file("config/gtt_urban_config.xml");
 
 	const string nullString("");
 	string temp;
@@ -383,16 +331,7 @@ int rrm_config::get_time_division_granularity() {
 
 void rrm_config::load() {
 	//开始解析系统配置文件
-	switch (context::get_context()->get_global_control_config()->get_platform()) {
-	case Windows:
-		get_config_loader()->resolv_config_file("config\\rrm_config.xml");
-		break;
-	case Linux:
-		get_config_loader()->resolv_config_file("config/rrm_config.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+	get_config_loader()->resolv_config_file("config/rrm_config.xml");
 
 	const string nullString("");
 	string temp;
@@ -475,16 +414,7 @@ const std::vector<int>& tmc_config::get_tti_per_package() {
 
 void tmc_config::load() {
 	//开始解析系统配置文件
-	switch (context::get_context()->get_global_control_config()->get_platform()) {
-	case Windows:
-		get_config_loader()->resolv_config_file("config\\tmc_config.xml");
-		break;
-	case Linux:
-		get_config_loader()->resolv_config_file("config/tmc_config.xml");
-		break;
-	default:
-		throw logic_error("Platform Config Error!");
-	}
+	get_config_loader()->resolv_config_file("config/tmc_config.xml");
 
 	const string nullString("");
 	string temp;

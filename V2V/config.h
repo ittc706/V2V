@@ -25,15 +25,6 @@ public:
 	config_loader* get_config_loader();
 
 	/*
-	* 平台
-	*/
-private:
-	platform m_platform;
-	void set_platform(platform t_platform);
-public:
-	platform get_platform();
-
-	/*
 	* 仿真时长
 	*/
 private:

@@ -97,14 +97,10 @@ void tmc::event_trigger() {
 void tmc::statistic() {
 	ofstream loss_package_distance;
 	ofstream distance;
-	if (context::get_context()->get_global_control_config()->get_platform() == Windows) {
-		loss_package_distance.open("log\\loss_package_distance.txt");
-		distance.open("log\\distance.txt");
-	}
-	else {
-		loss_package_distance.open("log/loss_package_distance.txt");
-		distance.open("log/distance.txt");
-	}
+
+	loss_package_distance.open("log/loss_package_distance.txt");
+	distance.open("log/distance.txt");
+
 	context* __context = context::get_context();
 	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
 
