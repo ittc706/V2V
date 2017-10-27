@@ -105,27 +105,28 @@ int vue_network::select_pattern() {
 	int altorithm = context::get_context()->get_rrm_config()->get_select_altorithm();
 	switch (altorithm) {
 	case 1:
-		return select_pattern_base();
+		return select1();
 		break;
 	case 2:
-		return select_pattern_based_on_sensing();
+		return select2();
 		break;
 	case 3:
-		return select_pattern_based_on_sensing_classical();
+		return select3();
 		break;
 	case 4:
-		return select_sensing();
+		return select4();
 	default:
 		throw logic_error("altorithm config error");
 	}
 }
 
-int vue_network::select_pattern_base() {
+int vue_network::select1() {
 	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
 	return u(s_engine);
 }
 
-int vue_network::select_sensing() {
+// 在可用pattern中随机选择一个（根据程序中的占用布尔值）
+int vue_network::select4() {
 	context* __context = context::get_context();
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
 	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
@@ -150,7 +151,8 @@ int vue_network::select_sensing() {
 	return candidate_pattern[u(s_engine)];
 }
 
-int vue_network::select_pattern_based_on_sensing() {
+// 根据载波功率，选出功率较小的一批，然后随机选择一个
+int vue_network::select2() {
 	context* __context = context::get_context();
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
 	vector<double> pattern_cumulative_power(pattern_num,0);
@@ -188,7 +190,8 @@ int vue_network::select_pattern_based_on_sensing() {
 }
 
 
-int vue_network::select_pattern_based_on_sensing_classical() {
+// 根据侦听到的功率，按其比例进行随机选取
+int vue_network::select3() {
 	context* __context = context::get_context();
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
 	

@@ -131,21 +131,21 @@ private:
 	/*
 	* 选择占用的资源块编号
 	*/
-	int select_pattern_base();
+	int select1();
 
 	/*
 	* 加强版随机选择(0-1)式
 	*/
-	int select_pattern_based_on_sensing();
+	int select2();
 
 	/*
 	* 加强版随机选择(古典式)
 	*/
-	int select_pattern_based_on_sensing_classical();
+	int select3();
 
 	/*
 	* 依据是否接收到信号来判断该频段是否被占用
 	*/
-	int select_sensing();
+	int select4();
 
 };

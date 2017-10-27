@@ -11,12 +11,12 @@
 
 
 <!--丢包临界sinr
-	1:base
-	2:based on sensing
-	3:base on sensing classical
-        4:sensing
+	1:在所有Pattern中随机选择
+	2:根据程序中的Pattern是否被占用的信息，随机选择未被占用的Pattern
+	3:监听每个Pattern的功率，在低于某个阈值的Pattern集合中随机选择
+    4:监听每个Pattern的功率，依据功率大小分配给每个Pattern一个概率，最终随机选择，但是选择的结果与每个Pattern功率大小相关
 	-->
-<select_altorithm>1</select_altorithm>
+<select_altorithm>4</select_altorithm>
 
 
 <!--时分粒度，例如奇偶时分方式就设为2-->
