@@ -3,7 +3,7 @@
 
 
 <!--一个pattern的rb数量-->
-<rb_num_per_pattern>5</rb_num_per_pattern>
+<rb_num_per_pattern>10</rb_num_per_pattern>
 
 
 <!--丢包临界sinr-->
@@ -20,6 +20,6 @@
 
 
 <!--时分粒度，例如奇偶时分方式就设为2-->
-<time_division_granularity>2</time_division_granularity>
+<time_division_granularity>4</time_division_granularity>
 
 

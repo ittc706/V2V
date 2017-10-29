@@ -137,7 +137,6 @@ receiver_event::receiver_event(sender_event* t_sender_event, vue* t_receiver_vue
 	set_sender_event(t_sender_event);
 	set_sender_vue(t_sender_event->get_sender_vue());
 	set_receiver_vue(t_receiver_vue);
-	set_pattern_idx(t_sender_event->get_pattern_idx());
 
 	m_package_loss.assign(context::get_context()->get_tmc_config()->get_package_num(), false);
 
@@ -192,12 +191,8 @@ double receiver_event::get_distance() {
 	return m_distance;
 }
 
-void receiver_event::set_pattern_idx(int t_pattern_idx) {
-	m_pattern_idx = t_pattern_idx;
-}
-
 int receiver_event::get_pattern_idx() {
-	return m_pattern_idx;
+	return m_sender_event->get_pattern_idx();
 }
 
 void receiver_event::set_package_loss(int t_package_loss) {
@@ -225,11 +220,6 @@ void receiver_event::receive(int t_package_idx,bool t_is_finished) {
 	int vue_receive_id = get_receiver_vue_id();
 	int pattern_idx = get_pattern_idx();
 
-
-	//if (vue_physics::get_pl(vue_send_id, vue_receive_id) <1e-15) {
-	//	sinr = __context->get_rrm_config()->get_drop_sinr_boundary() - 1;
-	//}
-	//else {
 	//当前pattern下，发送车辆的id，为什么用set，因为可能同一个频段上，同一个车辆触发了不同的事件，但是只需要统计车辆id，因此用set
 	set<int> sending_vue_id_vec;
 	for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
@@ -243,7 +233,6 @@ void receiver_event::receive(int t_package_idx,bool t_is_finished) {
 		get_pattern_idx(),
 		sending_vue_id_vec
 	);
-	//}
 
 	auto p = __context->get_vue_array()[vue_receive_id].get_physics_level();
 

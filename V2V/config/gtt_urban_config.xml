@@ -1,7 +1,7 @@
-<!--道路东西长度-->	
+<!--道路南北长度-->	
 <road_length_ew>443</road_length_ew>
 
-<!--道路南北长度-->	
+<!--道路东西长度-->	
 <road_length_sn>250</road_length_sn>
 
 <!--路宽-->	

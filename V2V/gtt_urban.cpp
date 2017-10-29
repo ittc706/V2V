@@ -110,6 +110,92 @@ void gtt_urban::initialize() {
 
 	vue_physics::s_pl_all.assign(get_vue_num(), std::vector<double>(get_vue_num(), 0));
 	vue_physics::s_distance_all.assign(get_vue_num(), std::vector<double>(get_vue_num(), 0));
+
+
+	double x_unit = __config->get_road_length_sn() / 2 + __config->get_road_width();
+	double y_unit = __config->get_road_length_ew() / 2 + __config->get_road_width();
+	// 第一排
+	m_crossroads[0][0] = -4 * x_unit;
+	m_crossroads[0][1] = 3 * y_unit;
+
+	m_crossroads[1][0] = -2 * x_unit;
+	m_crossroads[1][1] = 3 * y_unit;
+
+	m_crossroads[2][0] = 0 * x_unit;
+	m_crossroads[2][1] = 3 * y_unit;
+
+	m_crossroads[3][0] = 2 * x_unit;
+	m_crossroads[3][1] = 3 * y_unit;
+
+	m_crossroads[4][0] = 4 * x_unit;
+	m_crossroads[4][1] = 3 * y_unit;
+
+	// 第二排
+
+	m_crossroads[5][0] = -6 * x_unit;
+	m_crossroads[5][1] = 1 * y_unit;
+
+	m_crossroads[6][0] = -4 * x_unit;
+	m_crossroads[6][1] = 1 * y_unit;
+
+	m_crossroads[7][0] = -2 * x_unit;
+	m_crossroads[7][1] = 1 * y_unit;
+
+	m_crossroads[8][0] = 0 * x_unit;
+	m_crossroads[8][1] = 1 * y_unit;
+
+	m_crossroads[9][0] = 2 * x_unit;
+	m_crossroads[9][1] = 1 * y_unit;
+
+	m_crossroads[10][0] = 4 * x_unit;
+	m_crossroads[10][1] = 1 * y_unit;
+
+	m_crossroads[11][0] = 6 * x_unit;
+	m_crossroads[11][1] = 1 * y_unit;
+
+	// 第三排
+
+	m_crossroads[12][0] = -6 * x_unit;
+	m_crossroads[12][1] = -1 * y_unit;
+
+	m_crossroads[13][0] = -4 * x_unit;
+	m_crossroads[13][1] = -1 * y_unit;
+
+	m_crossroads[14][0] = -2 * x_unit;
+	m_crossroads[14][1] = -1 * y_unit;
+
+	m_crossroads[15][0] = 0 * x_unit;
+	m_crossroads[15][1] = -1 * y_unit;
+
+	m_crossroads[16][0] = 2 * x_unit;
+	m_crossroads[16][1] = -1 * y_unit;
+
+	m_crossroads[17][0] = 4 * x_unit;
+	m_crossroads[17][1] = -1 * y_unit;
+
+	m_crossroads[18][0] = 6 * x_unit;
+	m_crossroads[18][1] = -1 * y_unit;
+
+	// 第四排
+
+	m_crossroads[19][0] = -4 * x_unit;
+	m_crossroads[19][1] = -3 * y_unit;
+
+	m_crossroads[20][0] = -2 * x_unit;
+	m_crossroads[20][1] = -3 * y_unit;
+
+	m_crossroads[21][0] = 0 * x_unit;
+	m_crossroads[21][1] = -3 * y_unit;
+
+	m_crossroads[22][0] = 2 * x_unit;
+	m_crossroads[22][1] = -3 * y_unit;
+
+	m_crossroads[23][0] = 4 * x_unit;
+	m_crossroads[23][1] = -3 * y_unit;
+
+	for (int i = 0; i < 24; i++) {
+		center_coordinate << m_crossroads[i][0] << " " << m_crossroads[i][1] << endl;
+	}
 }
 
 int gtt_urban::get_vue_num() {
@@ -128,12 +214,20 @@ void gtt_urban::fresh_location() {
 		//每次更新车辆位置时重新判断车辆所在的zone_idx
 		auto p = context::get_context()->get_vue_array()[vue_id].get_physics_level();
 		int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
-		if (granularity == 2) {
-			if (p->m_vangle == 180 || p->m_vangle == 0) {
-				p->m_slot_time_idx = 0;
+		p->m_slot_time_idx = calculate_slot_time_idx(p, granularity);
+
+		if (context::get_context()->get_tti() == 0) {
+			if (p->m_slot_time_idx == 0) {
+				time_slot_0 << p->m_absx << " " << p->m_absy << endl;
 			}
-			else {
-				p->m_slot_time_idx = 1;
+			else if(p->m_slot_time_idx == 1){
+				time_slot_1 << p->m_absx << " " << p->m_absy << endl;
+			}
+			else if (p->m_slot_time_idx == 2) {
+				time_slot_2 << p->m_absx << " " << p->m_absy << endl;
+			}
+			else if (p->m_slot_time_idx == 3) {
+				time_slot_3 << p->m_absx << " " << p->m_absy << endl;
 			}
 		}
 	}
@@ -150,6 +244,48 @@ void gtt_urban::fresh_location() {
 				distance_pl << vue_physics::get_distance(vue_id2, vue_id1) << " " << vue_physics::get_pl(vue_id1, vue_id2) << endl;
 			}
 		}
+	}
+}
+
+int gtt_urban::calculate_slot_time_idx(vue_physics* t_pv, int t_granularity) {
+	if (t_granularity == 1) {
+		return 0;
+	}
+	if (t_granularity == 2) {
+		if (t_pv->m_vangle == -180 || t_pv->m_vangle == 0 || t_pv->m_vangle == 180) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+	else if (t_granularity==4) {
+		gtt_urban_config* __config = get_precise_config();
+		int center_idx = -1;
+		double min_distance = 0x3f3f3f3f;
+		double temp;
+		for (int i = 0; i < 24; i++) {
+			if ((temp = pow(abs(t_pv->m_absx - m_crossroads[i][0]), 2) + pow(abs(t_pv->m_absy - m_crossroads[i][1]), 2)) < min_distance) {
+				min_distance = temp;
+				center_idx = i;
+			}
+		}
+
+		if (t_pv->m_absx - m_crossroads[center_idx][0]>__config->get_road_width()) {
+			return 0;
+		}
+		else if (t_pv->m_absy - m_crossroads[center_idx][1] > __config->get_road_width()) {
+			return 1;
+		}
+		else if (m_crossroads[center_idx][0] - t_pv->m_absx>__config->get_road_width()) {
+			return 2;
+		}
+		else {
+			return 3;
+		}
+	}
+	else {
+		throw logic_error("t_granularity config error");
 	}
 }
 

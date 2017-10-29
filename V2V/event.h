@@ -239,10 +239,6 @@ public:
 	/*
 	* Õ¼ÓÃÆµ¶Î
 	*/
-private:
-	int m_pattern_idx;
-public:
-	void set_pattern_idx(int t_pattern_idx);
 	int get_pattern_idx();
 
 	/*

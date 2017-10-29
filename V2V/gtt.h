@@ -34,6 +34,11 @@ protected:
 	std::ofstream distance_pl;
 	std::ofstream distance_los;
 	std::ofstream distance_nlos;
+	std::ofstream time_slot_0;
+	std::ofstream time_slot_1;
+	std::ofstream time_slot_2;
+	std::ofstream time_slot_3;
+	std::ofstream center_coordinate;
 
 	/*--------------------½Ó¿Ú--------------------*/
 

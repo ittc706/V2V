@@ -144,6 +144,14 @@ void gtt_highspeed::fresh_location() {
 				p->m_slot_time_idx = 1;//若当前区域采用even subframe，则赋值1
 			}
 		}
+		if (context::get_context()->get_tti() == 0) {
+			if (p->m_slot_time_idx == 0) {
+				time_slot_1 << p->m_absx << " " << p->m_absy << endl;
+			}
+			else {
+				time_slot_2 << p->m_absx << " " << p->m_absy << endl;
+			}
+		}
 	}
 
 	for (int vue_id1 = 0; vue_id1 < get_vue_num(); vue_id1++) {
