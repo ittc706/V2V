@@ -81,8 +81,7 @@ void vue_network::send_connection() {
 
 		//<Warn>:当没有可选Pattern时，进行退避，下一TTI继续选择，可以修改为退避一段时间，需要在sender_event中添加退避窗大小等参数，并且给定最长退避时间(超过此设定值，可直接判定丢包)
 		if (pattern_idx == -1) {
-			++it;
-			continue;
+			throw logic_error("pattern select error");
 		}
 
 		__sender_event->set_pattern_idx(pattern_idx);
@@ -113,8 +112,6 @@ int vue_network::select_pattern() {
 	case 3:
 		return select3();
 		break;
-	case 4:
-		return select4();
 	default:
 		throw logic_error("altorithm config error");
 	}
@@ -125,68 +122,37 @@ int vue_network::select1() {
 	return u(s_engine);
 }
 
-// 在可用pattern中随机选择一个（根据程序中的占用布尔值）
-int vue_network::select4() {
-	context* __context = context::get_context();
-	int pattern_num = __context->get_rrm_config()->get_pattern_num();
-	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
-	auto p = __context->get_vue_array()[vue_id].get_physics_level();
-	//候选pattern向量
-	vector<int> candidate_pattern;
-
-	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
-		if (p->m_pattern_occupied[pattern_idx] == false){
-			candidate_pattern.push_back(pattern_idx);
-		}
-	}
-
-	//选择完毕后清空pattern使用情况数组
-	memset(p->m_pattern_occupied, false, sizeof(p->m_pattern_occupied));
-
-	//如果无可选pattern，返回-1
-	if (candidate_pattern.size() == 0) return -1;
-
-	uniform_int_distribution<int> u(0, static_cast<int>(candidate_pattern.size()) - 1);
-
-	return candidate_pattern[u(s_engine)];
-}
-
-// 根据载波功率，选出功率较小的一批，然后随机选择一个
+// 根据载波功率，选择功率最小的那个
 int vue_network::select2() {
 	context* __context = context::get_context();
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
-	vector<double> pattern_cumulative_power(pattern_num,0);
 
 	double noise_power = pow(10, -17.4);
 	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
 	double send_power = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
 	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
+	vector<double> pattern_cumulative_power(pattern_num, noise_power);
 
 	//计算每个Pattern上的累计功率
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		for (sender_event* __sender_event : s_sender_event_per_pattern[pattern_idx]) {
-			int inter_vue_id = __sender_event->get_sender_vue_id();
-			pattern_cumulative_power[pattern_idx] += noise_power + vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
+			if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
+				int inter_vue_id = __sender_event->get_sender_vue_id();
+				pattern_cumulative_power[pattern_idx] += vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
+			}
 		}
 	}
-
-	//求出功率阈值	
-	double power_boundary = send_power * 1e-13;
-	//计算候选pattern
-	vector<int> candidate_pattern;
+	
+	int selected_pattern = -1;
+	double min_power = 0x3f3f3f3f;
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
-		if (pattern_cumulative_power[pattern_idx] < power_boundary) {
-			candidate_pattern.push_back(pattern_idx);
+		if (pattern_cumulative_power[pattern_idx] < min_power) {
+			min_power = pattern_cumulative_power[pattern_idx];
+			selected_pattern = pattern_idx;
 		}
 	}
-
-	//如果无可选pattern，返回-1
-	if (candidate_pattern.size() == 0) return -1;
-
-	uniform_int_distribution<int> u(0, static_cast<int>(candidate_pattern.size()) - 1);
-
-	return candidate_pattern[u(s_engine)];
-
+	
+	return selected_pattern;
 }
 
 
@@ -206,11 +172,12 @@ int vue_network::select3() {
 	//计算每个Pattern上的累计功率
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		for (sender_event* __sender_event : s_sender_event_per_pattern[pattern_idx]) {
-			int inter_vue_id = __sender_event->get_sender_vue_id();
-			pattern_cumulative_power[pattern_idx] += noise_power + vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
+			if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
+				int inter_vue_id = __sender_event->get_sender_vue_id();
+				pattern_cumulative_power[pattern_idx] += noise_power + vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
+			}
 		}
 	}
-
 	//将功率转化为倒数
 	double total = 0;
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {

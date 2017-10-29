@@ -134,18 +134,12 @@ private:
 	int select1();
 
 	/*
-	* 加强版随机选择(0-1)式
+	* 监听每个Pattern的功率，选择功率最低的Pattern
 	*/
 	int select2();
 
 	/*
-	* 加强版随机选择(古典式)
+	* 监听每个Pattern的功率，依据功率大小分配给每个Pattern一个概率，最终随机选择，但是选择的结果与每个Pattern功率大小相关
 	*/
 	int select3();
-
-	/*
-	* 依据是否接收到信号来判断该频段是否被占用
-	*/
-	int select4();
-
 };
