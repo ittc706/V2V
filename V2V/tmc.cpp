@@ -96,10 +96,10 @@ void tmc::event_trigger() {
 
 void tmc::statistic() {
 	ofstream loss_package_distance;
-	ofstream distance;
+	ofstream transmit_package_distance;
 
 	loss_package_distance.open("log/loss_package_distance.txt");
-	distance.open("log/distance.txt");
+	transmit_package_distance.open("log/transmit_package_distance.txt");
 
 	context* __context = context::get_context();
 	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
@@ -120,13 +120,13 @@ void tmc::statistic() {
 				if (__receiver_event->get_package_loss()[package_idx]) {
 					loss_package_distance << __receiver_event->get_distance() << " ";
 				}
-				distance << __receiver_event->get_distance() << " ";
+				transmit_package_distance << __receiver_event->get_distance() << " ";
 			}
 		}
 
 		for (receiver_event* __receiver_event : __context->get_vue_array()[vue_id].get_link_level()->get_success_event_list()) {
 			for (int package_idx = 0; package_idx < __context->get_tmc_config()->get_package_num(); package_idx++) {
-				distance << __receiver_event->get_distance() << " ";
+				transmit_package_distance << __receiver_event->get_distance() << " ";
 			}
 		}
 	}

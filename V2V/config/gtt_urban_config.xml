@@ -13,4 +13,4 @@
 
 
 <!--车辆位置刷新时间,单位TTI-->	
-<freshtime>500</freshtime>
+<freshtime>100</freshtime>

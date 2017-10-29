@@ -124,7 +124,20 @@ void gtt_urban::fresh_location() {
 
 	for (int vue_id = 0; vue_id < get_vue_num(); vue_id++) {
 		context::get_context()->get_vue_array()[vue_id].get_physics_level()->update_location_urban();
+
+		//每次更新车辆位置时重新判断车辆所在的zone_idx
+		auto p = context::get_context()->get_vue_array()[vue_id].get_physics_level();
+		int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
+		if (granularity == 2) {
+			if (p->m_vangle == 180 || p->m_vangle == 0) {
+				p->m_slot_time_idx = 0;
+			}
+			else {
+				p->m_slot_time_idx = 1;
+			}
+		}
 	}
+
 
 	for (int vue_id1 = 0; vue_id1 < get_vue_num(); vue_id1++) {
 		for (int vue_id2 = 0; vue_id2 < vue_id1; vue_id2++) {
@@ -182,7 +195,9 @@ void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {
 	double y_between = abs(vuei->m_absy - vuej->m_absy);
 
 	//判断辆车间是否有建筑物遮挡，从而确定是Nlos还是Los,如果是NLos，再判断是否是曼哈顿街角模型
-	if ((v_diri == true && v_dirj == true && y_between < 20) || (v_diri == false && v_dirj == false && x_between < 20)) {
+	if ((v_diri == true && v_dirj == true && y_between < 20)
+		|| (v_diri == false && v_dirj == false && x_between < 20
+			|| vue_physics::get_distance(t_vue_id1, t_vue_id2)<20)) {
 		_location.locationType = Los;
 	}
 	else {

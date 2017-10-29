@@ -93,7 +93,8 @@ void sender_event::transimit() {
 	context* __context = context::get_context();
 	int tti = __context->get_tti();
 	//当该事件所对应的发送车辆不在该时隙传输时，continue
-	if (!is_transmit_time_slot(tti)) return;
+	if (!is_transmit_time_slot(tti)) 
+		return;
 
 	//当前正在传输的package序号
 	int cur_transimiting_package_idx = get_package_idx();
