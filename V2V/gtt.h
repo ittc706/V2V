@@ -1,6 +1,7 @@
 #pragma once
 
 #include<string>
+#include<fstream>
 #include"enumeration.h"
 
 class gtt_config;
@@ -29,7 +30,16 @@ private:
 public:
 	gtt_config* get_config();
 
+protected:
+	std::ofstream distance_pl;
+	std::ofstream distance_los;
+	std::ofstream distance_nlos;
+
 	/*--------------------½Ó¿Ú--------------------*/
+
+public:
+	gtt();
+	~gtt();
 
 	virtual void initialize() = 0;
 

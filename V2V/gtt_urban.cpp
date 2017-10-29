@@ -132,19 +132,11 @@ void gtt_urban::fresh_location() {
 			auto vuej = context::get_context()->get_vue_array()[vue_id2].get_physics_level();
 			vue_physics::set_distance(vue_id2, vue_id1, sqrt(pow((vuei->m_absx - vuej->m_absx), 2.0f) + pow((vuei->m_absy - vuej->m_absy), 2.0f)));
 			calculate_pl(vue_id1, vue_id2);
-		}
-	}
 
-	if (context::get_context()->get_tti() == 0) {
-		ofstream distance_pl;
-		distance_pl.open("log/distance_pl.txt");
-		for (int vue_id1 = 0; vue_id1 < get_vue_num(); vue_id1++) {
-			for (int vue_id2 = 0; vue_id2 < vue_id1; vue_id2++) {
+			if (context::get_context()->get_tti() == 0) {
 				distance_pl << vue_physics::get_distance(vue_id2, vue_id1) << " " << vue_physics::get_pl(vue_id1, vue_id2) << endl;
 			}
 		}
-
-		distance_pl.close();
 	}
 }
 
@@ -200,6 +192,15 @@ void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {
 		}
 		else {
 			_location.manhattan = true;
+		}
+	}
+
+	if (context::get_context()->get_tti() == 0) {
+		if (_location.locationType == Los) {
+			distance_los << vue_physics::get_distance(t_vue_id1, t_vue_id2) << endl;
+		}
+		else {
+			distance_nlos << vue_physics::get_distance(t_vue_id1, t_vue_id2) << endl;
 		}
 	}
 
