@@ -30,10 +30,10 @@ using namespace std;
 
 int sender_event::s_event_count = 0;
 
-sender_event::sender_event() {
+sender_event::sender_event(int t_tti) {
 	m_package_num = context::get_context()->get_tmc_config()->get_package_num();
 	m_remaining_transmission_time_per_package = context::get_context()->get_tmc_config()->get_tti_per_package();
-	m_time_offset = rand() % 108;
+	m_start_time = t_tti;
 }
 
 sender_event::~sender_event() {
@@ -89,6 +89,18 @@ bool sender_event::get_is_finished() {
 	return m_is_finished;
 }
 
+int sender_event::get_start_time() {
+	return m_start_time;
+}
+
+int sender_event::get_end_time() {
+	return m_end_time;
+}
+
+void sender_event::set_end_time(int t_tti) {
+	m_end_time = t_tti;
+}
+
 void sender_event::transimit() {
 	context* __context = context::get_context();
 	int tti = __context->get_tti();
@@ -121,6 +133,8 @@ void sender_event::update() {
 		vue_network::s_sender_event_per_pattern_finished[get_pattern_idx()].insert(this);
 
 		if (++m_package_idx == m_package_num) {
+			set_end_time(context::get_context()->get_tti());
+			vue_network::s_finished_sender_event.push_back(this);
 			m_is_finished = true;
 		}
 		else{//当还有包需要传送时，将其再次添加到对应vue的发送列表中进行再次的pattern选择

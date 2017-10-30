@@ -33,6 +33,7 @@ default_random_engine vue_network::s_engine(0);
 
 vector<set<sender_event*>> vue_network::s_sender_event_per_pattern;
 vector<set<sender_event*>> vue_network::s_sender_event_per_pattern_finished;
+vector<sender_event*> vue_network::s_finished_sender_event;
 
 vue_network::vue_network() {
 
@@ -69,12 +70,6 @@ void vue_network::send_connection() {
 	list<sender_event*>::iterator it = m_sender_event_list.begin();
 	while (it != m_sender_event_list.end()) {
 		sender_event* __sender_event = *it;
-
-		if (__sender_event->m_time_offset != 0) {
-			__sender_event->m_time_offset--;
-			++it;
-			continue;
-		}
 
 		//Ñ¡Ôñ·¢ËÍÆµ¶Î
 		int pattern_idx = select_pattern();

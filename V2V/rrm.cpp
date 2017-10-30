@@ -24,6 +24,7 @@
 #include"vue.h"
 #include"vue_link.h"
 #include"vue_network.h"
+#include<iostream>
 
 using namespace std;
 

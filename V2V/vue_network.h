@@ -54,6 +54,8 @@ private:
 	*/
 	static std::vector<std::set<sender_event*>> s_sender_event_per_pattern_finished;
 
+	static std::vector<sender_event*> s_finished_sender_event;
+
 	/*----------------¿½±´¿ØÖÆ³ÉÔ±----------------*/
 private:
 	/*

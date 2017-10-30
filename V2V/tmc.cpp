@@ -62,7 +62,6 @@ void tmc::initialize() {
 			__context->get_vue_array()[vue_id].get_network_level()->m_periodic_event_next_trigger_tti[congestion_level] = u(e);
 		}	
 	}
-
 }
 
 void tmc::event_trigger() {
@@ -77,7 +76,7 @@ void tmc::event_trigger() {
 		*/
 		if (__context->get_vue_array()[vue_id].get_network_level()->get_periodic_event_next_trigger_tti()[congestion_level] > tti) continue;
 		
-		sender_event* __sender_event = new sender_event();
+		sender_event* __sender_event = new sender_event(tti);
 		__sender_event->set_sender_vue(&__context->get_vue_array()[vue_id]);
 		__sender_event->set_slot_time_idx(__context->get_vue_array()[vue_id].get_physics_level()->get_slot_time_idx());
 
@@ -97,9 +96,11 @@ void tmc::event_trigger() {
 void tmc::statistic() {
 	ofstream loss_package_distance;
 	ofstream transmit_package_distance;
+	ofstream transmit_time;
 
 	loss_package_distance.open("log/loss_package_distance.txt");
 	transmit_package_distance.open("log/transmit_package_distance.txt");
+	transmit_time.open("log/transmit_time.txt");
 
 	context* __context = context::get_context();
 	for (int vue_id = 0; vue_id < __context->get_gtt()->get_vue_num(); vue_id++) {
@@ -129,5 +130,9 @@ void tmc::statistic() {
 				transmit_package_distance << __receiver_event->get_distance() << " ";
 			}
 		}
+	}
+
+	for (sender_event* __sender_event : vue_network::s_finished_sender_event) {
+		transmit_time << (__sender_event->get_end_time() - __sender_event->get_start_time()) << endl;
 	}
 }

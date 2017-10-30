@@ -20,7 +20,7 @@ public:
 	/*
 	* 默认构造函数
 	*/
-	sender_event();
+	sender_event(int t_tti);
 
 	/*
 	* 析构函数，负责清理资源
@@ -48,11 +48,6 @@ public:
 	sender_event& operator=(sender_event&& t_sender_event) = delete;
 	
 	/*--------------------字段--------------------*/
-	/*
-	* 发送事件时域选择时间
-	*/
-public: int m_time_offset;
-	
 	/*
 	* 发送事件id
 	*/
@@ -126,6 +121,14 @@ private:
 	bool m_is_finished = false;
 public:
 	bool get_is_finished();
+
+private:
+	int m_start_time;
+	int m_end_time;
+public:
+	void set_end_time(int t_tti);
+	int get_start_time();
+	int get_end_time();
 
 	/*--------------------接口--------------------*/
 public:

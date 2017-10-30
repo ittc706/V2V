@@ -19,6 +19,6 @@
 
 
 <!--时分粒度，例如奇偶时分方式就设为2-->
-<time_division_granularity>1</time_division_granularity>
+<time_division_granularity>4</time_division_granularity>
 
 
