@@ -15,6 +15,7 @@ gtt::gtt() {
 	time_slot_2.open("log/time_slot_2.txt");
 	time_slot_3.open("log/time_slot_3.txt");
 	center_coordinate.open("log/center_coordinate.txt");
+	building_coordinate.open("log/building_coordinate.txt");
 }
 
 gtt::~gtt() {
@@ -26,6 +27,7 @@ gtt::~gtt() {
 	time_slot_2.close();
 	time_slot_3.close();
 	center_coordinate.close();
+	building_coordinate.close();
 }
 
 gtt* gtt::gtt_bind_by_mode(gtt_mode t_mode) {

@@ -178,24 +178,37 @@ int vue_network::select3() {
 			}
 		}
 	}
+
+	double min_power = noise_power + send_power * pow(10, -13);
+	vector<int> candidate_pattern;
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+		if (pattern_cumulative_power[pattern_idx] < min_power) {
+			candidate_pattern.push_back(pattern_idx);
+		}
+	}
+
+
+	if (candidate_pattern.empty()) return -1;
+
 	//将功率转化为倒数
 	double total = 0;
-	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+	for (int i = 0; i < candidate_pattern.size();i++) {
+		int pattern_idx = candidate_pattern[i];
 		pattern_cumulative_power[pattern_idx] = 1 / pattern_cumulative_power[pattern_idx];
 		total += pattern_cumulative_power[pattern_idx];
-		if (pattern_idx > 0) {//转为功率倒数的累积值
-			pattern_cumulative_power[pattern_idx] += pattern_cumulative_power[pattern_idx - 1];
+		if (i > 0) {//转为功率倒数的累积值
+			pattern_cumulative_power[pattern_idx] += pattern_cumulative_power[candidate_pattern[i-1]];
 		}
 	}
 
 	//归一化
-	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+	for (int pattern_idx: candidate_pattern) {
 		pattern_cumulative_power[pattern_idx] /= total;
 	}
 	
 	uniform_real_distribution<double> u(0, 1);
 	double p = u(s_engine);
-	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+	for (int pattern_idx : candidate_pattern) {
 		if (p < pattern_cumulative_power[pattern_idx]) return pattern_idx;
 	}
 

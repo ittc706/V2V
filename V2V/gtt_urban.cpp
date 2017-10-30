@@ -492,6 +492,12 @@ void gtt_urban::initialize() {
 	m_buildings[55][0][1] = m_crossroads[22][1] + road_width;
 	m_buildings[55][1][0] = m_crossroads[23][0] - road_width;
 	m_buildings[55][1][1] = m_crossroads[23][1] + road_width;
+
+	for (int i = 0; i < 56; i++) {
+		for (int j = 0; j < 2; j++) {
+			building_coordinate << m_buildings[i][j][0] << " " << m_buildings[i][j][1] << endl;
+		}
+	}
 }
 
 int gtt_urban::get_vue_num() {
@@ -586,7 +592,16 @@ int gtt_urban::calculate_slot_time_idx(vue_physics* t_pv, int t_granularity) {
 }
 
 bool gtt_urban::is_interact_with_buildings(double t_x1, double t_y1, double t_x2, double t_y2) {
-
+	for (int i = 0; i < 56; i++) {
+		if (is_interact(pair<double, double>(t_x1, t_y1),
+			pair<double, double>(t_x2, t_y2),
+			pair<double, double>(m_buildings[i][0][0], m_buildings[i][0][1]),
+			pair<double, double>(m_buildings[i][1][0], m_buildings[i][1][1])
+		)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {
@@ -631,9 +646,9 @@ void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {
 	double y_between = abs(vuei->m_absy - vuej->m_absy);
 
 	//判断辆车间是否有建筑物遮挡，从而确定是Nlos还是Los,如果是NLos，再判断是否是曼哈顿街角模型
-	if ((v_diri == true && v_dirj == true && y_between < 20)
-		|| (v_diri == false && v_dirj == false && x_between < 20
-			|| vue_physics::get_distance(t_vue_id1, t_vue_id2)<20)) {
+	if (!is_interact_with_buildings(
+		vuei->m_absx, vuei->m_absy,
+		vuej->m_absx,vuej->m_absy)) {
 		_location.locationType = Los;
 	}
 	else {

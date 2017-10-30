@@ -40,6 +40,7 @@ protected:
 	std::ofstream time_slot_2;
 	std::ofstream time_slot_3;
 	std::ofstream center_coordinate;
+	std::ofstream building_coordinate;
 
 	/*--------------------½Ó¿Ú--------------------*/
 
