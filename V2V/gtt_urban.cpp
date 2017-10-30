@@ -63,7 +63,7 @@ void gtt_urban::initialize() {
 
 	vue_coordinate.open("log/vue_coordinate.txt");
 
-	default_random_engine e((unsigned)time(0));
+	default_random_engine e(0);
 	uniform_real_distribution<double> u(0, 2 * (__config->get_road_length_ew() + __config->get_road_length_sn()));
 
 	for (int RoadIdx = 0; RoadIdx != __config->get_road_num(); RoadIdx++) {

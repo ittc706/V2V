@@ -46,7 +46,7 @@ rrm_config* rrm::get_config() {
 
 void rrm::initialize() {
 	vue_network::s_sender_event_per_pattern.assign(m_config->get_pattern_num(),set<sender_event*>());
-	vue_network::s_sender_event_per_pattern_finished.assign(m_config->get_pattern_num(), set<sender_event*>());
+	vue_network::s_temp_finished_sender_event_per_pattern.assign(m_config->get_pattern_num(), set<sender_event*>());
 }
 
 void rrm::schedule() {
@@ -57,14 +57,33 @@ void rrm::schedule() {
 		__context->get_vue_array()[vue_id].get_network_level()->send_connection();
 	}
 
+	//vector<int> inter(__context->get_rrm_config()->get_pattern_num(),0);
+	//for (int pattern_idx = 0; pattern_idx < __context->get_rrm_config()->get_pattern_num(); pattern_idx++) {
+	//	for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
+	//		if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
+	//			inter[pattern_idx]++;
+	//		}
+	//	}
+	//}
+
+	//for (int i : inter) {
+	//	cout << i << ",";
+	//}
+	//cout << endl;
+
 	//进行传输
 	for (int pattern_idx = 0; pattern_idx < __context->get_rrm_config()->get_pattern_num(); pattern_idx++) {
 		for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
 			__sender_event->transimit();
 		}
-		for (sender_event *__finished_sender_event : vue_network::s_sender_event_per_pattern_finished[pattern_idx]) {
+	}
+
+	// 后续处理
+	for (int pattern_idx = 0; pattern_idx < __context->get_rrm_config()->get_pattern_num(); pattern_idx++) {
+		for (sender_event *__finished_sender_event : vue_network::s_temp_finished_sender_event_per_pattern[pattern_idx]) {
 			vue_network::s_sender_event_per_pattern[pattern_idx].erase(__finished_sender_event);
+			vue_network::s_finished_sender_event.push_back(__finished_sender_event);
 		}
-		vue_network::s_sender_event_per_pattern_finished[pattern_idx].clear();
+		vue_network::s_temp_finished_sender_event_per_pattern[pattern_idx].clear();
 	}
 }

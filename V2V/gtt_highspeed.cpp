@@ -36,8 +36,6 @@ void gtt_highspeed::initialize() {
 	double* TotalTime = new double[__config->get_road_num()];//每条道路初始泊松撒点过程中所有车辆都已撒进区域内所用的总时间
 	std::list<double>* possion = new std::list<double>[__config->get_road_num()];//每条道路初始泊松撒点的车辆到达时间间隔list，单位s
 
-	srand((unsigned)time(0));
-
 	//生成负指数分布的车辆到达间隔
 	int tempVeUENum = 0;
 	double lambda = 1 / 2.5;//均值为1/lambda，依照协议车辆到达时间间隔的均值为2.5s

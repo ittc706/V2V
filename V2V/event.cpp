@@ -129,18 +129,13 @@ bool sender_event::is_transmit_time_slot(int t_tti) {
 
 void sender_event::update() {
 	if (--m_remaining_transmission_time_per_package[m_package_idx] == 0) {
-		//当前包传输完毕，将其添加到该列表中进行后续维护
-		vue_network::s_sender_event_per_pattern_finished[get_pattern_idx()].insert(this);
-
 		if (++m_package_idx == m_package_num) {
 			set_end_time(context::get_context()->get_tti());
-			vue_network::s_finished_sender_event.push_back(this);
+			vue_network::s_temp_finished_sender_event_per_pattern[get_pattern_idx()].insert(this);
 			m_is_finished = true;
 		}
 		else{//当还有包需要传送时，将其再次添加到对应vue的发送列表中进行再次的pattern选择
 			int sender_vue_id = m_sender_vue->get_physics_level()->get_vue_id();
-			//当一个包传输完毕后，将当前sender_event添加到对应车辆的发送事件列表中，进行下一次的pattern选择
-			context::get_context()->get_vue_array()[sender_vue_id].get_network_level()->add_sender_event(this);
 		}
 	}
 }

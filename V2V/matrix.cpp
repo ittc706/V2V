@@ -242,7 +242,7 @@ row_vector element_divide(const row_vector& t_row_vector1, const row_vector& t_r
 }
 
 
-default_random_engine matrix::s_engine((unsigned)time(NULL));
+default_random_engine matrix::s_engine(0);
 
 
 void matrix::free() {

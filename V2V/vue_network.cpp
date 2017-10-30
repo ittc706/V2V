@@ -32,7 +32,7 @@ using namespace std;
 default_random_engine vue_network::s_engine(0);
 
 vector<set<sender_event*>> vue_network::s_sender_event_per_pattern;
-vector<set<sender_event*>> vue_network::s_sender_event_per_pattern_finished;
+vector<set<sender_event*>> vue_network::s_temp_finished_sender_event_per_pattern;
 vector<sender_event*> vue_network::s_finished_sender_event;
 
 vue_network::vue_network() {
@@ -76,7 +76,8 @@ void vue_network::send_connection() {
 
 		//<Warn>:当没有可选Pattern时，进行退避，下一TTI继续选择，可以修改为退避一段时间，需要在sender_event中添加退避窗大小等参数，并且给定最长退避时间(超过此设定值，可直接判定丢包)
 		if (pattern_idx == -1) {
-			throw logic_error("pattern select error");
+			it++;
+			continue;
 		}
 
 		__sender_event->set_pattern_idx(pattern_idx);
@@ -119,8 +120,12 @@ int vue_network::select1() {
 
 // 根据载波功率，选择功率最小的那个
 int vue_network::select2() {
+
 	context* __context = context::get_context();
+
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
+
+	// 由于PL计算，做了非常模糊的近似，导致pl很小可能两个车相距较近
 
 	double noise_power = pow(10, -17.4);
 	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
@@ -139,7 +144,7 @@ int vue_network::select2() {
 	}
 	
 	int selected_pattern = -1;
-	double min_power = 0x3f3f3f3f;
+	double min_power = noise_power+send_power * pow(10, -14);
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		if (pattern_cumulative_power[pattern_idx] < min_power) {
 			min_power = pattern_cumulative_power[pattern_idx];

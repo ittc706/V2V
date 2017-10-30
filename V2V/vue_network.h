@@ -48,12 +48,11 @@ private:
 	*/
 	static std::vector<std::set<sender_event*>> s_sender_event_per_pattern;
 
-	/*
-	* 某一个包传输完毕的发送事件
-	* 外层下标为pattern编号
-	*/
-	static std::vector<std::set<sender_event*>> s_sender_event_per_pattern_finished;
+	static std::vector<std::set<sender_event*>> s_temp_finished_sender_event_per_pattern;
 
+	/*
+	* 传输完毕的发送事件集合
+	*/
 	static std::vector<sender_event*> s_finished_sender_event;
 
 	/*----------------拷贝控制成员----------------*/

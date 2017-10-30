@@ -22,4 +22,5 @@ plot(IntersectDistance,1-rateLoss,'bo-','LineWidth',2);
 title('PRR','LineWidth',2);
 xlabel('Distance(m)','LineWidth',2);
 ylabel('PRR','LineWidth',2);
+axis([0 500 0 1])
 grid on;
