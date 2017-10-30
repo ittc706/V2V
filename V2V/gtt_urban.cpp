@@ -196,6 +196,302 @@ void gtt_urban::initialize() {
 	for (int i = 0; i < 24; i++) {
 		center_coordinate << m_crossroads[i][0] << " " << m_crossroads[i][1] << endl;
 	}
+
+	double road_width = __config->get_road_width();
+
+	m_buildings[0][0][0] = m_crossroads[0][0] + road_width;
+	m_buildings[0][0][1] = m_crossroads[0][1] - road_width;
+	m_buildings[0][1][0] = m_crossroads[1][0] - road_width;
+	m_buildings[0][1][1] = m_crossroads[1][1] - road_width;
+
+	m_buildings[1][0][0] = m_crossroads[1][0] + road_width;
+	m_buildings[1][0][1] = m_crossroads[1][1] - road_width;
+	m_buildings[1][1][0] = m_crossroads[2][0] - road_width;
+	m_buildings[1][1][1] = m_crossroads[2][1] - road_width;
+
+	m_buildings[2][0][0] = m_crossroads[2][0] + road_width;
+	m_buildings[2][0][1] = m_crossroads[2][1] - road_width;
+	m_buildings[2][1][0] = m_crossroads[3][0] - road_width;
+	m_buildings[2][1][1] = m_crossroads[3][1] - road_width;
+
+	m_buildings[3][0][0] = m_crossroads[3][0] + road_width;
+	m_buildings[3][0][1] = m_crossroads[3][1] - road_width;
+	m_buildings[3][1][0] = m_crossroads[4][0] - road_width;
+	m_buildings[3][1][1] = m_crossroads[4][1] - road_width;
+
+
+
+	m_buildings[4][0][0] = m_crossroads[0][0] + road_width;
+	m_buildings[4][0][1] = m_crossroads[0][1] - road_width;
+	m_buildings[4][1][0] = m_crossroads[6][0] + road_width;
+	m_buildings[4][1][1] = m_crossroads[6][1] + road_width;
+
+	m_buildings[5][0][0] = m_crossroads[1][0] - road_width;
+	m_buildings[5][0][1] = m_crossroads[1][1] - road_width;
+	m_buildings[5][1][0] = m_crossroads[7][0] - road_width;
+	m_buildings[5][1][1] = m_crossroads[7][1] + road_width;
+
+	m_buildings[6][0][0] = m_crossroads[1][0] + road_width;
+	m_buildings[6][0][1] = m_crossroads[1][1] - road_width;
+	m_buildings[6][1][0] = m_crossroads[7][0] + road_width;
+	m_buildings[6][1][1] = m_crossroads[7][1] + road_width;
+
+	m_buildings[7][0][0] = m_crossroads[2][0] - road_width;
+	m_buildings[7][0][1] = m_crossroads[2][1] - road_width;
+	m_buildings[7][1][0] = m_crossroads[8][0] - road_width;
+	m_buildings[7][1][1] = m_crossroads[8][1] + road_width;
+
+	m_buildings[8][0][0] = m_crossroads[2][0] + road_width;
+	m_buildings[8][0][1] = m_crossroads[2][1] - road_width;
+	m_buildings[8][1][0] = m_crossroads[8][0] + road_width;
+	m_buildings[8][1][1] = m_crossroads[8][1] + road_width;
+
+	m_buildings[9][0][0] = m_crossroads[3][0] - road_width;
+	m_buildings[9][0][1] = m_crossroads[3][1] - road_width;
+	m_buildings[9][1][0] = m_crossroads[9][0] - road_width;
+	m_buildings[9][1][1] = m_crossroads[9][1] + road_width;
+
+	m_buildings[10][0][0] = m_crossroads[3][0] + road_width;
+	m_buildings[10][0][1] = m_crossroads[3][1] - road_width;
+	m_buildings[10][1][0] = m_crossroads[9][0] + road_width;
+	m_buildings[10][1][1] = m_crossroads[9][1] + road_width;
+
+	m_buildings[11][0][0] = m_crossroads[4][0] - road_width;
+	m_buildings[11][0][1] = m_crossroads[4][1] - road_width;
+	m_buildings[11][1][0] = m_crossroads[10][0] - road_width;
+	m_buildings[11][1][1] = m_crossroads[10][1] + road_width;
+
+
+
+	m_buildings[12][0][0] = m_crossroads[6][0] + road_width;
+	m_buildings[12][0][1] = m_crossroads[6][1] + road_width;
+	m_buildings[12][1][0] = m_crossroads[7][0] - road_width;
+	m_buildings[12][1][1] = m_crossroads[7][1] + road_width;
+
+	m_buildings[13][0][0] = m_crossroads[7][0] + road_width;
+	m_buildings[13][0][1] = m_crossroads[7][1] + road_width;
+	m_buildings[13][1][0] = m_crossroads[8][0] - road_width;
+	m_buildings[13][1][1] = m_crossroads[8][1] + road_width;
+
+	m_buildings[14][0][0] = m_crossroads[8][0] + road_width;
+	m_buildings[14][0][1] = m_crossroads[8][1] + road_width;
+	m_buildings[14][1][0] = m_crossroads[9][0] - road_width;
+	m_buildings[14][1][1] = m_crossroads[9][1] + road_width;
+
+	m_buildings[15][0][0] = m_crossroads[9][0] + road_width;
+	m_buildings[15][0][1] = m_crossroads[9][1] + road_width;
+	m_buildings[15][1][0] = m_crossroads[10][0] - road_width;
+	m_buildings[15][1][1] = m_crossroads[10][1] + road_width;
+
+
+
+	m_buildings[16][0][0] = m_crossroads[5][0] + road_width;
+	m_buildings[16][0][1] = m_crossroads[5][1] - road_width;
+	m_buildings[16][1][0] = m_crossroads[6][0] - road_width;
+	m_buildings[16][1][1] = m_crossroads[6][1] - road_width;
+
+	m_buildings[17][0][0] = m_crossroads[6][0] + road_width;
+	m_buildings[17][0][1] = m_crossroads[6][1] - road_width;
+	m_buildings[17][1][0] = m_crossroads[7][0] - road_width;
+	m_buildings[17][1][1] = m_crossroads[7][1] - road_width;
+
+	m_buildings[18][0][0] = m_crossroads[7][0] + road_width;
+	m_buildings[18][0][1] = m_crossroads[7][1] - road_width;
+	m_buildings[18][1][0] = m_crossroads[8][0] - road_width;
+	m_buildings[18][1][1] = m_crossroads[8][1] - road_width;
+
+	m_buildings[19][0][0] = m_crossroads[8][0] + road_width;
+	m_buildings[19][0][1] = m_crossroads[8][1] - road_width;
+	m_buildings[19][1][0] = m_crossroads[9][0] - road_width;
+	m_buildings[19][1][1] = m_crossroads[9][1] - road_width;
+
+	m_buildings[20][0][0] = m_crossroads[9][0] + road_width;
+	m_buildings[20][0][1] = m_crossroads[9][1] - road_width;
+	m_buildings[20][1][0] = m_crossroads[10][0] - road_width;
+	m_buildings[20][1][1] = m_crossroads[10][1] - road_width;
+
+	m_buildings[21][0][0] = m_crossroads[10][0] + road_width;
+	m_buildings[21][0][1] = m_crossroads[10][1] - road_width;
+	m_buildings[21][1][0] = m_crossroads[11][0] - road_width;
+	m_buildings[21][1][1] = m_crossroads[11][1] - road_width;
+
+
+
+	m_buildings[22][0][0] = m_crossroads[5][0] + road_width;
+	m_buildings[22][0][1] = m_crossroads[5][1] - road_width;
+	m_buildings[22][1][0] = m_crossroads[12][0] + road_width;
+	m_buildings[22][1][1] = m_crossroads[12][1] + road_width;
+
+	m_buildings[23][0][0] = m_crossroads[6][0] - road_width;
+	m_buildings[23][0][1] = m_crossroads[6][1] - road_width;
+	m_buildings[23][1][0] = m_crossroads[13][0] - road_width;
+	m_buildings[23][1][1] = m_crossroads[13][1] + road_width;
+
+	m_buildings[24][0][0] = m_crossroads[6][0] + road_width;
+	m_buildings[24][0][1] = m_crossroads[6][1] - road_width;
+	m_buildings[24][1][0] = m_crossroads[13][0] + road_width;
+	m_buildings[24][1][1] = m_crossroads[13][1] + road_width;
+
+	m_buildings[25][0][0] = m_crossroads[7][0] - road_width;
+	m_buildings[25][0][1] = m_crossroads[7][1] - road_width;
+	m_buildings[25][1][0] = m_crossroads[14][0] - road_width;
+	m_buildings[25][1][1] = m_crossroads[14][1] + road_width;
+
+	m_buildings[26][0][0] = m_crossroads[7][0] + road_width;
+	m_buildings[26][0][1] = m_crossroads[7][1] - road_width;
+	m_buildings[26][1][0] = m_crossroads[14][0] + road_width;
+	m_buildings[26][1][1] = m_crossroads[14][1] + road_width;
+
+	m_buildings[27][0][0] = m_crossroads[8][0] - road_width;
+	m_buildings[27][0][1] = m_crossroads[8][1] - road_width;
+	m_buildings[27][1][0] = m_crossroads[15][0] - road_width;
+	m_buildings[27][1][1] = m_crossroads[15][1] + road_width;
+
+	m_buildings[28][0][0] = m_crossroads[8][0] + road_width;
+	m_buildings[28][0][1] = m_crossroads[8][1] - road_width;
+	m_buildings[28][1][0] = m_crossroads[15][0] + road_width;
+	m_buildings[28][1][1] = m_crossroads[15][1] + road_width;
+
+	m_buildings[29][0][0] = m_crossroads[9][0] - road_width;
+	m_buildings[29][0][1] = m_crossroads[9][1] - road_width;
+	m_buildings[29][1][0] = m_crossroads[16][0] - road_width;
+	m_buildings[29][1][1] = m_crossroads[16][1] + road_width;
+
+	m_buildings[30][0][0] = m_crossroads[9][0] + road_width;
+	m_buildings[30][0][1] = m_crossroads[9][1] - road_width;
+	m_buildings[30][1][0] = m_crossroads[16][0] + road_width;
+	m_buildings[30][1][1] = m_crossroads[16][1] + road_width;
+
+	m_buildings[31][0][0] = m_crossroads[10][0] - road_width;
+	m_buildings[31][0][1] = m_crossroads[10][1] - road_width;
+	m_buildings[31][1][0] = m_crossroads[17][0] - road_width;
+	m_buildings[31][1][1] = m_crossroads[17][1] + road_width;
+
+	m_buildings[32][0][0] = m_crossroads[10][0] + road_width;
+	m_buildings[32][0][1] = m_crossroads[10][1] - road_width;
+	m_buildings[32][1][0] = m_crossroads[17][0] + road_width;
+	m_buildings[32][1][1] = m_crossroads[17][1] + road_width;
+
+	m_buildings[33][0][0] = m_crossroads[11][0] - road_width;
+	m_buildings[33][0][1] = m_crossroads[11][1] - road_width;
+	m_buildings[33][1][0] = m_crossroads[18][0] - road_width;
+	m_buildings[33][1][1] = m_crossroads[18][1] + road_width;
+
+
+
+	m_buildings[34][0][0] = m_crossroads[12][0] + road_width;
+	m_buildings[34][0][1] = m_crossroads[12][1] + road_width;
+	m_buildings[34][1][0] = m_crossroads[13][0] - road_width;
+	m_buildings[34][1][1] = m_crossroads[13][1] + road_width;
+
+	m_buildings[35][0][0] = m_crossroads[13][0] + road_width;
+	m_buildings[35][0][1] = m_crossroads[13][1] + road_width;
+	m_buildings[35][1][0] = m_crossroads[14][0] - road_width;
+	m_buildings[35][1][1] = m_crossroads[14][1] + road_width;
+
+	m_buildings[36][0][0] = m_crossroads[14][0] + road_width;
+	m_buildings[36][0][1] = m_crossroads[14][1] + road_width;
+	m_buildings[36][1][0] = m_crossroads[15][0] - road_width;
+	m_buildings[36][1][1] = m_crossroads[15][1] + road_width;
+
+	m_buildings[37][0][0] = m_crossroads[15][0] + road_width;
+	m_buildings[37][0][1] = m_crossroads[15][1] + road_width;
+	m_buildings[37][1][0] = m_crossroads[16][0] - road_width;
+	m_buildings[37][1][1] = m_crossroads[16][1] + road_width;
+
+	m_buildings[38][0][0] = m_crossroads[16][0] + road_width;
+	m_buildings[38][0][1] = m_crossroads[16][1] + road_width;
+	m_buildings[38][1][0] = m_crossroads[17][0] - road_width;
+	m_buildings[38][1][1] = m_crossroads[17][1] + road_width;
+
+	m_buildings[39][0][0] = m_crossroads[17][0] + road_width;
+	m_buildings[39][0][1] = m_crossroads[17][1] + road_width;
+	m_buildings[39][1][0] = m_crossroads[18][0] - road_width;
+	m_buildings[39][1][1] = m_crossroads[18][1] + road_width;
+
+	m_buildings[40][0][0] = m_crossroads[13][0] + road_width;
+	m_buildings[40][0][1] = m_crossroads[13][1] - road_width;
+	m_buildings[40][1][0] = m_crossroads[14][0] - road_width;
+	m_buildings[40][1][1] = m_crossroads[14][1] - road_width;
+
+	m_buildings[41][0][0] = m_crossroads[14][0] + road_width;
+	m_buildings[41][0][1] = m_crossroads[14][1] - road_width;
+	m_buildings[41][1][0] = m_crossroads[15][0] - road_width;
+	m_buildings[41][1][1] = m_crossroads[15][1] - road_width;
+
+	m_buildings[42][0][0] = m_crossroads[15][0] + road_width;
+	m_buildings[42][0][1] = m_crossroads[15][1] - road_width;
+	m_buildings[42][1][0] = m_crossroads[16][0] - road_width;
+	m_buildings[42][1][1] = m_crossroads[16][1] - road_width;
+
+	m_buildings[43][0][0] = m_crossroads[16][0] + road_width;
+	m_buildings[43][0][1] = m_crossroads[16][1] - road_width;
+	m_buildings[43][1][0] = m_crossroads[17][0] - road_width;
+	m_buildings[43][1][1] = m_crossroads[17][1] - road_width;
+
+
+
+	m_buildings[44][0][0] = m_crossroads[13][0] + road_width;
+	m_buildings[44][0][1] = m_crossroads[13][1] - road_width;
+	m_buildings[44][1][0] = m_crossroads[19][0] + road_width;
+	m_buildings[44][1][1] = m_crossroads[19][1] + road_width;
+
+	m_buildings[45][0][0] = m_crossroads[14][0] - road_width;
+	m_buildings[45][0][1] = m_crossroads[14][1] - road_width;
+	m_buildings[45][1][0] = m_crossroads[20][0] - road_width;
+	m_buildings[45][1][1] = m_crossroads[20][1] + road_width;
+
+	m_buildings[46][0][0] = m_crossroads[14][0] + road_width;
+	m_buildings[46][0][1] = m_crossroads[14][1] - road_width;
+	m_buildings[46][1][0] = m_crossroads[20][0] + road_width;
+	m_buildings[46][1][1] = m_crossroads[20][1] + road_width;
+
+	m_buildings[47][0][0] = m_crossroads[15][0] - road_width;
+	m_buildings[47][0][1] = m_crossroads[15][1] - road_width;
+	m_buildings[47][1][0] = m_crossroads[21][0] - road_width;
+	m_buildings[47][1][1] = m_crossroads[21][1] + road_width;
+
+	m_buildings[48][0][0] = m_crossroads[15][0] + road_width;
+	m_buildings[48][0][1] = m_crossroads[15][1] - road_width;
+	m_buildings[48][1][0] = m_crossroads[21][0] + road_width;
+	m_buildings[48][1][1] = m_crossroads[21][1] + road_width;
+
+	m_buildings[49][0][0] = m_crossroads[16][0] - road_width;
+	m_buildings[49][0][1] = m_crossroads[16][1] - road_width;
+	m_buildings[49][1][0] = m_crossroads[22][0] - road_width;
+	m_buildings[49][1][1] = m_crossroads[22][1] + road_width;
+
+	m_buildings[50][0][0] = m_crossroads[16][0] + road_width;
+	m_buildings[50][0][1] = m_crossroads[16][1] - road_width;
+	m_buildings[50][1][0] = m_crossroads[22][0] + road_width;
+	m_buildings[50][1][1] = m_crossroads[22][1] + road_width;
+
+	m_buildings[51][0][0] = m_crossroads[17][0] - road_width;
+	m_buildings[51][0][1] = m_crossroads[17][1] - road_width;
+	m_buildings[51][1][0] = m_crossroads[23][0] - road_width;
+	m_buildings[51][1][1] = m_crossroads[23][1] + road_width;
+
+
+
+	m_buildings[52][0][0] = m_crossroads[19][0] + road_width;
+	m_buildings[52][0][1] = m_crossroads[19][1] + road_width;
+	m_buildings[52][1][0] = m_crossroads[20][0] - road_width;
+	m_buildings[52][1][1] = m_crossroads[20][1] + road_width;
+
+	m_buildings[53][0][0] = m_crossroads[20][0] + road_width;
+	m_buildings[53][0][1] = m_crossroads[20][1] + road_width;
+	m_buildings[53][1][0] = m_crossroads[21][0] - road_width;
+	m_buildings[53][1][1] = m_crossroads[21][1] + road_width;
+
+	m_buildings[54][0][0] = m_crossroads[21][0] + road_width;
+	m_buildings[54][0][1] = m_crossroads[21][1] + road_width;
+	m_buildings[54][1][0] = m_crossroads[22][0] - road_width;
+	m_buildings[54][1][1] = m_crossroads[22][1] + road_width;
+
+	m_buildings[55][0][0] = m_crossroads[22][0] + road_width;
+	m_buildings[55][0][1] = m_crossroads[22][1] + road_width;
+	m_buildings[55][1][0] = m_crossroads[23][0] - road_width;
+	m_buildings[55][1][1] = m_crossroads[23][1] + road_width;
 }
 
 int gtt_urban::get_vue_num() {
@@ -287,6 +583,10 @@ int gtt_urban::calculate_slot_time_idx(vue_physics* t_pv, int t_granularity) {
 	else {
 		throw logic_error("t_granularity config error");
 	}
+}
+
+bool gtt_urban::is_interact_with_buildings(double t_x1, double t_y1, double t_x2, double t_y2) {
+
 }
 
 void gtt_urban::calculate_pl(int t_vue_id1, int t_vue_id2) {

@@ -21,6 +21,9 @@ public:
 private:
 	int calculate_slot_time_idx(vue_physics* t_pv, int t_granularity);
 
+	bool is_interact_with_buildings(double t_x1, double t_y1, double t_x2, double t_y2);
+
 private:
 	double m_crossroads[24][2];
+	double m_buildings[56][2][2];
 }; 

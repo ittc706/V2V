@@ -2,6 +2,7 @@
 
 #include<string>
 #include<fstream>
+#include<utility>
 #include"enumeration.h"
 
 class gtt_config;
@@ -59,4 +60,9 @@ public:
 	* 用于计算指定信道响应矩阵
 	*/
 	virtual void calculate_pl(int t_vue_id1, int t_vue_id2) = 0;
+
+	/*
+	* 判断两条线段是否相交
+	*/
+	bool is_interact(std::pair<double, double> p1, std::pair<double, double> p2, std::pair<double, double> p3, std::pair<double, double> p4);
 };
