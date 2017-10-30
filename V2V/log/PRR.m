@@ -9,7 +9,7 @@ lossDistance=load('loss_package_distance.txt');
 transimitDistance=load('transmit_package_distance.txt');
 
 %IntersectDistance=intersect(unique(PackageLossDistance),unique(PackageTransimitDistance));
-IntersectDistance=0:10:max(transimitDistance);
+IntersectDistance=0:20:max(transimitDistance);
 
 [numLoss,~]=hist(lossDistance',IntersectDistance);
 [numTransmit,~]=hist(transimitDistance',IntersectDistance);

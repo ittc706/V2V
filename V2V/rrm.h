@@ -1,5 +1,7 @@
 #pragma once
 
+#include<fstream>
+
 class rrm_config;
 
 class rrm {
@@ -53,6 +55,8 @@ private:
 	void set_config(rrm_config* t_config);
 public:
 	rrm_config* get_config();
+
+	std::ofstream pattern_vue_coordinate;
 
 	/*--------------------·½·¨--------------------*/
 public:

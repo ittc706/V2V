@@ -144,7 +144,7 @@ int vue_network::select2() {
 	}
 	
 	int selected_pattern = -1;
-	double min_power = noise_power+send_power * pow(10, -14);
+	double min_power = noise_power+send_power * pow(10, -13);
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		if (pattern_cumulative_power[pattern_idx] < min_power) {
 			min_power = pattern_cumulative_power[pattern_idx];

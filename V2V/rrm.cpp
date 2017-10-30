@@ -22,6 +22,7 @@
 #include"gtt.h"
 #include"rrm.h"
 #include"vue.h"
+#include"vue_physics.h"
 #include"vue_link.h"
 #include"vue_network.h"
 #include<iostream>
@@ -29,11 +30,11 @@
 using namespace std;
 
 rrm::rrm() {
-
+	pattern_vue_coordinate.open("log/pattern_vue_coordinate.txt");
 }
 
 rrm::~rrm() {
-
+	pattern_vue_coordinate.close();
 }
 
 void rrm::set_config(rrm_config* t_config) {
@@ -75,7 +76,15 @@ void rrm::schedule() {
 	for (int pattern_idx = 0; pattern_idx < __context->get_rrm_config()->get_pattern_num(); pattern_idx++) {
 		for (sender_event *__sender_event : vue_network::s_sender_event_per_pattern[pattern_idx]) {
 			__sender_event->transimit();
+			if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
+				pattern_vue_coordinate
+					<< __sender_event->get_sender_vue()->get_physics_level()->m_absx
+					<< " "
+					<< __sender_event->get_sender_vue()->get_physics_level()->m_absy
+					<< " ";
+			}
 		}
+		pattern_vue_coordinate << endl;
 	}
 
 	// 后续处理

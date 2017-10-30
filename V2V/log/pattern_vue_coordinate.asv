@@ -1,0 +1,30 @@
+clear all;
+close all;
+clc;
+
+
+center=load('center_coordinate.txt');
+fid=fopen('pattern_vue_coordinate.txt');
+lines=cell(5);
+
+figure(1)
+
+colors=linspecer(5);
+
+while 1
+    for i=1:5
+        lines{i}=fgets(fid);
+    end
+    if lines{1}==-1
+        break;
+    else
+        hold on;
+        plot(center(:,1).',center(:,2).','bo','LineWidth',2);
+        for j=1:5
+            lineStr = regexp(lines{j}, ' +', 'split');
+            lineNum = str2double
+            plot(line(1:2:end),line(2:2:end),'o','Color',colors(j,:),'LineWidth',2);
+        end
+        hold off;
+    end
+end
