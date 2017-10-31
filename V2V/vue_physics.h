@@ -159,14 +159,14 @@ public:
 	/*
 	* 发送时隙编号，用于时分复用，该区域编号在地理位置更新后更新
 	* 该编号假设由基站告知，并且假设基站无缝无重合划分整个区域
-	* TTI%granularity==m_slot_time_idx来判断是否可以发送
+	* TTI%granularity==m_time_slot_idx来判断是否可以发送
 	* 其中granularity为时分粒度，例如奇偶划分就是2
 	*/
 private:
-	int m_slot_time_idx = 0;
-	void set_slot_time_idx(int t_slot_time_idx);
+	int m_time_slot_idx = 0;
+	void set_time_slot_idx(int t_time_slot_idx);
 public:
-	int get_slot_time_idx();
+	int get_time_slot_idx();
 
 
 private:

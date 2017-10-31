@@ -78,7 +78,6 @@ void tmc::event_trigger() {
 		
 		sender_event* __sender_event = new sender_event(tti);
 		__sender_event->set_sender_vue(&__context->get_vue_array()[vue_id]);
-		__sender_event->set_slot_time_idx(__context->get_vue_array()[vue_id].get_physics_level()->get_slot_time_idx());
 
 		__context->get_event_array().push_back(__sender_event);
 		__context->get_tti_event_list()[tti].push_back(__sender_event);

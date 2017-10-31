@@ -8,7 +8,7 @@
 using namespace std;
 
 int main() {
-	srand(0);
+	srand(1);
 
 	context *__context = context::get_context();
 

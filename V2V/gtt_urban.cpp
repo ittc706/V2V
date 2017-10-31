@@ -133,16 +133,16 @@ void gtt_urban::fresh_location() {
 		set_slot_time_idx_for_vue(pv);
 
 		if (context::get_context()->get_tti() == 0) {
-			if (pv->m_slot_time_idx == 0) {
+			if (pv->m_time_slot_idx == 0) {
 				time_slot_0 << pv->m_absx << " " << pv->m_absy << endl;
 			}
-			else if(pv->m_slot_time_idx == 1){
+			else if(pv->m_time_slot_idx == 1){
 				time_slot_1 << pv->m_absx << " " << pv->m_absy << endl;
 			}
-			else if (pv->m_slot_time_idx == 2) {
+			else if (pv->m_time_slot_idx == 2) {
 				time_slot_2 << pv->m_absx << " " << pv->m_absy << endl;
 			}
-			else if (pv->m_slot_time_idx == 3) {
+			else if (pv->m_time_slot_idx == 3) {
 				time_slot_3 << pv->m_absx << " " << pv->m_absy << endl;
 			}
 			else {
@@ -181,30 +181,30 @@ void gtt_urban::set_slot_time_idx_for_vue(vue_physics* t_pv) {
 	}
 	t_pv->m_center_idx = center_idx;
 
-	int time_slot = -1;
+	int time_slot_idx = -1;
 
 	if (granularity == 1) {
-		time_slot = 0;
+		time_slot_idx = 0;
 	}
 	else if (granularity ==4) {
 		if (t_pv->m_absx - m_crossroads[center_idx][0]>__config->get_road_width()) {
-			time_slot = 0;
+			time_slot_idx = 0;
 		}
 		else if (t_pv->m_absy - m_crossroads[center_idx][1] > __config->get_road_width()) {
-			time_slot = 1;
+			time_slot_idx = 1;
 		}
 		else if (m_crossroads[center_idx][0] - t_pv->m_absx>__config->get_road_width()) {
-			time_slot = 2;
+			time_slot_idx = 2;
 		}
 		else {
-			time_slot = 3;
+			time_slot_idx = 3;
 		}
 	}
 	else {
 		throw logic_error("t_granularity config error");
 	}
 
-	t_pv->m_slot_time_idx = time_slot;
+	t_pv->m_time_slot_idx = time_slot_idx;
 }
 
 bool gtt_urban::is_interact_with_buildings(double t_x1, double t_y1, double t_x2, double t_y2) {

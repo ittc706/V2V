@@ -87,8 +87,8 @@ void rrm::schedule() {
 
 			if (__context->get_rrm_config()->get_select_altorithm()==4) {
 				vue* pv = __finished_sender_event->get_sender_vue();
-				int center_idx = pv->get_physics_level()->get_center_idx();
-				int slot_idx = pv->get_physics_level()->get_slot_time_idx();
+				int center_idx = __finished_sender_event->get_center_idx();
+				int slot_idx = __finished_sender_event->get_time_slot_idx();
 				if (!vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
 					throw logic_error("pattern select error");
 				}

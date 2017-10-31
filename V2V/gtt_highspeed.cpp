@@ -117,10 +117,10 @@ void gtt_highspeed::fresh_location() {
 		set_slot_time_idx_for_vue(pv);
 		
 		if (context::get_context()->get_tti() == 0) {
-			if (pv->m_slot_time_idx == 0) {
+			if (pv->m_time_slot_idx == 0) {
 				time_slot_0 << pv->m_absx << " " << pv->m_absy << endl;
 			}
-			else if (pv->m_slot_time_idx == 1) {
+			else if (pv->m_time_slot_idx == 1) {
 				time_slot_1 << pv->m_absx << " " << pv->m_absy << endl;
 			}
 			else {
@@ -150,24 +150,24 @@ void gtt_highspeed::set_slot_time_idx_for_vue(vue_physics* t_pv){
 
 	t_pv->m_center_idx = center_idx;
 
-	int time_slot = -1;
+	int time_slot_idx = -1;
 
 	if (granularity == 1) {
-		time_slot = 0;
+		time_slot_idx = 0;
 	}
 	else if (granularity == 2) {
 		if ((center_idx + 1) % 2 == 1) {
-			time_slot = 0;//若当前区域采用odd subframe，则赋值0
+			time_slot_idx = 0;//若当前区域采用odd subframe，则赋值0
 		}
 		else {
-			time_slot = 1;//若当前区域采用even subframe，则赋值1
+			time_slot_idx = 1;//若当前区域采用even subframe，则赋值1
 		}
 	}
 	else {
 		throw logic_error("t_granularity config error");
 	}
 
-	t_pv->m_slot_time_idx = time_slot;
+	t_pv->m_time_slot_idx = time_slot_idx;
 }
 
 void gtt_highspeed::calculate_pl(int t_vue_id1, int t_vue_id2) {

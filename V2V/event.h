@@ -76,6 +76,22 @@ public:
 	int get_sender_vue_id();
 
 	/*
+	* 分区编号
+	*/
+private:
+	int m_center_idx;
+public:
+	int get_center_idx();
+
+	/*
+	* 时域编号
+	*/
+private:
+	int m_time_slot_idx;
+public:
+	int get_time_slot_idx();
+
+	/*
 	* 占用频段
 	*/
 private:
@@ -83,16 +99,6 @@ private:
 public:
 	void set_pattern_idx(int t_pattern_idx);
 	int get_pattern_idx();
-
-	/*
-	* 时隙编号
-	*/
-private:
-	int m_slot_time_idx;
-	void set_slot_time_idx(int t_slot_time_idx);
-public:
-	int get_slot_time_idx();
-
 
 	/*
 	* 数据包总数

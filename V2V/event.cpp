@@ -55,6 +55,8 @@ const std::vector<receiver_event*>& sender_event::get_receiver_event_vec() {
 
 void sender_event::set_sender_vue(vue* t_sender_vue) {
 	m_sender_vue = t_sender_vue;
+	m_center_idx = t_sender_vue->get_physics_level()->get_center_idx();
+	m_time_slot_idx = t_sender_vue->get_physics_level()->get_time_slot_idx();
 }
 
 vue* sender_event::get_sender_vue() {
@@ -65,20 +67,20 @@ int sender_event::get_sender_vue_id() {
 	return m_sender_vue->get_physics_level()->get_vue_id();
 }
 
+int sender_event::get_center_idx() {
+	return m_center_idx;
+}
+
+int sender_event::get_time_slot_idx() {
+	return m_time_slot_idx;
+}
+
 void sender_event::set_pattern_idx(int t_pattern_idx) {
 	m_pattern_idx = t_pattern_idx;
 }
 
 int sender_event::get_pattern_idx() {
 	return m_pattern_idx;
-}
-
-void sender_event::set_slot_time_idx(int t_slot_time_idx) {
-	m_slot_time_idx = t_slot_time_idx;
-}
-
-int sender_event::get_slot_time_idx() {
-	return m_slot_time_idx;
 }
 
 int sender_event::get_package_idx() {
@@ -124,7 +126,7 @@ void sender_event::transimit() {
 
 bool sender_event::is_transmit_time_slot(int t_tti) {
 	int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
-	return t_tti% granularity == m_slot_time_idx;
+	return t_tti% granularity == m_time_slot_idx;
 }
 
 void sender_event::update() {

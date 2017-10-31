@@ -86,12 +86,12 @@ int vue_physics::get_congestion_level() {
 	return m_congestion_level;
 }
 
-void vue_physics::set_slot_time_idx(int t_slot_time_idx) {
-	this->m_slot_time_idx = t_slot_time_idx;
+void vue_physics::set_time_slot_idx(int t_time_slot_idx) {
+	this->m_time_slot_idx = t_time_slot_idx;
 }
 
-int vue_physics::get_slot_time_idx() {
-	return m_slot_time_idx;
+int vue_physics::get_time_slot_idx() {
+	return m_time_slot_idx;
 }
 
 int vue_physics::get_center_idx() {

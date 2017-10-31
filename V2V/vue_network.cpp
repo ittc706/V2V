@@ -203,7 +203,7 @@ int vue_network::select4() {
 	context* __context = context::get_context();
 
 	int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
-	int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
+	int slot_idx = get_superior_level()->get_physics_level()->get_time_slot_idx();
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
 
 	vector<int> candidate_pattern;
