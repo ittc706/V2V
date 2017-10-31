@@ -148,4 +148,9 @@ private:
 	* 监听每个Pattern的功率，依据功率大小分配给每个Pattern一个概率，最终随机选择，但是选择的结果与每个Pattern功率大小相关
 	*/
 	int select3();
+
+	/*
+	* 时分方式
+	*/
+	int select4();
 };

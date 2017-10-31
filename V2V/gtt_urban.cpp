@@ -145,6 +145,9 @@ void gtt_urban::fresh_location() {
 			else if (pv->m_slot_time_idx == 3) {
 				time_slot_3 << pv->m_absx << " " << pv->m_absy << endl;
 			}
+			else {
+				throw logic_error("t_granularity config error");
+			}
 		}
 	}
 

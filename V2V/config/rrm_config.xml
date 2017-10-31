@@ -10,17 +10,13 @@
 <drop_sinr_boundary>1.99</drop_sinr_boundary>
 
 
-<!--丢包临界sinr
+<!--算法
 	1:在所有Pattern中随机选择
 	2:监听每个Pattern的功率，选择功率最低的Pattern
 	3:监听每个Pattern的功率，依据功率大小分配给每个Pattern一个概率，最终随机选择，但是选择的结果与每个Pattern功率大小相关
+	4:时分方式，会额外增加冲突避让机制，否则效果会更差
 	-->
 <select_altorithm>1</select_altorithm>
 
-
-<!--是否时分
-	ON
-	OFF-->
-<is_time_division>ON</is_time_division>
 
 

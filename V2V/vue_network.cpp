@@ -81,17 +81,8 @@ void vue_network::send_connection() {
 			continue;
 		}
 
-		if (__context->get_rrm_config()->is_time_difision()) {
-			int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
-			int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
-			if (vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
-				throw logic_error("pattern select error");
-			}
-			vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx] = true;
-		}
-
 		__sender_event->set_pattern_idx(pattern_idx);
-		
+
 		s_sender_event_per_pattern[pattern_idx].insert(__sender_event);
 
 		if (__sender_event->get_package_idx() == 0) {
@@ -118,71 +109,49 @@ int vue_network::select_pattern() {
 	case 3:
 		return select3();
 		break;
+	case 4:
+		return select4();
+		break;
 	default:
 		throw logic_error("altorithm config error");
 	}
 }
 
 int vue_network::select1() {
-	context* __context = context::get_context();
-
-	if (__context->get_rrm_config()->is_time_difision()) {
-		int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
-		int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
-		int pattern_num = __context->get_rrm_config()->get_pattern_num();
-
-		vector<int> candidate_pattern;
-		for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
-			if (!vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
-				candidate_pattern.push_back(pattern_idx);
-			}
-		}
-
-		if (candidate_pattern.empty()) return -1;
-		
-		uniform_int_distribution<int> u(0, candidate_pattern.size() - 1);
-		return candidate_pattern[u(s_engine)];
-	}
-	else {
-		uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
-		return u(s_engine);
-	}
+	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
+	return u(s_engine);
 }
 
 // 根据载波功率，选择功率最小的那个
 int vue_network::select2() {
-
 	context* __context = context::get_context();
 
 	int pattern_num = __context->get_rrm_config()->get_pattern_num();
-
-	// 由于PL计算，做了非常模糊的近似，导致pl很小可能两个车相距较近
-
-	double noise_power = pow(10, -17.4);
-	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
-	double send_power = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
 	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
-	vector<double> pattern_cumulative_power(pattern_num, noise_power);
 
-	//计算每个Pattern上的累计功率
+	vector<double> pattern_cumulative_power(pattern_num, pow(10, -17.4));
+
+	//计算每个Pattern上的累计功率（这里以PL代替功率）
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		for (sender_event* __sender_event : s_sender_event_per_pattern[pattern_idx]) {
-			if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
-				int inter_vue_id = __sender_event->get_sender_vue_id();
-				pattern_cumulative_power[pattern_idx] += vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
-			}
+			int inter_vue_id = __sender_event->get_sender_vue_id();
+			pattern_cumulative_power[pattern_idx] += vue_physics::get_pl(vue_id, inter_vue_id);
 		}
 	}
-	
+
 	int selected_pattern = -1;
-	double min_power = noise_power+send_power * pow(10, -13);
+	double min_power = 0x3f3f3f3f;
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		if (pattern_cumulative_power[pattern_idx] < min_power) {
 			min_power = pattern_cumulative_power[pattern_idx];
 			selected_pattern = pattern_idx;
 		}
 	}
-	
+
+	if (selected_pattern == -1) {
+		throw logic_error("select2 error");
+	}
+
 	return selected_pattern;
 }
 
@@ -190,58 +159,69 @@ int vue_network::select2() {
 // 根据侦听到的功率，按其比例进行随机选取
 int vue_network::select3() {
 	context* __context = context::get_context();
-	int pattern_num = __context->get_rrm_config()->get_pattern_num();
-	
-	double noise_power = pow(10, -17.4);
-	//初始化为噪声功率，避免为0
-	vector<double> pattern_cumulative_power(pattern_num, noise_power);
 
-	int subcarrier_num = context::get_context()->get_rrm_config()->get_rb_num_per_pattern() * 12;
-	double send_power = pow(10, (23 - 10 * log10(subcarrier_num * 15 * 1000)) / 10);
+	int pattern_num = __context->get_rrm_config()->get_pattern_num();
 	int vue_id = get_superior_level()->get_physics_level()->get_vue_id();
 
-	//计算每个Pattern上的累计功率
+	vector<double> pattern_cumulative_power(pattern_num, pow(10,-17.4));
+
+	//计算每个Pattern上的累计功率（这里以PL代替功率）
 	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		for (sender_event* __sender_event : s_sender_event_per_pattern[pattern_idx]) {
-			if (__sender_event->is_transmit_time_slot(__context->get_tti())) {
-				int inter_vue_id = __sender_event->get_sender_vue_id();
-				pattern_cumulative_power[pattern_idx] += noise_power + vue_physics::get_pl(vue_id, inter_vue_id)*send_power;
-			}
+			int inter_vue_id = __sender_event->get_sender_vue_id();
+			pattern_cumulative_power[pattern_idx] += vue_physics::get_pl(vue_id, inter_vue_id);
 		}
 	}
 
-	double min_power = noise_power + send_power * pow(10, -13);
-	vector<int> candidate_pattern;
-	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
-		if (pattern_cumulative_power[pattern_idx] < min_power) {
-			candidate_pattern.push_back(pattern_idx);
-		}
-	}
-
-
-	if (candidate_pattern.empty()) return -1;
 
 	//将功率转化为倒数
 	double total = 0;
-	for (int i = 0; i < candidate_pattern.size();i++) {
-		int pattern_idx = candidate_pattern[i];
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		pattern_cumulative_power[pattern_idx] = 1 / pattern_cumulative_power[pattern_idx];
 		total += pattern_cumulative_power[pattern_idx];
-		if (i > 0) {//转为功率倒数的累积值
-			pattern_cumulative_power[pattern_idx] += pattern_cumulative_power[candidate_pattern[i-1]];
+		if (pattern_idx > 0) {//转为功率倒数的累积值
+			pattern_cumulative_power[pattern_idx] += pattern_cumulative_power[pattern_idx - 1];
 		}
 	}
 
 	//归一化
-	for (int pattern_idx: candidate_pattern) {
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		pattern_cumulative_power[pattern_idx] /= total;
 	}
-	
+
 	uniform_real_distribution<double> u(0, 1);
 	double p = u(s_engine);
-	for (int pattern_idx : candidate_pattern) {
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
 		if (p < pattern_cumulative_power[pattern_idx]) return pattern_idx;
 	}
 
-	throw new logic_error("select_error");
+	throw new logic_error("select3 error");
+}
+
+// 时分方式
+int vue_network::select4() {
+	context* __context = context::get_context();
+
+	int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
+	int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
+	int pattern_num = __context->get_rrm_config()->get_pattern_num();
+
+	vector<int> candidate_pattern;
+	for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+		if (!vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
+			candidate_pattern.push_back(pattern_idx);
+		}
+	}
+
+	if (candidate_pattern.empty()) return -1;
+
+	uniform_int_distribution<int> u(0, (int)candidate_pattern.size() - 1);
+	int selected_pattern = candidate_pattern[u(s_engine)];
+
+	if (vue_network::s_is_pattern_occupied[center_idx][slot_idx][selected_pattern]) {
+		throw logic_error("select4 error");
+	}
+	vue_network::s_is_pattern_occupied[center_idx][slot_idx][selected_pattern] = true;
+
+	return selected_pattern;
 }

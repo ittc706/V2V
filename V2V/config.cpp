@@ -321,14 +321,6 @@ int rrm_config::get_select_altorithm() {
 	return m_select_altorithm;
 }
 
-void rrm_config::set_is_time_division(bool t_is_time_division) {
-	is_time_division = t_is_time_division;
-}
-
-bool rrm_config::is_time_difision() {
-	return is_time_division;
-}
-
 void rrm_config::set_time_division_granularity(int t_time_division_granularity) {
 	m_time_division_granularity = t_time_division_granularity;
 }
@@ -366,27 +358,18 @@ void rrm_config::load() {
 
 	if ((temp = get_config_loader()->get_param("select_altorithm")) != nullString) {
 		set_select_altorithm(stoi(temp));
-	}
-	else
-		throw logic_error("ConfigLoaderError");
 
-	if ((temp = get_config_loader()->get_param("is_time_division")) != nullString) {
 		context* __context = context::get_context();
-
-		if (temp == "ON") {
-			set_is_time_division(true);
+		if (get_select_altorithm() == 4) {
 			if (__context->get_global_control_config()->get_gtt_mode() == URBAN) {
 				set_time_division_granularity(4);
-			}else{
+			}
+			else {
 				set_time_division_granularity(2);
 			}
 		}
-		else if (temp == "OFF") {
-			set_is_time_division(false);
-			set_time_division_granularity(1);
-		}
 		else {
-			throw logic_error("ConfigLoaderError");
+			set_time_division_granularity(1);
 		}
 	}
 	else

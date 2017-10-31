@@ -85,7 +85,7 @@ void rrm::schedule() {
 			vue_network::s_sender_event_per_pattern[pattern_idx].erase(__finished_sender_event);
 			vue_network::s_finished_sender_event.push_back(__finished_sender_event);
 
-			if (__context->get_rrm_config()->is_time_difision()) {
+			if (__context->get_rrm_config()->get_select_altorithm()==4) {
 				vue* pv = __finished_sender_event->get_sender_vue();
 				int center_idx = pv->get_physics_level()->get_center_idx();
 				int slot_idx = pv->get_physics_level()->get_slot_time_idx();

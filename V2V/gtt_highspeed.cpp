@@ -64,14 +64,9 @@ void gtt_highspeed::initialize() {
 	context::get_context()->set_vue_array(new vue[tempVeUENum]);
 	int vue_id = 0;
 
-	/*ofstream vue_coordinate;
+	ofstream vue_coordinate;
 
-	if (context::get_context()->get_global_control_config()->get_platform() == Windows) {
-		vue_coordinate.open("log\\vue_coordinate.txt");
-	}
-	else {
-		vue_coordinate.open("log/vue_coordinate.txt");
-	}*/
+	vue_coordinate.open("log/vue_coordinate.txt");
 
 	for (int roadId = 0; roadId != __config->get_road_num(); roadId++) {
 		for (int uprIdx = 0; uprIdx != m_pupr[roadId]; uprIdx++) {
@@ -80,9 +75,9 @@ void gtt_highspeed::initialize() {
 		    p->m_absx = -1732 + (TotalTime[roadId] - possion[roadId].back())*(p->m_speed);
 			p->m_absy = __config->get_road_topo_ratio()[roadId * 2 + 1]* __config->get_road_width();
 			//将撒点后的坐标输出到txt文件
-			//vue_coordinate << p->m_absx << " ";
-			//vue_coordinate << p->m_absy << " ";
-			//vue_coordinate << endl;
+			vue_coordinate << p->m_absx << " ";
+			vue_coordinate << p->m_absy << " ";
+			vue_coordinate << endl;
 
 			TotalTime[roadId] = TotalTime[roadId] - possion[roadId].back();
 			possion[roadId].pop_back();
@@ -91,22 +86,10 @@ void gtt_highspeed::initialize() {
 			p->m_pattern_occupied = new bool[context::get_context()->get_rrm_config()->get_pattern_num()];
 			memset(p->m_pattern_occupied, false, sizeof(p->m_pattern_occupied));
 
-			//根据是否采用时分的资源分配算法决定是否维护m_slot_time_idx,即当前车辆能发送数据的TTI
-			int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
-			if (granularity == 2) {
-				double zone_length = 346.41;
-				int zone_idx = (int)abs((p->m_absx - (-1732.0f)) / 346.4f);//0到9
-				if ((zone_idx + 1) % 2 == 1) {
-					p->m_slot_time_idx = 0;//若当前区域采用odd subframe，则赋值0
-				}
-				else {
-					p->m_slot_time_idx = 1;//若当前区域采用even subframe，则赋值1
-				}
-			}
 		}
 	}
 
-	//vue_coordinate.close();
+	vue_coordinate.close();
 
 	memory_clean::safe_delete(m_pupr, true);
 	memory_clean::safe_delete(TotalTime, true);
@@ -135,10 +118,13 @@ void gtt_highspeed::fresh_location() {
 		
 		if (context::get_context()->get_tti() == 0) {
 			if (pv->m_slot_time_idx == 0) {
+				time_slot_0 << pv->m_absx << " " << pv->m_absy << endl;
+			}
+			else if (pv->m_slot_time_idx == 1) {
 				time_slot_1 << pv->m_absx << " " << pv->m_absy << endl;
 			}
 			else {
-				time_slot_2 << pv->m_absx << " " << pv->m_absy << endl;
+				throw logic_error("t_granularity config error");
 			}
 		}
 	}

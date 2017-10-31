@@ -315,15 +315,6 @@ private:
 public:
 	int get_select_altorithm();
 
-	/*
-	*  «∑Ò ±∑÷
-	*/
-private:
-	bool is_time_division;
-	void set_is_time_division(bool t_is_time_division);
-public:
-	bool is_time_difision();
-
 private:
 	int m_time_division_granularity = -1;
 	void set_time_division_granularity(int t_time_division_granularity);
