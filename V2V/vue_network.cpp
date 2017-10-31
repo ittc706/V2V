@@ -17,6 +17,7 @@
 */
 
 #include<iostream>
+#include<fstream>
 #include"context.h"
 #include"config.h"
 #include"gtt.h"
@@ -81,6 +82,8 @@ void vue_network::send_connection() {
 			continue;
 		}
 
+		__sender_event->set_center_idx(get_superior_level()->get_physics_level()->get_center_idx());
+		__sender_event->set_time_slot_idx(get_superior_level()->get_physics_level()->get_time_slot_idx());
 		__sender_event->set_pattern_idx(pattern_idx);
 
 		s_sender_event_per_pattern[pattern_idx].insert(__sender_event);

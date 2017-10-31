@@ -81,6 +81,7 @@ public:
 private:
 	int m_center_idx;
 public:
+	void set_center_idx(int t_center_idx);
 	int get_center_idx();
 
 	/*
@@ -89,6 +90,7 @@ public:
 private:
 	int m_time_slot_idx;
 public:
+	void set_time_slot_idx(int t_time_slot_idx);
 	int get_time_slot_idx();
 
 	/*

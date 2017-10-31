@@ -55,8 +55,6 @@ const std::vector<receiver_event*>& sender_event::get_receiver_event_vec() {
 
 void sender_event::set_sender_vue(vue* t_sender_vue) {
 	m_sender_vue = t_sender_vue;
-	m_center_idx = t_sender_vue->get_physics_level()->get_center_idx();
-	m_time_slot_idx = t_sender_vue->get_physics_level()->get_time_slot_idx();
 }
 
 vue* sender_event::get_sender_vue() {
@@ -67,8 +65,16 @@ int sender_event::get_sender_vue_id() {
 	return m_sender_vue->get_physics_level()->get_vue_id();
 }
 
+void sender_event::set_center_idx(int t_center_idx) {
+	m_center_idx = t_center_idx;
+}
+
 int sender_event::get_center_idx() {
 	return m_center_idx;
+}
+
+void sender_event::set_time_slot_idx(int t_time_slot_idx) {
+	m_time_slot_idx = t_time_slot_idx;
 }
 
 int sender_event::get_time_slot_idx() {

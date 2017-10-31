@@ -26,6 +26,7 @@
 #include"vue_link.h"
 #include"vue_network.h"
 #include<iostream>
+#include<fstream>
 
 using namespace std;
 
@@ -53,7 +54,7 @@ void rrm::initialize() {
 		vue_network::s_is_pattern_occupied.assign(24, vector<vector<bool>>(m_config->get_time_division_granularity(), vector<bool>(m_config->get_pattern_num(), false)));
 	}
 	else {
-		vue_network::s_is_pattern_occupied.assign(10, vector<vector<bool>>(m_config->get_time_division_granularity(), vector<bool>(m_config->get_pattern_num(), false)));
+		vue_network::s_is_pattern_occupied.assign(5, vector<vector<bool>>(m_config->get_time_division_granularity(), vector<bool>(m_config->get_pattern_num(), false)));
 	}
 }
 void rrm::schedule() {
@@ -89,6 +90,10 @@ void rrm::schedule() {
 				vue* pv = __finished_sender_event->get_sender_vue();
 				int center_idx = __finished_sender_event->get_center_idx();
 				int slot_idx = __finished_sender_event->get_time_slot_idx();
+				int pa_idx = __finished_sender_event->get_pattern_idx();
+				if (pa_idx != pattern_idx) {
+					throw logic_error("pattern select error");
+				}
 				if (!vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
 					throw logic_error("pattern select error");
 				}

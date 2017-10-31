@@ -97,6 +97,19 @@ void gtt_highspeed::initialize() {
 
 	vue_physics::s_pl_all.assign(get_vue_num(), std::vector<double>(get_vue_num(), 0));
 	vue_physics::s_distance_all.assign(get_vue_num(), std::vector<double>(get_vue_num(), 0));
+
+
+	double road_length = get_precise_config()->get_road_length();
+	double center_length = road_length / 5;
+
+	for (int center_idx = 0; center_idx < 5; center_idx++) {
+		m_centers[center_idx][0]= -road_length / 2 + center_idx*center_length + center_length / 2;
+		m_centers[center_idx][1] = 0;
+	}
+
+	for (int i = 0; i < 5; i++) {
+		center_coordinate << m_centers[i][0] << " " << m_centers[i][1] << endl;
+	}
 }
 
 int gtt_highspeed::get_vue_num() {
@@ -144,9 +157,15 @@ void gtt_highspeed::fresh_location() {
 void gtt_highspeed::set_slot_time_idx_for_vue(vue_physics* t_pv){
 	int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
 
-	double road_length = get_precise_config()->get_road_length();
-	double center_length = road_length / 10;
-	int center_idx = (int)abs((t_pv->m_absx - (-road_length/2)) / center_length);//0到9
+	double min_distance = 0x3f3f3f3f;
+	int center_idx = -1;
+	double temp;
+	for (int i = 0; i < 5; i++) {
+		if ((temp = abs(t_pv->m_absx - m_centers[i][0])) < min_distance) {
+			min_distance = temp;
+			center_idx = i;
+		}
+	}
 
 	t_pv->m_center_idx = center_idx;
 
@@ -156,11 +175,11 @@ void gtt_highspeed::set_slot_time_idx_for_vue(vue_physics* t_pv){
 		time_slot_idx = 0;
 	}
 	else if (granularity == 2) {
-		if ((center_idx + 1) % 2 == 1) {
-			time_slot_idx = 0;//若当前区域采用odd subframe，则赋值0
+		if (t_pv->m_absx <= m_centers[center_idx][0]) {
+			time_slot_idx = 0;
 		}
 		else {
-			time_slot_idx = 1;//若当前区域采用even subframe，则赋值1
+			time_slot_idx = 1;
 		}
 	}
 	else {

@@ -19,5 +19,7 @@ public:
 	gtt_highspeed_config* get_precise_config();
 
 private:
+	double m_centers[5][2];
+
 	void set_slot_time_idx_for_vue(vue_physics* t_pv);
 };
