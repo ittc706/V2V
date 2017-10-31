@@ -15,10 +15,12 @@
 	2:监听每个Pattern的功率，选择功率最低的Pattern
 	3:监听每个Pattern的功率，依据功率大小分配给每个Pattern一个概率，最终随机选择，但是选择的结果与每个Pattern功率大小相关
 	-->
-<select_altorithm>3</select_altorithm>
+<select_altorithm>1</select_altorithm>
 
 
-<!--时分粒度，例如奇偶时分方式就设为2-->
-<time_division_granularity>4</time_division_granularity>
+<!--是否时分
+	ON
+	OFF-->
+<is_time_division>ON</is_time_division>
 
 

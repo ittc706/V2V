@@ -19,11 +19,14 @@ public:
 	gtt_urban_config* get_precise_config();
 
 private:
-	int calculate_slot_time_idx(vue_physics* t_pv, int t_granularity);
+	void set_slot_time_idx_for_vue(vue_physics* t_pv);
 
 	bool is_interact_with_buildings(double t_x1, double t_y1, double t_x2, double t_y2);
 
 private:
 	double m_crossroads[24][2];
 	double m_buildings[56][2][2];
+
+	void initialize_crossroads();
+	void initialize_buildings();
 }; 

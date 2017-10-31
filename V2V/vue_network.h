@@ -55,6 +55,11 @@ private:
 	*/
 	static std::vector<sender_event*> s_finished_sender_event;
 
+	/*
+	* 外层center编号，中层time_slot编号，内层pattern编号
+	*/
+	static std::vector<std::vector<std::vector<bool>>> s_is_pattern_occupied;
+
 	/*----------------拷贝控制成员----------------*/
 private:
 	/*

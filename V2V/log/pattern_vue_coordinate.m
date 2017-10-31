@@ -30,6 +30,7 @@ while 1
             plot(lineNum(1:2:end),lineNum(2:2:end),shapes(j),'Color',colors(j,:),'LineWidth',2);
         end
         hold off;
+        pause;
         clf;
     end
 end

@@ -34,6 +34,7 @@ default_random_engine vue_network::s_engine(0);
 vector<set<sender_event*>> vue_network::s_sender_event_per_pattern;
 vector<set<sender_event*>> vue_network::s_temp_finished_sender_event_per_pattern;
 vector<sender_event*> vue_network::s_finished_sender_event;
+std::vector<std::vector<std::vector<bool>>> vue_network::s_is_pattern_occupied;
 
 vue_network::vue_network() {
 
@@ -80,6 +81,15 @@ void vue_network::send_connection() {
 			continue;
 		}
 
+		if (__context->get_rrm_config()->is_time_difision()) {
+			int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
+			int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
+			if (vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
+				throw logic_error("pattern select error");
+			}
+			vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx] = true;
+		}
+
 		__sender_event->set_pattern_idx(pattern_idx);
 		
 		s_sender_event_per_pattern[pattern_idx].insert(__sender_event);
@@ -114,8 +124,29 @@ int vue_network::select_pattern() {
 }
 
 int vue_network::select1() {
-	uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
-	return u(s_engine);
+	context* __context = context::get_context();
+
+	if (__context->get_rrm_config()->is_time_difision()) {
+		int center_idx = get_superior_level()->get_physics_level()->get_center_idx();
+		int slot_idx = get_superior_level()->get_physics_level()->get_slot_time_idx();
+		int pattern_num = __context->get_rrm_config()->get_pattern_num();
+
+		vector<int> candidate_pattern;
+		for (int pattern_idx = 0; pattern_idx < pattern_num; pattern_idx++) {
+			if (!vue_network::s_is_pattern_occupied[center_idx][slot_idx][pattern_idx]) {
+				candidate_pattern.push_back(pattern_idx);
+			}
+		}
+
+		if (candidate_pattern.empty()) return -1;
+		
+		uniform_int_distribution<int> u(0, candidate_pattern.size() - 1);
+		return candidate_pattern[u(s_engine)];
+	}
+	else {
+		uniform_int_distribution<int> u(0, context::get_context()->get_rrm_config()->get_pattern_num() - 1);
+		return u(s_engine);
+	}
 }
 
 // 根据载波功率，选择功率最小的那个

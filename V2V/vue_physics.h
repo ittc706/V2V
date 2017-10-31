@@ -167,6 +167,12 @@ private:
 	void set_slot_time_idx(int t_slot_time_idx);
 public:
 	int get_slot_time_idx();
+
+
+private:
+	int m_center_idx = -1;
+public:
+	int get_center_idx();
 	/*----------------·ÃÎÊÓë±à¼­Æ÷----------------*/
 public:
 

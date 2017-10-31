@@ -130,24 +130,15 @@ void gtt_highspeed::fresh_location() {
 		context::get_context()->get_vue_array()[vue_id].get_physics_level()->update_location_highspeed();
 
 		//每次更新车辆位置时重新判断车辆所在的zone_idx
-		auto p = context::get_context()->get_vue_array()[vue_id].get_physics_level();
-		int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
-		if (granularity == 2) {
-			double zone_length = 346.41;
-			int zone_idx = (int)abs((p->m_absx - (-1732.0f)) / 346.4f);//0到9
-			if ((zone_idx + 1) % 2 == 1) {
-				p->m_slot_time_idx = 0;//若当前区域采用odd subframe，则赋值0
-			}
-			else {
-				p->m_slot_time_idx = 1;//若当前区域采用even subframe，则赋值1
-			}
-		}
+		auto pv = context::get_context()->get_vue_array()[vue_id].get_physics_level();
+		set_slot_time_idx_for_vue(pv);
+		
 		if (context::get_context()->get_tti() == 0) {
-			if (p->m_slot_time_idx == 0) {
-				time_slot_1 << p->m_absx << " " << p->m_absy << endl;
+			if (pv->m_slot_time_idx == 0) {
+				time_slot_1 << pv->m_absx << " " << pv->m_absy << endl;
 			}
 			else {
-				time_slot_2 << p->m_absx << " " << p->m_absy << endl;
+				time_slot_2 << pv->m_absx << " " << pv->m_absy << endl;
 			}
 		}
 	}
@@ -164,6 +155,34 @@ void gtt_highspeed::fresh_location() {
 
 }
 
+void gtt_highspeed::set_slot_time_idx_for_vue(vue_physics* t_pv){
+	int granularity = context::get_context()->get_rrm_config()->get_time_division_granularity();
+
+	double road_length = get_precise_config()->get_road_length();
+	double center_length = road_length / 10;
+	int center_idx = (int)abs((t_pv->m_absx - (-road_length/2)) / center_length);//0到9
+
+	t_pv->m_center_idx = center_idx;
+
+	int time_slot = -1;
+
+	if (granularity == 1) {
+		time_slot = 0;
+	}
+	else if (granularity == 2) {
+		if ((center_idx + 1) % 2 == 1) {
+			time_slot = 0;//若当前区域采用odd subframe，则赋值0
+		}
+		else {
+			time_slot = 1;//若当前区域采用even subframe，则赋值1
+		}
+	}
+	else {
+		throw logic_error("t_granularity config error");
+	}
+
+	t_pv->m_slot_time_idx = time_slot;
+}
 
 void gtt_highspeed::calculate_pl(int t_vue_id1, int t_vue_id2) {
 
